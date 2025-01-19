@@ -19,17 +19,17 @@ const Nav = () => {
                     <div className="flex-10">
                         <ul className="flex gap-8 mr-16 text-lg">
                             <Link spy={true} smooth={true} to="Home">
-                            <li className="hover:text-color-hover transition border-b-2 border-white hover:border-color-hover cursor-pointer">
+                            <li className="hover:text-color-hover transition border-b-2 border-black hover:border-color-hover cursor-pointer">
                                     Inicio
                                 </li>
                             </Link>
                             <Link spy={true} smooth={true} to="Productos">
-                            <li className="hover:text-color-hover transition border-b-2 border-white hover:border-color-hover cursor-pointer">
+                            <li className="hover:text-color-hover transition border-b-2 border-black hover:border-color-hover cursor-pointer">
                                     Productos
                                 </li>
                             </Link>
                             <Link spy={true} smooth={true} to="Nosotros">
-                                <li className="hover:text-color-hover transition border-b-2 border-white hover:border-color-hover cursor-pointer">
+                                <li className="hover:text-color-hover transition border-b-2 border-black hover:border-color-hover cursor-pointer">
                                     Nosotros
                                 </li>
                             </Link>
