@@ -1,4 +1,5 @@
 import Nav from "./components/Nav"
+import Footer from "./components/Footer"
 
 function App() {
 
@@ -7,6 +8,8 @@ function App() {
       <div className="bg-black">
         <Nav/>
       </div>
+
+      <Footer/>
     </>
   )
 }

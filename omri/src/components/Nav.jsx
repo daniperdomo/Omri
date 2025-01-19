@@ -23,6 +23,11 @@ const Nav = () => {
                                     Inicio
                                 </li>
                             </Link>
+                            <Link spy={true} smooth={true} to="Productos">
+                            <li className="hover:text-color-hover transition border-b-2 border-white hover:border-color-hover cursor-pointer">
+                                    Productos
+                                </li>
+                            </Link>
                             <Link spy={true} smooth={true} to="Nosotros">
                                 <li className="hover:text-color-hover transition border-b-2 border-white hover:border-color-hover cursor-pointer">
                                     Nosotros
