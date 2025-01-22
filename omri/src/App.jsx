@@ -3,8 +3,8 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Accesorios from "./pages/Accesorios";
-import Cubitt from "./pages/cubitt";
-import Nosotros from "./pages/nosotros";
+import Cubitt from './pages/cubitt';
+import Nosotros from './pages/Nosotros';
 
 function App() {
   return (
