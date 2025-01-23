@@ -1,6 +1,7 @@
 import React from "react";
-import SliderHero from "../components/SliderHero";
-import Cards from "../components/Cards";
+import SliderHero from "../components/home/SliderHero";
+import Cards from "../components/home/Cards";
+import Menu from "../components/home/Menu";
 
 const Home = () => {
     return (
@@ -10,6 +11,7 @@ const Home = () => {
 
             {/* Cards */}
             <Cards />
+            <Menu/>
         </div>
     );
 };

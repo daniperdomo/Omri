@@ -6,19 +6,19 @@ const SliderHero = () => {
             id: 1,
             title: "Explora las Mejores Ofertas",
             subtitle: "Encuentra los productos que amas a precios increíbles.",
-            image: "/images/cubittbanner.webp",
+            image: "/images/home/slider/cubittbanner.webp",
         },
         {
             id: 2,
             title: "Tecnología de Última Generación",
             subtitle: "Lleva tu experiencia al siguiente nivel.",
-            image: "/images/arabebanner.webp",
+            image: "/images/home/slider/arabebanner.webp",
         },
         {
             id: 3,
             title: "Diseño para Inspirarte",
             subtitle: "Crea espacios únicos con nuestro catálogo.",
-            image: "/images/applebanner.jpg",
+            image: "/images/home/slider/applebanner.jpg",
         },
     ];
 
@@ -27,15 +27,22 @@ const SliderHero = () => {
     // Cambiar automáticamente el slider cada 5 segundos
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-        }, 5000); // Cambia cada 5 segundos
+            goToNextSlide();
+        }, 6000); // Cambia cada 6 segundos
 
         return () => clearInterval(interval); // Limpia el intervalo al desmontar
-    }, [slides.length]);
+    }, [currentIndex]);
 
-    // Cambiar el slide manualmente al hacer clic en un indicador
-    const goToSlide = (index) => {
-        setCurrentIndex(index);
+    // Función para ir al siguiente slide
+    const goToNextSlide = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    };
+
+    // Función para ir al slide anterior
+    const goToPrevSlide = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+        );
     };
 
     return (
@@ -45,8 +52,8 @@ const SliderHero = () => {
                 {slides.map((slide, index) => (
                     <div
                         key={slide.id}
-                        className={`absolute inset-0 w-full h-full transform transition-transform duration-700 ${
-                            index === currentIndex ? "translate-x-0" : "translate-x-full"
+                        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ${
+                            index === currentIndex ? "opacity-100" : "opacity-0"
                         }`}
                         style={{
                             backgroundImage: `url(${slide.image})`,
@@ -64,18 +71,19 @@ const SliderHero = () => {
                 ))}
             </div>
 
-            {/* Indicadores/Dots */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-                {slides.map((_, index) => (
-                    <div
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-3 h-3 rounded-full cursor-pointer transition-opacity ${
-                            index === currentIndex ? "bg-white opacity-100" : "bg-white opacity-50 hover:opacity-100"
-                        }`}
-                    ></div>
-                ))}
-            </div>
+            {/* Flechas de navegación */}
+            <button
+                onClick={goToPrevSlide}
+                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-opacity"
+            >
+                &#8592; {/* Flecha izquierda */}
+            </button>
+            <button
+                onClick={goToNextSlide}
+                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-opacity"
+            >
+                &#8594; {/* Flecha derecha */}
+            </button>
         </div>
     );
 };
