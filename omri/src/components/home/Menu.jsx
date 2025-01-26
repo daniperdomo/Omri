@@ -10,21 +10,16 @@ const Menu = () => {
     },
     {
       id: 2,
-      title: "Accesorios Apple.",
+      title: "Accesorios Apple",
       description: "Contamos con accesorios originales de la marca Apple.",
       image: "/images/home/menu/menuapple.jpg", // Reemplaza con tu imagen
     },
     {
       id: 3,
-      title: "Accesorios Samsung.",
-      description: "Accesorios originales de la marca samsung disponibles para ti.",
+      title: "Accesorios Samsung",
+      description: "Accesorios originales de la marca Samsung disponibles para ti.",
       image: "/images/home/menu/menusamsung.jpg", // Reemplaza con tu imagen
-    },
-    {
-      id: 4,
-      title: "Catalogo de perfumes arabes",
-      description: "Proximamente disponibles.",
-      image: "/images/home/menu/menuarabe.jpg", // Reemplaza con tu imagen
+      fullWidth: true, // Indica que este elemento ocupará dos columnas
     },
   ];
 
@@ -33,7 +28,9 @@ const Menu = () => {
       {items.map((item) => (
         <div
           key={item.id}
-          className="relative flex items-center justify-center h-80 text-white text-center"
+          className={`relative flex items-center justify-center h-80 text-white text-center ${
+            item.fullWidth ? 'md:col-span-2' : ''
+          }`}
           style={{
             backgroundImage: `url(${item.image})`,
             backgroundSize: "cover",

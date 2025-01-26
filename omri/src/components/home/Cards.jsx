@@ -29,30 +29,33 @@ const Cards = () => {
   ];
 
   return (
-    <div className="bg-gray-50 py-12">
+    <div className="bg-white py-16">
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-extrabold text-center mb-12 uppercase tracking-wider text-gray-800">
+        <h2 className="text-4xl font-light text-center mb-12 uppercase tracking-widest text-gray-800">
           Productos destacados
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {cards.map((card) => (
             <div
               key={card.id}
-              className="bg-white border-2 border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transform hover:-translate-y-2 transition duration-300"
+              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-black" // Borde negro añadido
             >
-              <img
-                src={card.image}
-                alt={card.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              {/* Contenedor de la imagen con altura reducida */}
+              <div className="relative h-48 flex items-center justify-center"> {/* Altura fija de 12rem (h-48) */}
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-contain" // Imagen centrada y sin cortes
+                />
+              </div>
+              {/* Contenido de la card */}
+              <div className="p-4"> {/* Padding reducido */}
+                <h3 className="text-xl font-medium text-gray-800 mb-2">
                   {card.title}
                 </h3>
-                <p className="text-sm text-gray-600">{card.description}</p>
-              </div>
-              <div className="p-4 bg-gray-100 text-center">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition duration-300">
+                <p className="text-sm text-gray-500 mb-4">{card.description}</p>
+                {/* Botón con hover */}
+                <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium text-sm hover:bg-black hover:text-white hover:border-black transition duration-300">
                   Ver Más
                 </button>
               </div>
