@@ -1,4 +1,5 @@
 import React from 'react';
+import productosCubitt from '../jsons/productosCubitt.json'
 
 const Cubitt = () => {
   const categories = [
@@ -64,7 +65,6 @@ const Cubitt = () => {
                 alt={category.title}
                 className="w-full h-full object-cover"
               />
-              {/* Texto posicionado más abajo sin overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
                 <h3 className="text-lg font-bold text-white text-center">
                   {category.title}
@@ -75,21 +75,34 @@ const Cubitt = () => {
         </div>
 
         {/* Sección de filtros */}
-        <div className="flex space-x-4">
-          {/* Filtro: Categoría */}
+        <div className="flex space-x-4 mb-8">
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Categoría</span>
           </div>
-
-          {/* Filtro: Precio */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Precio</span>
           </div>
-
-          {/* Filtro: Color */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Color</span>
           </div>
+        </div>
+
+        {/* Grid de productos obtenidos del JSON*/}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {productosCubitt.map((product) => (
+            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
+                <p className="text-gray-700">${product.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-500">{product.category}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

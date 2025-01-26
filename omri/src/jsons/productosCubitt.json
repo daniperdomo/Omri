@@ -1,0 +1,37 @@
+[
+    {
+      "id": 1,
+      "name": "Aura Pro",
+      "price": 199.99,
+      "image": "/images/cubitt/categorias/smartwatches.png",
+      "category": "Smartwatches"
+    },
+    {
+      "id": 2,
+      "name": "Audífonos Y",
+      "price": 99.99,
+      "image": "/images/cubitt/categorias/smartwatches.png",
+      "category": "Audífonos"
+    },
+    {
+      "id": 3,
+      "name": "Termo Z",
+      "price": 49.99,
+      "image": "/images/cubitt/categorias/smartwatches.png",
+      "category": "Termos"
+    },
+    {
+      "id": 4,
+      "name": "Audífonos Y",
+      "price": 99.99,
+      "image": "/images/cubitt/categorias/smartwatches.png",
+      "category": "Audífonos"
+    },
+    {
+      "id": 5,
+      "name": "Audífonos Y",
+      "price": 99.99,
+      "image": "/images/cubitt/categorias/smartwatches.png",
+      "category": "Audífonos"
+    }
+  ]
