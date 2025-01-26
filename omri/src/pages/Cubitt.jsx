@@ -6,7 +6,7 @@ const Cubitt = () => {
     {
       id: 1,
       title: "Smartwatches",
-      image: "/images/cubitt/categorias/smartwatches.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/smartwatches1.png", // Reemplaza con tu imagen
       link: "/smartwatches",
     },
     {
@@ -18,25 +18,25 @@ const Cubitt = () => {
     {
       id: 3,
       title: "Termos",
-      image: "/images/cubitt/categorias/termos.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/termos1.png", // Reemplaza con tu imagen
       link: "/termos",
     },
     {
       id: 4,
       title: "Bocinas",
-      image: "/images/cubitt/categorias/bocinas.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/bocinas1.png", // Reemplaza con tu imagen
       link: "/headphones",
     },
     {
       id: 5,
       title: "Básculas",
-      image: "/images/cubitt/categorias/basculas.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/basculas1.png", // Reemplaza con tu imagen
       link: "/bocinas",
     },
     {
       id: 6,
       title: "Accesorios",
-      image: "/images/categories/electronica.jpg", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/accesorios1.png", // Reemplaza con tu imagen
       link: "/electronica",
     },
   ];
@@ -75,13 +75,21 @@ const Cubitt = () => {
         </div>
 
         {/* Sección de filtros */}
-        <div className="flex space-x-4 mb-8">
+        <div className="flex items-center space-x-4 mb-8">
+          {/* Texto "Filtrar por:" */}
+          <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
+
+          {/* Filtro: Categoría */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Categoría</span>
           </div>
+
+          {/* Filtro: Precio */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Precio</span>
           </div>
+
+          {/* Filtro: Color */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Color</span>
           </div>
