@@ -7,7 +7,7 @@ const Nav = () => {
     const handleClick = () => setClick(!click);
 
     return (
-        <nav className="bg-white shadow-lg">
+        <nav className="bg-white shadow-lg sticky top-0 left-0 w-full z-50 ">
             <div className="h-20 flex justify-between items-center z-50 text-black lg:py-5 px-10 sm:px-6">
                 {/* Contenedor del logo */}
                 <div className="flex items-center flex-1">
