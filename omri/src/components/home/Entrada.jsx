@@ -9,9 +9,9 @@ const Entrada = () => {
     };
 
     return (
-        <div className="flex justify-center items-center w-full pb-4">
+        <div className="flex justify-center items-center w-full">
             {/* Contenedor de la imagen */}
-            <div className="w-[100%] h-80 md:h-96 relative overflow-hidden rounded-lg shadow-lg">
+            <div className="w-[100%] h-80 md:h-96 relative overflow-hidden shadow-lg"> {/* Eliminé rounded-lg */}
                 {/* Imagen de fondo */}
                 <div
                     className="absolute inset-0 w-full h-full"

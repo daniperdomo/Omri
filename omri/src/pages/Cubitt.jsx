@@ -6,37 +6,37 @@ const Cubitt = () => {
     {
       id: 1,
       title: "Smartwatches",
-      image: "/images/cubitt/categorias/smartwatches1.png",
+      image: "/images/cubitt/categorias/smartwatches2.png",
       link: "/smartwatches",
     },
     {
       id: 2,
       title: "Audífonos",
-      image: "/images/cubitt/categorias/audifonos.png",
+      image: "/images/cubitt/categorias/audifonos2.png",
       link: "/jr-teens",
     },
     {
       id: 3,
       title: "Termos",
-      image: "/images/cubitt/categorias/termos1.png",
+      image: "/images/cubitt/categorias/termos2.png",
       link: "/termos",
     },
     {
       id: 4,
       title: "Bocinas",
-      image: "/images/cubitt/categorias/bocinas1.png",
+      image: "/images/cubitt/categorias/bocinas2.png",
       link: "/headphones",
     },
     {
       id: 5,
       title: "Básculas",
-      image: "/images/cubitt/categorias/basculas1.png",
+      image: "/images/cubitt/categorias/basculas2.png",
       link: "/bocinas",
     },
     {
       id: 6,
       title: "Accesorios",
-      image: "/images/cubitt/categorias/accesorios1.png",
+      image: "/images/cubitt/categorias/accesorios2.png",
       link: "/electronica",
     },
   ];
@@ -84,18 +84,18 @@ const Cubitt = () => {
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
 
           {/* Filtro: Categoría */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Categoría</span>
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Categoría</span>
           </div>
 
           {/* Filtro: Precio */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Precio</span>
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Precio</span>
           </div>
 
           {/* Filtro: Color */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Color</span>
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Color</span>
           </div>
         </div>
 

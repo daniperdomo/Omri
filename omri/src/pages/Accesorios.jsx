@@ -17,7 +17,7 @@ const Accesorios = () => {
   ];
 
   return (
-    <div className="py-8 bg-white">
+    <div className="py-8 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header "Accesorios" */}
         <header className="text-center mb-6">
@@ -56,18 +56,18 @@ const Accesorios = () => {
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
 
           {/* Filtro: Categoría */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Categoría</span>
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Categoría</span>
+          </div>
+
+          {/* Filtro: Marca */}
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Marca</span>
           </div>
 
           {/* Filtro: Precio */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Marca</span>
-          </div>
-
-          {/* Filtro: Color */}
-          <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-white">Precio</span>
+          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
+            <span className="text-sm font-semibold text-black">Precio</span>
           </div>
         </div>
       </div>
