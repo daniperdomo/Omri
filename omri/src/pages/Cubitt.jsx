@@ -1,42 +1,42 @@
-import React from 'react';
-import productosCubitt from '../jsons/productosCubitt.json'
+import React, { useState } from 'react';
+import productosCubitt from '../jsons/productosCubitt.json';
 
 const Cubitt = () => {
   const categories = [
     {
       id: 1,
       title: "Smartwatches",
-      image: "/images/cubitt/categorias/smartwatches1.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/smartwatches1.png",
       link: "/smartwatches",
     },
     {
       id: 2,
       title: "Audífonos",
-      image: "/images/cubitt/categorias/audifonos.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/audifonos.png",
       link: "/jr-teens",
     },
     {
       id: 3,
       title: "Termos",
-      image: "/images/cubitt/categorias/termos1.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/termos1.png",
       link: "/termos",
     },
     {
       id: 4,
       title: "Bocinas",
-      image: "/images/cubitt/categorias/bocinas1.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/bocinas1.png",
       link: "/headphones",
     },
     {
       id: 5,
       title: "Básculas",
-      image: "/images/cubitt/categorias/basculas1.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/basculas1.png",
       link: "/bocinas",
     },
     {
       id: 6,
       title: "Accesorios",
-      image: "/images/cubitt/categorias/accesorios1.png", // Reemplaza con tu imagen
+      image: "/images/cubitt/categorias/accesorios1.png",
       link: "/electronica",
     },
   ];
@@ -44,9 +44,13 @@ const Cubitt = () => {
   return (
     <div className="py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header "Cubitt" */}
+        {/* Header con imagen centrada */}
         <header className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-900">Cubitt</h1>
+          <img
+            src="/images/cubitt/logocubitt.png" // Ruta de tu imagen
+            alt="Logo de Cubitt" // Texto alternativo para la imagen
+            className="mx-auto w-48 h-auto" // Ajusta el tamaño según necesites
+          />
         </header>
 
         {/* Subtítulo "Compra por categoría" */}
@@ -95,23 +99,49 @@ const Cubitt = () => {
           </div>
         </div>
 
-        {/* Grid de productos obtenidos del JSON*/}
+        {/* Grid de productos obtenidos del JSON */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {productosCubitt.map((product) => (
-            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
-                <p className="text-gray-700">${product.price.toFixed(2)}</p>
-                <p className="text-sm text-gray-500">{product.category}</p>
-              </div>
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
+      </div>
+    </div>
+  );
+};
+
+const ProductCard = ({ product }) => {
+  const [currentImage, setCurrentImage] = useState(product.image);
+
+  const handleColorClick = (image) => {
+    setCurrentImage(image);
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+      <img
+        src={currentImage}
+        alt={product.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
+        <p className="text-gray-700">${product.price.toFixed(2)}</p>
+        <p className="text-sm text-gray-500">{product.category}</p>
+
+        {/* Círculos de colores */}
+        {product.colors && product.colors.length > 0 && (
+          <div className="flex space-x-2 mt-2">
+            {product.colors.map((color, index) => (
+              <button
+                key={index}
+                className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
+                style={{ backgroundColor: color.color }}
+                onClick={() => handleColorClick(color.image)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

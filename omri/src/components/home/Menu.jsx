@@ -6,7 +6,7 @@ const Menu = () => {
       id: 1,
       title: "Catálogo Cubitt",
       description: "Descubre los productos Cubitt que ofrecemos para ti.",
-      image: "/images/home/menu/prueba.png", // Reemplaza con tu imagen
+      image: "/images/home/menu/menucubi.JPG", // Reemplaza con tu imagen
     },
     {
       id: 2,

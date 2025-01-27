@@ -51,7 +51,10 @@ const Accesorios = () => {
         </div>
 
         {/* Sección de filtros */}
-        <div className="flex space-x-4">
+        <div className="flex items-center space-x-4 mb-8">
+          {/* Texto "Filtrar por:" */}
+          <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
+
           {/* Filtro: Categoría */}
           <div className="w-32 h-10 flex items-center justify-center bg-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-white">Categoría</span>

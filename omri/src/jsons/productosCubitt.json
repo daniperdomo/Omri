@@ -1,37 +1,58 @@
 [
-    {
-      "id": 1,
-      "name": "Aura Pro",
-      "price": 130.00,
-      "image": "/images/cubitt/productos/aurapro1.png",
-      "category": "Smartwatches"
-    },
-    {
-      "id": 2,
-      "name": "Hydro Bottle",
-      "price": 25.00,
-      "image": "/images/cubitt/productos/hydrobottle1.png",
-      "category": "Termos"
-    },
-    {
-      "id": 3,
-      "name": "Viva",
-      "price": 85.00,
-      "image": "/images/cubitt/productos/viva1.png",
-      "category": "Smartwatches"
-    },
-    {
-      "id": 4,
-      "name": "Bocina Power Go",
-      "price": 55.00,
-      "image": "/images/cubitt/productos/bocinago1.png",
-      "category": "Bocinas"
-    },
-    {
-      "id": 5,
-      "name": "Audífonos Y",
-      "price": 99.99,
-      "image": "/images/cubitt/productos/hydrobottle1.png",
-      "category": "Audífonos"
-    }
-  ]
+  {
+    "id": 1,
+    "name": "Aura Pro",
+    "price": 130.00,
+    "image": "/images/cubitt/productos/aurapro1.png",
+    "category": "Smartwatches",
+    "colors": [
+      { "color": "Negro", "image": "/images/cubitt/productos/aurapro_negro.png" },
+      { "color": "Azul", "image": "/images/cubitt/productos/aurapro_azul.png" },
+      { "color": "Rojo", "image": "/images/cubitt/productos/aurapro_rojo.png" }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Hydro Bottle",
+    "price": 25.00,
+    "image": "/images/cubitt/productos/hydrobottle1.png",
+    "category": "Termos",
+    "colors": [
+      { "color": "Negro", "image": "/images/cubitt/productos/hydrobottle_negro.png" },
+      { "color": "Blanco", "image": "/images/cubitt/productos/hydrobottle_blanco.png" }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Viva",
+    "price": 85.00,
+    "image": "/images/cubitt/productos/viva1.png",
+    "category": "Smartwatches",
+    "colors": [
+      { "color": "Negro", "image": "/images/cubitt/productos/viva_negro.png" },
+      { "color": "Rosa", "image": "/images/cubitt/productos/viva_rosa.png" }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Bocina Power Go",
+    "price": 55.00,
+    "image": "/images/cubitt/productos/bocinago1.png",
+    "category": "Bocinas",
+    "colors": [
+      { "color": "Negro", "image": "/images/cubitt/productos/bocinago_negro.png" },
+      { "color": "Azul", "image": "/images/cubitt/productos/bocinago_azul.png" }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Audífonos Y",
+    "price": 99.99,
+    "image": "/images/cubitt/productos/audifonosy1.png",
+    "category": "Audífonos",
+    "colors": [
+      { "color": "Negro", "image": "/images/cubitt/productos/audifonosy_negro.png" },
+      { "color": "Blanco", "image": "/images/cubitt/productos/audifonosy_blanco.png" }
+    ]
+  }
+]

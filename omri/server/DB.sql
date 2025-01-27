@@ -23,8 +23,7 @@ CREATE TABLE Productos(
     precio DECIMAL(18,2),
     cantidad INT,
     estatus VARCHAR(100),
-    color VARCHAR(100),
     FOREIGN KEY (cod_categoria) REFERENCES Categorias(cod_categoria),
     FOREIGN KEY (cod_marca) REFERENCES Marcas(cod_marca),
-    PRIMARY KEY(cod_producto, color)
+    PRIMARY KEY(cod_producto)
 );
