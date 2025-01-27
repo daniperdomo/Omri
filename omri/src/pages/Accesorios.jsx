@@ -5,13 +5,13 @@ const Accesorios = () => {
     {
       id: 1,
       title: "Cargadores",
-      image: "/images/accesorios/categorias/cargador.jpg", // Reemplaza con tu imagen
+      image: "/images/accesorios/categorias/cargadores.png", // Reemplaza con tu imagen
       link: "/smartwatches",
     },
     {
       id: 2,
       title: "Cables",
-      image: "/images/accesorios/categorias/cablenegro.png", // Reemplaza con tu imagen
+      image: "/images/accesorios/categorias/cables.png", // Reemplaza con tu imagen
       link: "/jr-teens",
     },
   ];
