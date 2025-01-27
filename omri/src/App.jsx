@@ -11,9 +11,9 @@ function App() {
     <Router>
       <div className="flex flex-col min-h-screen">
         {/* navbar */}
+        <div className="bg-black">
           <Nav />
-        {/* <div className="bg-black">
-        </div> */}
+        </div> 
 
         {/* Main content (grow to fill available space) */}
         <main className="flex-grow">

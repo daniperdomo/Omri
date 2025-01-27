@@ -42,7 +42,7 @@ const Cubitt = () => {
   ];
 
   return (
-    <div className="py-8 bg-white">
+    <div className="py-8 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header con imagen centrada */}
         <header className="text-center mb-6">
