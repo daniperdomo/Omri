@@ -1,55 +1,17 @@
 import React, { useState } from 'react';
 import productosCubitt from '../jsons/productosCubitt.json';
+import categoriasCubitt from '../jsons/categoriasCubitt.json'; // Importa el nuevo JSON
 
 const Cubitt = () => {
-  const categories = [
-    {
-      id: 1,
-      title: "Smartwatches",
-      image: "/images/cubitt/categorias/smartwatches2.png",
-      link: "/smartwatches",
-    },
-    {
-      id: 2,
-      title: "Audífonos",
-      image: "/images/cubitt/categorias/audifonos2.png",
-      link: "/jr-teens",
-    },
-    {
-      id: 3,
-      title: "Termos",
-      image: "/images/cubitt/categorias/termos2.png",
-      link: "/termos",
-    },
-    {
-      id: 4,
-      title: "Bocinas",
-      image: "/images/cubitt/categorias/bocinas2.png",
-      link: "/headphones",
-    },
-    {
-      id: 5,
-      title: "Básculas",
-      image: "/images/cubitt/categorias/basculas2.png",
-      link: "/bocinas",
-    },
-    {
-      id: 6,
-      title: "Accesorios",
-      image: "/images/cubitt/categorias/accesorios2.png",
-      link: "/electronica",
-    },
-  ];
-
   return (
     <div className="py-8 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header con imagen centrada */}
         <header className="text-center mb-6">
           <img
-            src="/images/cubitt/logocubitt.png" // Ruta de tu imagen
-            alt="Logo de Cubitt" // Texto alternativo para la imagen
-            className="mx-auto w-48 h-auto" // Ajusta el tamaño según necesites
+            src="/images/cubitt/logocubitt.png"
+            alt="Logo de Cubitt"
+            className="mx-auto w-48 h-auto"
           />
         </header>
 
@@ -58,7 +20,7 @@ const Cubitt = () => {
 
         {/* Grid de categorías */}
         <div className="flex justify-center space-x-4 mb-12">
-          {categories.map((category) => (
+          {categoriasCubitt.map((category) => (
             <a
               key={category.id}
               href={category.link}
@@ -80,20 +42,13 @@ const Cubitt = () => {
 
         {/* Sección de filtros */}
         <div className="flex items-center space-x-4 mb-8">
-          {/* Texto "Filtrar por:" */}
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
-
-          {/* Filtro: Categoría */}
           <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-black">Categoría</span>
           </div>
-
-          {/* Filtro: Precio */}
           <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-black">Precio</span>
           </div>
-
-          {/* Filtro: Color */}
           <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
             <span className="text-sm font-semibold text-black">Color</span>
           </div>

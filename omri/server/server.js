@@ -6,7 +6,7 @@ const port = 8081
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "JESUS\\SQLEXPRESS",
+    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
     database: "webomri",
     driver: "msnodesqlv8",
     options: {
