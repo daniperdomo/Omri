@@ -237,18 +237,39 @@ app.put('/api/marca', (req, res) => {
     })
 })
 
-app.get('/api/categoria/:cod_categoria', (req, res) => {
-    const { cod_categoria } = req.params 
+app.get('/api/categoria/:cod_categoria/:modelo', (req, res) => {
+    const { cod_categoria, modelo } = req.params 
     const request = new sql.Request()
 
     request.input('cod_categoria', sql.VarChar, cod_categoria)
+    request.input('modelo', sql.VarChar, modelo)
 
-    request.query('select * from Marcas where cod_categoria = @cod_categoria', (error, result) => {
+    request.query('select * from Categorias where cod_categoria = @cod_categoria and modelo = @modelo', (error, result) => {
         if (error) {
             console.log("Error leyendo Categorias:", error)
             return res.status(500).send('Error leyendo Categorias')
         }
         res.json(result.recordset)
+    })
+})
+
+app.put('/api/categoria', (req, res) => {
+    const { cod_categoria, modelo, cod_categoria_original, modelo_original, descripcion } = req.body
+
+    const request = new sql.Request()
+    request.input('cod_categoria', sql.VarChar, cod_categoria)
+    request.input('modelo', sql.VarChar, modelo)
+    request.input('cod_categoria_original', sql.VarChar, cod_categoria_original)
+    request.input('modelo_original', sql.VarChar, modelo_original)
+    request.input('descripcion', sql.VarChar, descripcion)
+
+    // Actualiza la categoría en la base de datos
+    request.query('UPDATE Categorias SET cod_categoria = @cod_categoria, modelo = @modelo, descripcion = @descripcion WHERE cod_categoria = @cod_categoria_original AND modelo = @modelo_original', (error) => {
+        if (error) {
+            console.log('Error actualizando Categoría: ', error)
+            return res.status(500).send('Error actualizando Categoría')
+        }
+        res.status(200).send('Categoría actualizada con éxito')
     })
 })
 
