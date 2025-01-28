@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Accesorios from "./pages/Accesorios";
 import Cubitt from './pages/cubitt';
 import Nosotros from './pages/Nosotros';
+import Admin from './pages/Admin';
+import AdminForm from './pages/AdminForm';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route path='/cubitt' element={<Cubitt />} />
             <Route path='/accesorios' element={<Accesorios />} />
             <Route path='/nosotros' element={<Nosotros />} />
+            <Route path='/admin' element={<Admin />}/>
+            <Route path='/admin/:type' element={<AdminForm/>} />
           </Routes>
         </main>
 
