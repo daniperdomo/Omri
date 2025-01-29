@@ -23,7 +23,7 @@ const Cubitt = () => {
             return {
               ...producto,
               ...imagenes,
-              cod_producto: imagenes.colors[0].cod_producto, // Establecer el código inicial del producto
+              cod_producto: imagenes.colors[0].id, // Establecer el código inicial del producto
             };
           })
           .filter((producto) => producto !== null); // Filtrar productos nulos
@@ -146,7 +146,7 @@ const ProductCard = ({ product, productos }) => {
                 key={index}
                 className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
                 style={{ backgroundColor: color.color }}
-                onClick={() => handleColorClick(color.image, color.cod_producto)}
+                onClick={() => handleColorClick(color.image, color.id)}
               />
             ))}
           </div>

@@ -26,7 +26,7 @@ const UpdateProducto = () => {
         setModelo(model)
     }
     const handleCod_marca = (e) => setCod_marca(e.target.value.toUpperCase())
-    const handleDescripcion = (e) => setDescripcion(e.target.value.toLowerCase())
+    const handleDescripcion = (e) => setDescripcion(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
     const handlePrecio = (e) => setPrecio(parseFloat(e.target.value))
     const handleCantidad = (e) => setCantidad(parseInt(e.target.value, 10))
