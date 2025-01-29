@@ -6,20 +6,27 @@ const Cubitt = () => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    // Obtener productos desde la API
     fetch("http://localhost:8081/api/producto")
       .then((response) => response.json())
       .then((data) => {
-        // Combinar los datos de la API con los datos del JSON
-        const productosConImagenes = data.map((producto) => {
-          const imagenes = productosCubitt.find(
-            (cubittProducto) => cubittProducto.id === producto.cod_producto // Relacionar por id
-          );
-          return {
-            ...producto,
-            ...imagenes, // Agregar información del JSON (imagen, colores, etc.)
-          };
-        });
+        const productosConImagenes = data
+          .map((producto) => {
+            const imagenes = productosCubitt.find(
+              (cubittProducto) => cubittProducto.id === producto.cod_producto
+            );
+
+            if (!imagenes) {
+              console.warn(`Producto no encontrado en JSON: ${producto.cod_producto}`);
+              return null; // Excluir el producto
+            }
+
+            return {
+              ...producto,
+              ...imagenes,
+              cod_producto: imagenes.colors[0].cod_producto, // Establecer el código inicial del producto
+            };
+          })
+          .filter((producto) => producto !== null); // Filtrar productos nulos
 
         setProductos(productosConImagenes);
       })
@@ -87,7 +94,7 @@ const Cubitt = () => {
         {/* Grid de productos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {productos.map((product) => (
-            <ProductCard key={product.cod_producto} product={product} />
+            <ProductCard key={product.cod_producto} product={product} productos={productos} />
           ))}
         </div>
       </div>
@@ -95,12 +102,17 @@ const Cubitt = () => {
   );
 };
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, productos }) => {
   const [currentImage, setCurrentImage] = useState(product.image);
+  const [currentProductCode, setCurrentProductCode] = useState(product.cod_producto);
 
-  const handleColorClick = (image) => {
+  const handleColorClick = (image, cod_producto) => {
     setCurrentImage(image);
+    setCurrentProductCode(cod_producto);
   };
+
+  // Buscar el producto actual basado en el currentProductCode
+  const currentProduct = productos.find(p => p.cod_producto === currentProductCode);
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
@@ -110,8 +122,20 @@ const ProductCard = ({ product }) => {
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <h3 className="text-lg font-bold text-gray-900">{product.descripcion}</h3>
+        {/* Nombre del producto con estado de disponibilidad */}
+        <div className="items-center mb-2">
+          <h3 className="text-lg font-bold text-gray-900">{product.descripcion}</h3>
+          {currentProduct && currentProduct.cantidad > 0 ? (
+            <span className="text-sm font-semibold text-green-600">Disponible</span>
+          ) : (
+            <span className="text-sm font-semibold text-red-600">No disponible</span>
+          )}
+        </div>
+
+        {/* Precio */}
         <p className="text-gray-700">${product.precio.toFixed(2)}</p>
+
+        {/* Categoría */}
         <p className="text-sm text-gray-500">{product.cod_categoria}</p>
 
         {/* Círculos de colores */}
@@ -122,7 +146,7 @@ const ProductCard = ({ product }) => {
                 key={index}
                 className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
                 style={{ backgroundColor: color.color }}
-                onClick={() => handleColorClick(color.image)}
+                onClick={() => handleColorClick(color.image, color.cod_producto)}
               />
             ))}
           </div>

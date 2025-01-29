@@ -1,14 +1,16 @@
 [
   {
-    "id": "AURA",
-    "name": "Aura Pro",
+    "id": "AURA1",
+    "name": "Aura",
     "price": 130.00,
-    "image": "/images/cubitt/productos/aurapro1.png",
+    "image": "/images/cubitt/productos/aura/auranegro.png",
     "category": "Smartwatches",
     "colors": [
-      { "color": "Negro", "image": "/images/cubitt/productos/aurapro_negro.png" },
-      { "color": "Azul", "image": "/images/cubitt/productos/aurapro_azul.png" },
-      { "color": "Rojo", "image": "/images/cubitt/productos/aurapro_rojo.png" }
+      { "color": "Black", "image": "/images/cubitt/productos/aura/auranegro.png", "id": "AURA1" },
+      { "color": "#3c4564", "image": "/images/cubitt/productos/aura/auraazul.png", "id": "AURA2" },
+      { "color": "#e5dad7", "image": "/images/cubitt/productos/aura/aurarosa.png", "id": "AURA5" },
+      { "color": "Gray", "image": "/images/cubitt/productos/aura/auragris.png", "id": "AURA8" },
+      { "color": "#5b584d", "image": "/images/cubitt/productos/aura/auramocha.png", "id": "AURA9" }
     ]
   },
   {
