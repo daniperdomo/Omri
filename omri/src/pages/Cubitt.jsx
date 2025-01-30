@@ -20,6 +20,15 @@ const Cubitt = () => {
       .catch((error) => console.error("Error leyendo productos:", error));
   }, []);
 
+  // Agrupar productos por categoría
+  const productosPorCategoria = productos.reduce((acc, product) => {
+    if (!acc[product.cod_categoria]) {
+      acc[product.cod_categoria] = [];
+    }
+    acc[product.cod_categoria].push(product);
+    return acc;
+  }, {});
+
   return (
     <div className="py-8 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,22 +90,24 @@ const Cubitt = () => {
         {/* Grid de productos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {productos.map((product) => (
-            <ProductCard key={product.cod_producto} product={product} />
+            <ProductCard key={product.cod_producto} product={product} allProducts={productosPorCategoria[product.cod_categoria]} />
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 // Componente ProductCard
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, allProducts }) => {
   const [currentImage, setCurrentImage] = useState(
     product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : ""
   );
+  const [availability, setAvailability] = useState(product.cantidad > 0);
 
-  const handleColorClick = (image) => {
+  const handleColorClick = (image, quantity) => {
     setCurrentImage(image);
+    setAvailability(quantity > 0);
   };
 
   return (
@@ -114,7 +125,7 @@ const ProductCard = ({ product }) => {
         {/* Nombre del producto con estado de disponibilidad */}
         <div className="items-center mb-2">
           <h3 className="text-lg font-bold text-gray-900">{product.descripcion}</h3>
-          {product.cantidad > 0 ? (
+          {availability ? (
             <span className="text-sm font-semibold text-green-600">Disponible</span>
           ) : (
             <span className="text-sm font-semibold text-red-600">No disponible</span>
@@ -127,17 +138,19 @@ const ProductCard = ({ product }) => {
         {/* Categoría */}
         <p className="text-sm text-gray-500">{product.cod_categoria}</p>
 
-        {/* Círculos de colores */}
-        {product.imagenes && product.imagenes.length > 0 && (
+        {/* Círculos de colores de otros productos de la misma categoría */}
+        {allProducts && allProducts.length > 0 && (
           <div className="flex space-x-2 mt-2">
-            {product.imagenes.map((imagen, index) => (
-              <button
-                key={index}
-                className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
-                style={{ backgroundColor: imagen.color }}
-                onClick={() => handleColorClick(imagen.url)}
-              />
-            ))}
+            {allProducts.map((otherProduct) => 
+              otherProduct.imagenes.map((imagen, index) => (
+                <button
+                  key={index}
+                  className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
+                  style={{ backgroundColor: imagen.color }}
+                  onClick={() => handleColorClick(imagen.url, otherProduct.cantidad)}
+                />
+              ))
+            )}
           </div>
         )}
       </div>

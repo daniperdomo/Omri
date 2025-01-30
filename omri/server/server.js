@@ -6,7 +6,7 @@ const port = 8081
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    server: "JESUS\\SQLEXPRESS",
     database: "webomri",
     driver: "msnodesqlv8",
     options: {
@@ -60,6 +60,28 @@ app.post('/api/categoria', (req, res) => {
         res.status(201).send('Categoria registrada con exito')
     })
 
+})
+
+app.post('/api/producto', (req, res) => {
+    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus } = req.body
+    const request = new sql.Request()
+    request.input('cod_producto', sql.VarChar, cod_producto)
+    request.input('cod_categoria', sql.VarChar, cod_categoria)
+    request.input('modelo', sql.VarChar, modelo)
+    request.input('cod_marca', sql.VarChar, cod_marca)
+    request.input('descripcion', sql.VarChar, descripcion)
+    request.input('caracteristicas', sql.VarChar, caracteristicas)
+    request.input('precio', sql.Decimal(18, 2), precio)
+    request.input('cantidad', sql.Int, cantidad)
+    request.input('estatus', sql.Int, estatus)
+    
+    request.query('insert into Productos (cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus) values (@cod_producto, @cod_categoria, @modelo, @cod_marca, @descripcion, @caracteristicas, @precio, @cantidad, @estatus)', (error) => {
+        if (error) {
+            console.log('Error registrando Producto: ', error)
+            return res.status(500).send('Error registrando Producto')
+        }
+        res.status(201).send('Producto registrado con exito')
+    })
 }) 
 
 app.get('/api/productos', (req, res) => {
@@ -81,7 +103,6 @@ app.get('/api/productos', (req, res) => {
         LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
     `;
 
-    console.log("Ejecutando consulta SQL:", query); // Log para ver la consulta
 
     request.query(query, (error, result) => {
         if (error) {
@@ -89,7 +110,6 @@ app.get('/api/productos', (req, res) => {
             return res.status(500).send('Error obteniendo productos');
         }
 
-        console.log("Datos obtenidos de la base de datos:", result.recordset); // Log para ver los datos
 
         // Organizar los datos para que cada producto tenga un array de imágenes
         const productos = result.recordset.reduce((acc, row) => {
@@ -119,7 +139,6 @@ app.get('/api/productos', (req, res) => {
             return acc;
         }, []);
 
-        console.log("Productos organizados:", productos); // Log para ver los productos organizados
         res.status(200).json(productos);
     });
 });
