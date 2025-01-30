@@ -6,7 +6,7 @@ const port = 8081
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "JESUS\\SQLEXPRESS",
+    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
     database: "webomri",
     driver: "msnodesqlv8",
     options: {
@@ -62,29 +62,68 @@ app.post('/api/categoria', (req, res) => {
 
 }) 
 
-app.post('/api/producto', (req, res) => {
-    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus } = req.body
+app.get('/api/productos', (req, res) => {
+    const request = new sql.Request();
+    const query = `
+        SELECT 
+            P.cod_producto,
+            P.cod_categoria,
+            P.modelo,
+            P.cod_marca,
+            P.descripcion,
+            P.caracteristicas,
+            P.precio,
+            P.cantidad,
+            P.estatus,
+            I.url AS imagen_url,
+            I.color AS imagen_color
+        FROM Productos P
+        LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
+    `;
 
-    const request = new sql.Request()
-    request.input('cod_producto', sql.VarChar, cod_producto)
-    request.input('cod_categoria', sql.VarChar, cod_categoria)
-    request.input('modelo', sql.VarChar, modelo)
-    request.input('cod_marca', sql.VarChar, cod_marca)
-    request.input('descripcion', sql.VarChar, descripcion)
-    request.input('caracteristicas', sql.VarChar, caracteristicas)
-    request.input('precio', sql.Decimal(18, 2), precio)
-    request.input('cantidad', sql.Int, cantidad)
-    request.input('estatus', sql.Int, estatus)
-    
-    request.query('insert into Productos (cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus) values (@cod_producto, @cod_categoria, @modelo, @cod_marca, @descripcion, @caracteristicas, @precio, @cantidad, @estatus)', (error) => {
+    console.log("Ejecutando consulta SQL:", query); // Log para ver la consulta
+
+    request.query(query, (error, result) => {
         if (error) {
-            console.log('Error registrando Producto: ', error)
-            return res.status(500).send('Error registrando Producto')
+            console.log('Error obteniendo productos:', error);
+            return res.status(500).send('Error obteniendo productos');
         }
-        res.status(201).send('Producto registrado con exito')
-    })
 
-}) 
+        console.log("Datos obtenidos de la base de datos:", result.recordset); // Log para ver los datos
+
+        // Organizar los datos para que cada producto tenga un array de imágenes
+        const productos = result.recordset.reduce((acc, row) => {
+            const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
+            if (productoExistente) {
+                productoExistente.imagenes.push({
+                    url: row.imagen_url,
+                    color: row.imagen_color
+                });
+            } else {
+                acc.push({
+                    cod_producto: row.cod_producto,
+                    cod_categoria: row.cod_categoria,
+                    modelo: row.modelo,
+                    cod_marca: row.cod_marca,
+                    descripcion: row.descripcion,
+                    caracteristicas: row.caracteristicas,
+                    precio: row.precio,
+                    cantidad: row.cantidad,
+                    estatus: row.estatus,
+                    imagenes: [{
+                        url: row.imagen_url,
+                        color: row.imagen_color
+                    }]
+                });
+            }
+            return acc;
+        }, []);
+
+        console.log("Productos organizados:", productos); // Log para ver los productos organizados
+        res.status(200).json(productos);
+    });
+});
+
 
 app.get('/api/marca', (req, res) => {
     const request = new sql.Request()
