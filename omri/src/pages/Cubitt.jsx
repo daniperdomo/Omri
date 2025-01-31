@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import categoriasCubitt from "../jsons/categoriasCubitt.json";
+import ProductCard from "../components/ProductCard"; // Importar el componente ProductCard
 
 const Cubitt = () => {
   const [productos, setProductos] = useState([]);
@@ -20,8 +21,11 @@ const Cubitt = () => {
       .catch((error) => console.error("Error leyendo productos:", error));
   }, []);
 
+  // Filtrar productos por marca "Cubitt" (cod_marca = "CT")
+  const productosCubitt = productos.filter((producto) => producto.cod_marca === "CT");
+
   // Agrupar productos por modelo
-  const productosPorModelo = productos.reduce((acc, product) => {
+  const productosPorModelo = productosCubitt.reduce((acc, product) => {
     const key = `${product.cod_categoria}-${product.modelo}`; // Usamos categoría y modelo como clave
     if (!acc[key]) {
       acc[key] = [];
@@ -102,73 +106,6 @@ const Cubitt = () => {
             );
           })}
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Componente ProductCard
-const ProductCard = ({ product, allProducts }) => {
-  const [currentImage, setCurrentImage] = useState(
-    product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : ""
-  );
-  const [availability, setAvailability] = useState(product.cantidad > 0);
-
-  const handleColorClick = (image, quantity) => {
-    setCurrentImage(image);
-    setAvailability(quantity > 0);
-  };
-
-  // Filtrar productos de la misma categoría y modelo
-  const filteredProducts = allProducts.filter(
-    (otherProduct) => otherProduct.cod_categoria === product.cod_categoria && otherProduct.modelo === product.modelo
-  );
-
-  return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-      {/* Contenedor de tamaño fijo para la imagen */}
-      <div className="w-full h-48 overflow-hidden">
-        {currentImage && (
-          <img
-            src={currentImage}
-            alt={product.descripcion}
-            className="w-full h-full object-cover"
-          />
-        )}
-      </div>
-
-      <div className="p-4">
-        {/* Nombre del producto con estado de disponibilidad */}
-        <div className="items-center mb-2">
-          <h3 className="text-lg font-bold text-gray-900">{product.descripcion}</h3>
-          {availability ? (
-            <span className="text-sm font-semibold text-green-600">Disponible</span>
-          ) : (
-            <span className="text-sm font-semibold text-red-600">No disponible</span>
-          )}
-        </div>
-
-        {/* Precio */}
-        <p className="text-gray-700">${product.precio.toFixed(2)}</p>
-
-        {/* Categoría */}
-        <p className="text-sm text-gray-500">{product.cod_categoria}</p>
-
-        {/* Círculos de colores de otros productos del mismo modelo */}
-        {allProducts && allProducts.length > 0 && (
-          <div className="flex space-x-2 mt-2">
-            {allProducts.map((otherProduct) => 
-              otherProduct.imagenes.map((imagen, index) => (
-                <button
-                  key={index}
-                  className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
-                  style={{ backgroundColor: imagen.color }}
-                  onClick={() => handleColorClick(imagen.url, otherProduct.cantidad)}
-                />
-              ))
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

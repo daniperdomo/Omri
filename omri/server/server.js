@@ -10,8 +10,7 @@ const upload = multer()
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    //server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    server: "JESUS\\SQLEXPRESS",
+    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
     database: "webomri",
     driver: "msnodesqlv8",
     options: {
