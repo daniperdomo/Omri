@@ -100,6 +100,17 @@ const UpdateProducto = () => {
             if (response.ok) {
                 setModalMessage('Producto actualizado con éxito')
                 setIsSuccess(true)
+
+                setCod_producto('')
+                setCod_categoria('')
+                setModelo('')
+                setCod_marca('')
+                setDescripcion('')
+                setCaracteristicas('')
+                setPrecio(0.00)
+                setCantidad(0)
+                setEstatus(0)
+                setImages([])
             } else {
                 setModalMessage('Error actualizando Producto')
                 setIsSuccess(false)

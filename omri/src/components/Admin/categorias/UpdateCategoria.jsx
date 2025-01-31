@@ -57,6 +57,9 @@ const UpdateCategoria = () => {
             })
 
             if (response.ok) {
+                setCod_categoria('')
+                setDescripcion('')
+                setModelo('')
                 setModalMessage('Categoría actualizada con éxito')
                 setIsSuccess(true)
             } else {

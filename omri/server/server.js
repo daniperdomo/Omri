@@ -3,10 +3,15 @@ const path = require("path")
 const app = express()
 const cors = require("cors")
 const port = 8081
+const multer = require('multer')
+const fs = require('node:fs')
+
+const upload = multer()
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    //server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    server: "JESUS\\SQLEXPRESS",
     database: "webomri",
     driver: "msnodesqlv8",
     options: {
