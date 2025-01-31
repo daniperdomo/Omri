@@ -1,38 +1,44 @@
 [
-    {
-      "id": 1,
-      "title": "Smartwatches",
-      "image": "/images/cubitt/categorias/smartwatches2.png",
-      "link": "/smartwatches"
-    },
-    {
-      "id": 2,
-      "title": "Audífonos",
-      "image": "/images/cubitt/categorias/audifonos2.png",
-      "link": "/jr-teens"
-    },
-    {
-      "id": 3,
-      "title": "Termos",
-      "image": "/images/cubitt/categorias/termos2.png",
-      "link": "/termos"
-    },
-    {
-      "id": 4,
-      "title": "Bocinas",
-      "image": "/images/cubitt/categorias/bocinas2.png",
-      "link": "/headphones"
-    },
-    {
-      "id": 5,
-      "title": "Básculas",
-      "image": "/images/cubitt/categorias/basculas2.png",
-      "link": "/bocinas"
-    },
-    {
-      "id": 6,
-      "title": "Accesorios",
-      "image": "/images/cubitt/categorias/accesorios2.png",
-      "link": "/electronica"
-    }
-  ]
+  {
+    "id": 1,
+    "title": "Smartwatches",
+    "image": "/images/cubitt/categorias/smartwatches2.png",
+    "link": "/smartwatches",
+    "cod_categoria": "SMWT"
+  },
+  {
+    "id": 2,
+    "title": "Audífonos",
+    "image": "/images/cubitt/categorias/audifonos2.png",
+    "link": "/jr-teens",
+    "cod_categoria": "ADFN"
+  },
+  {
+    "id": 3,
+    "title": "Termos",
+    "image": "/images/cubitt/categorias/termos2.png",
+    "link": "/termos",
+    "cod_categoria": "TERM"
+  },
+  {
+    "id": 4,
+    "title": "Bocinas",
+    "image": "/images/cubitt/categorias/bocinas2.png",
+    "link": "/headphones",
+    "cod_categoria": "BOCN"
+  },
+  {
+    "id": 5,
+    "title": "Básculas",
+    "image": "/images/cubitt/categorias/basculas2.png",
+    "link": "/bocinas",
+    "cod_categoria": "BSCL"
+  },
+  {
+    "id": 6,
+    "title": "Accesorios",
+    "image": "/images/cubitt/categorias/accesorios2.png",
+    "link": "/electronica",
+    "cod_categoria": "ACSR"
+  }
+]

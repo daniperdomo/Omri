@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import categoriasCubitt from "../jsons/categoriasCubitt.json";
-import ProductCard from "../components/ProductCard"; // Importar el componente ProductCard
+import ProductCard from "../components/ProductCard";
 
 const Cubitt = () => {
   const [productos, setProductos] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
   // Obtener los productos desde el backend
   useEffect(() => {
@@ -24,8 +25,13 @@ const Cubitt = () => {
   // Filtrar productos por marca "Cubitt" (cod_marca = "CT")
   const productosCubitt = productos.filter((producto) => producto.cod_marca === "CT");
 
+  // Filtrar productos por categoría seleccionada
+  const productosFiltrados = categoriaSeleccionada
+    ? productosCubitt.filter((producto) => producto.cod_categoria === categoriaSeleccionada)
+    : productosCubitt;
+
   // Agrupar productos por modelo
-  const productosPorModelo = productosCubitt.reduce((acc, product) => {
+  const productosPorModelo = productosFiltrados.reduce((acc, product) => {
     const key = `${product.cod_categoria}-${product.modelo}`; // Usamos categoría y modelo como clave
     if (!acc[key]) {
       acc[key] = [];
@@ -33,6 +39,11 @@ const Cubitt = () => {
     acc[key].push(product);
     return acc;
   }, {});
+
+  // Manejar clic en una categoría
+  const handleCategoriaClick = (cod_categoria) => {
+    setCategoriaSeleccionada(cod_categoria);
+  };
 
   return (
     <div className="py-8 bg-gray-100">
@@ -52,9 +63,9 @@ const Cubitt = () => {
         {/* Grid de categorías */}
         <div className="flex justify-center space-x-4 mb-12">
           {categoriasCubitt.map((category) => (
-            <a
+            <button
               key={category.id}
-              href={category.link}
+              onClick={() => handleCategoriaClick(category.cod_categoria)}
               className="flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               <img
@@ -67,7 +78,7 @@ const Cubitt = () => {
                   {category.title}
                 </h3>
               </div>
-            </a>
+            </button>
           ))}
         </div>
 
