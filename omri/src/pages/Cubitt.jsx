@@ -119,6 +119,11 @@ const ProductCard = ({ product, allProducts }) => {
     setAvailability(quantity > 0);
   };
 
+  // Filtrar productos de la misma categoría y modelo
+  const filteredProducts = allProducts.filter(
+    (otherProduct) => otherProduct.cod_categoria === product.cod_categoria && otherProduct.modelo === product.modelo
+  );
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
       {/* Contenedor de tamaño fijo para la imagen */}
@@ -152,7 +157,7 @@ const ProductCard = ({ product, allProducts }) => {
         {/* Círculos de colores de otros productos del mismo modelo */}
         {allProducts && allProducts.length > 0 && (
           <div className="flex space-x-2 mt-2">
-            {allProducts.map((otherProduct) =>
+            {allProducts.map((otherProduct) => 
               otherProduct.imagenes.map((imagen, index) => (
                 <button
                   key={index}
