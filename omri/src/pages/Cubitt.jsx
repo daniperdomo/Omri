@@ -14,18 +14,19 @@ const Cubitt = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Datos recibidos del backend:", data); // Log para ver los datos recibidos
+        console.log("Datos recibidos del backend:", data);
         setProductos(data);
       })
       .catch((error) => console.error("Error leyendo productos:", error));
   }, []);
 
-  // Agrupar productos por categoría
-  const productosPorCategoria = productos.reduce((acc, product) => {
-    if (!acc[product.cod_categoria]) {
-      acc[product.cod_categoria] = [];
+  // Agrupar productos por modelo
+  const productosPorModelo = productos.reduce((acc, product) => {
+    const key = `${product.cod_categoria}-${product.modelo}`; // Usamos categoría y modelo como clave
+    if (!acc[key]) {
+      acc[key] = [];
     }
-    acc[product.cod_categoria].push(product);
+    acc[key].push(product);
     return acc;
   }, {});
 
@@ -89,14 +90,22 @@ const Cubitt = () => {
 
         {/* Grid de productos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {productos.map((product) => (
-            <ProductCard key={product.cod_producto} product={product} allProducts={productosPorCategoria[product.cod_categoria]} />
-          ))}
+          {Object.keys(productosPorModelo).map((key) => {
+            const productosDelModelo = productosPorModelo[key];
+            const primerProducto = productosDelModelo[0]; // Usamos el primer producto para mostrar la información general
+            return (
+              <ProductCard
+                key={key}
+                product={primerProducto}
+                allProducts={productosDelModelo}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Componente ProductCard
 const ProductCard = ({ product, allProducts }) => {
@@ -112,14 +121,16 @@ const ProductCard = ({ product, allProducts }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-      {/* Imagen del producto */}
-      {currentImage && (
-        <img
-          src={currentImage}
-          alt={product.descripcion}
-          className="w-full h-48 object-cover"
-        />
-      )}
+      {/* Contenedor de tamaño fijo para la imagen */}
+      <div className="w-full h-48 overflow-hidden">
+        {currentImage && (
+          <img
+            src={currentImage}
+            alt={product.descripcion}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
 
       <div className="p-4">
         {/* Nombre del producto con estado de disponibilidad */}
@@ -138,10 +149,10 @@ const ProductCard = ({ product, allProducts }) => {
         {/* Categoría */}
         <p className="text-sm text-gray-500">{product.cod_categoria}</p>
 
-        {/* Círculos de colores de otros productos de la misma categoría */}
+        {/* Círculos de colores de otros productos del mismo modelo */}
         {allProducts && allProducts.length > 0 && (
           <div className="flex space-x-2 mt-2">
-            {allProducts.map((otherProduct) => 
+            {allProducts.map((otherProduct) =>
               otherProduct.imagenes.map((imagen, index) => (
                 <button
                   key={index}
