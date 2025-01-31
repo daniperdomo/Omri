@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react'
 import '../../../styles/estilosForm.css'
-
 
 const CreateProducto = () => {
     const [cod_producto, setCod_producto] = useState('')
@@ -14,9 +13,12 @@ const CreateProducto = () => {
     const [estatus, setEstatus] = useState(0)
     const [marcas, setMarcas] = useState([])
     const [categorias, setCategorias] = useState([])
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false)
+    const [modalMessage, setModalMessage] = useState('')
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [images, setImages] = useState([])
+
+    const fileInputRef = useRef(null)
 
     const handleCod_producto = (e) => setCod_producto(e.target.value.toUpperCase())
     const handleCod_categoria = (e) => {
@@ -30,51 +32,80 @@ const CreateProducto = () => {
     const handlePrecio = (e) => setPrecio(e.target.value)
     const handleCantidad = (e) => setCantidad(e.target.value)
     const handleEstatus = (e) => {
-        const value = Number(e.target.value);
-        setEstatus(value);
-    };
+        const value = Number(e.target.value)
+        setEstatus(value)
+    }
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files)
+        if (files.length > 3) {
+            alert('Solo puedes subir un máximo de 3 imágenes')
+            return
+        }
+        setImages(files)
+    }
 
     useEffect(() => {
         fetch('http://localhost:8081/api/marca')
             .then(response => response.json())
             .then(data => setMarcas(data))
-            .catch(error => console.error('Error leyendo Marcas:', error));
+            .catch(error => console.error('Error leyendo Marcas:', error))
 
         fetch('http://localhost:8081/api/categoria')
             .then(response => response.json())
             .then(data => setCategorias(data))
-            .catch(error => console.error('Error leyendo Categorias:', error));
-    }, []);
+            .catch(error => console.error('Error leyendo Categorias:', error))
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
+
+        console.log('Imágenes seleccionadas:')
+        images.forEach((image, index) => {
+            console.log(`Imagen ${index + 1}:`, image.name, image.size, image.type)
+        })
+
         try {
             const response = await fetch('http://localhost:8081/api/producto', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus})
+                body: JSON.stringify({ cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus }),
             })
 
             if (response.ok) {
-                setModalMessage('Producto registrado con exito');
-                setIsSuccess(true);
+                setModalMessage('Producto registrado con éxito')
+                setIsSuccess(true)
+
+                setCod_producto('')
+                setCod_categoria('')
+                setModelo('')
+                setCod_marca('')
+                setDescripcion('')
+                setCaracteristicas('')
+                setPrecio(0.00)
+                setCantidad(0)
+                setEstatus(0)
+                setImages([])
+
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ''
+                }
             } else {
-                setModalMessage('Error registrando Producto');
-                setIsSuccess(false);
+                setModalMessage('Error registrando Producto')
+                setIsSuccess(false)
             }
         } catch (error) {
-            console.error('Error de red:', error);
+            console.error('Error de red:', error)
         } finally {
-            setModalVisible(true); 
+            setModalVisible(true)
         }
     }
 
     const closeModal = () => {
-        setModalVisible(false);
-    };
+        setModalVisible(false)
+    }
 
     return (
         <>
@@ -108,8 +139,8 @@ const CreateProducto = () => {
                         </label>
                         <select onChange={handleCod_marca} className="form-input" required>
                             <option value="">Seleccione una marca</option>
-                            {marcas.map((marca)=>(
-                                <option key={`${marca.cod_marca}`}  value={`${marca.cod_marca}`}>
+                            {marcas.map((marca) => (
+                                <option key={`${marca.cod_marca}`} value={`${marca.cod_marca}`}>
                                     {`${marca.cod_marca} - ${marca.descripcion}`}
                                 </option>
                             ))}
@@ -119,25 +150,25 @@ const CreateProducto = () => {
                         <label htmlFor="" className="form-label">
                             Descripcion
                         </label>
-                        <input type="text" value={descripcion} onChange={handleDescripcion} className='form-input' maxLength={100} required/>
+                        <input type="text" value={descripcion} onChange={handleDescripcion} className='form-input' maxLength={100} required />
                     </div>
                     <div>
                         <label className="form-label">
                             Caracteristicas
                         </label>
-                        <input type="text" value={caracteristicas} onChange={handleCaracteristicas} className='form-input' maxLength={500} required/>
+                        <input type="text" value={caracteristicas} onChange={handleCaracteristicas} className='form-input' maxLength={500} required />
                     </div>
                     <div>
                         <label className="form-label">
                             Precio
                         </label>
-                        <input type="number" step="0.01" value={precio} onChange={handlePrecio} className='form-input' min="0.00" required/>
+                        <input type="number" step="0.01" value={precio} onChange={handlePrecio} className='form-input' min="0.00" required />
                     </div>
                     <div>
                         <label className="form-label">
                             Cantidad
                         </label>
-                        <input type="number" step="1" value={cantidad} onChange={handleCantidad} className='form-input' min="0" required/>
+                        <input type="number" step="1" value={cantidad} onChange={handleCantidad} className='form-input' min="0" required />
                     </div>
                     <div>
                         <label className="form-label">
@@ -149,8 +180,20 @@ const CreateProducto = () => {
                             <option value="0">Inactivo</option>
                         </select>
                     </div>
-                    
-                    <button type="submit" className ="form-button">Registrar Producto</button>
+                    <div>
+                        <label className="form-label">
+                            Imágenes (Máximo 3)
+                        </label>
+                        <input
+                            type="file"
+                            onChange={handleImageChange}
+                            className='form-input'
+                            multiple
+                            accept="image/*"
+                            ref={fileInputRef} // Referencia al input de archivos
+                        />
+                    </div>
+                    <button type="submit" className="form-button">Registrar Producto</button>
                 </form>
                 {modalVisible && (
                     <div className="modal">
@@ -162,7 +205,7 @@ const CreateProducto = () => {
                 )}
             </div>
         </>
-    );
-};
+    )
+}
 
-export default CreateProducto;
+export default CreateProducto

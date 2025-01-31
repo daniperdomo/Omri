@@ -44,13 +44,15 @@ const UpdateMarca = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    cod_marca_original, // Código original de la marca
-                    cod_marca_nuevo, // Nuevo código de la marca
+                    cod_marca_original,
+                    cod_marca_nuevo, 
                     descripcion,
                 })
             })
 
             if (response.ok) {
+                setCod_marca('')
+                setDescripcion('')
                 setModalMessage('Marca actualizada con éxito')
                 setIsSuccess(true)
             } else {
