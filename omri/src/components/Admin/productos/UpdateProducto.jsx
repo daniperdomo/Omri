@@ -15,6 +15,7 @@ const UpdateProducto = () => {
     const [estatus, setEstatus] = useState(0)
     const [marcas, setMarcas] = useState([])
     const [categorias, setCategorias] = useState([])
+    const [color, setColor] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
@@ -69,6 +70,7 @@ const UpdateProducto = () => {
                     setPrecio(prod.precio)
                     setCantidad(prod.cantidad)
                     setEstatus(prod.estatus)
+                    setColor(prod.color)
                 }
             })
             .catch(error => console.error('Error leyendo producto:', error))
@@ -93,24 +95,14 @@ const UpdateProducto = () => {
                     caracteristicas, 
                     precio, 
                     cantidad, 
-                    estatus 
+                    estatus,
+                    color 
                 })
             })
 
             if (response.ok) {
                 setModalMessage('Producto actualizado con éxito')
                 setIsSuccess(true)
-
-                setCod_producto('')
-                setCod_categoria('')
-                setModelo('')
-                setCod_marca('')
-                setDescripcion('')
-                setCaracteristicas('')
-                setPrecio(0.00)
-                setCantidad(0)
-                setEstatus(0)
-                setImages([])
             } else {
                 setModalMessage('Error actualizando Producto')
                 setIsSuccess(false)
@@ -182,6 +174,12 @@ const UpdateProducto = () => {
                                 onChange={handleCaracteristicas}
                                 required
                             />
+                        </div>
+                        <div>
+                            <label className="form-label">
+                                Color (HEX)
+                            </label>
+                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} className='form-input' maxLength={10} required />
                         </div>
                         <div>
                             <label className="form-label">Precio</label>

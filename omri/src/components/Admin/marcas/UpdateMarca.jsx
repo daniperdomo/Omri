@@ -51,8 +51,6 @@ const UpdateMarca = () => {
             })
 
             if (response.ok) {
-                setCod_marca('')
-                setDescripcion('')
                 setModalMessage('Marca actualizada con éxito')
                 setIsSuccess(true)
             } else {

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import '../../../styles/estilosForm.css'
 
 const DeleteCategoria = () => {
     const [cod_categoria, setCod_categoria] = useState('')
     const [modelo, setModelo] = useState('')
     const [categorias, setCategorias] = useState([])
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false)
+    const [modalMessage, setModalMessage] = useState('')
+    const [isSuccess, setIsSuccess] = useState(false)
 
     const handleCod_categoria = (e) => {
         const [cod, model] = e.target.value.split('|')
@@ -15,14 +15,12 @@ const DeleteCategoria = () => {
         setModelo(model)
     }
 
-
     useEffect(() => {
-            fetch('http://localhost:8081/api/categoria')
-                .then(response => response.json())
-                .then(data => setCategorias(data))
-                .catch(error => console.error('Error leyendo Categorias:', error));
-        }, []);
-
+        fetch('http://localhost:8081/api/categoria')
+            .then(response => response.json())
+            .then(data => setCategorias(data))
+            .catch(error => console.error('Error leyendo Categorias:', error))
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -37,22 +35,22 @@ const DeleteCategoria = () => {
             })
 
             if (response.ok) {
-                setModalMessage('Categoria eliminada con exito');
-                setIsSuccess(true);
+                setModalMessage('Categoria eliminada con exito')
+                setIsSuccess(true)
             } else {
-                setModalMessage('Error eliminando Categoria');
-                setIsSuccess(false);
+                setModalMessage('Error eliminando Categoria')
+                setIsSuccess(false)
             }
         } catch (error) {
-            console.error('Error de red:', error);
+            console.error('Error de red:', error)
         } finally {
-            setModalVisible(true);
+            setModalVisible(true)
         }
     }
 
     const closeModal = () => {
-        setModalVisible(false);
-    };
+        setModalVisible(false)
+    }
 
     return (
         <>
@@ -65,7 +63,7 @@ const DeleteCategoria = () => {
                         <label className="form-label">
                             Categoria
                         </label>
-                        <select onChange={handleCod_categoria} className="form-input" required>
+                        <select onChange={handleCod_categoria} className="form-input" required value={`${cod_categoria}|${modelo}`}>
                             <option value="">Seleccione una categoría</option>
                             {categorias.map((categoria) => (
                                 <option key={`${categoria.cod_categoria}|${categoria.modelo}`} value={`${categoria.cod_categoria}|${categoria.modelo}`}>
@@ -86,7 +84,7 @@ const DeleteCategoria = () => {
                 )}
             </div>
         </>
-    );
-};
+    )
+}
 
-export default DeleteCategoria;
+export default DeleteCategoria

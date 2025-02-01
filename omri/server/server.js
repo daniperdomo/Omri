@@ -6,12 +6,13 @@ const port = 8081
 const multer = require('multer')
 const fs = require('node:fs')
 
-const upload = multer()
+const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri2",
+    //server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    server: "JESUS\\SQLEXPRESS",
+    database: "webomri",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -46,7 +47,6 @@ app.post('/api/marca', (req, res) => {
         }
         res.status(201).send('Marca registrada con exito')
     })
-
 }) 
 
 app.post('/api/categoria', (req, res) => {
@@ -66,27 +66,49 @@ app.post('/api/categoria', (req, res) => {
 
 })
 
-app.post('/api/producto', (req, res) => {
-    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus } = req.body
+app.post('/api/producto', upload.array('images', 3), (req, res) => {
+    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion_marca, descripcion, caracteristicas, precio, cantidad, estatus, color } = req.body
     const request = new sql.Request()
+    
     request.input('cod_producto', sql.VarChar, cod_producto)
     request.input('cod_categoria', sql.VarChar, cod_categoria)
     request.input('modelo', sql.VarChar, modelo)
     request.input('cod_marca', sql.VarChar, cod_marca)
     request.input('descripcion', sql.VarChar, descripcion)
     request.input('caracteristicas', sql.VarChar, caracteristicas)
+    request.input('color', sql.VarChar, color)
     request.input('precio', sql.Decimal(18, 2), precio)
     request.input('cantidad', sql.Int, cantidad)
     request.input('estatus', sql.Int, estatus)
     
-    request.query('insert into Productos (cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus) values (@cod_producto, @cod_categoria, @modelo, @cod_marca, @descripcion, @caracteristicas, @precio, @cantidad, @estatus)', (error) => {
+    request.query('INSERT INTO Productos (cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus, color) VALUES (@cod_producto, @cod_categoria, @modelo, @cod_marca, @descripcion, @caracteristicas, @precio, @cantidad, @estatus, @color)', async (error) => {
         if (error) {
             console.log('Error registrando Producto: ', error)
             return res.status(500).send('Error registrando Producto')
         }
-        res.status(201).send('Producto registrado con exito')
+
+        const imagePromises = req.files.map(async (file) => {
+            const dir = path.join(__dirname, '../public/images', descripcion_marca, 'productos', modelo)
+            fs.mkdirSync(dir, { recursive: true })
+
+            const imagePath = path.join(dir, file.originalname)
+            fs.renameSync(file.path, imagePath)
+
+            const imageRequest = new sql.Request()
+            imageRequest.input('cod_producto', sql.VarChar, cod_producto)
+            imageRequest.input('url', sql.VarChar, `/images/${descripcion_marca}/productos/${modelo}/${file.originalname}`)
+            await imageRequest.query('INSERT INTO Imagenes (cod_producto, url) VALUES (@cod_producto, @url)')
+        })
+
+        try {
+            await Promise.all(imagePromises)
+            res.status(201).send('Producto registrado con éxito y las imágenes han sido guardadas')
+        } catch (imageError) {
+            console.log('Error guardando imágenes: ', imageError)
+            res.status(500).send('Producto registrado, pero hubo un error al guardar las imágenes')
+        }
     })
-}) 
+})
 
 app.get('/api/productos', (req, res) => {
     const request = new sql.Request();
@@ -117,6 +139,10 @@ app.get('/api/productos', (req, res) => {
         const productos = result.recordset.reduce((acc, row) => {
             const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
             if (productoExistente) {
+                // Asegurarse de que el array de imágenes esté inicializado
+                if (!productoExistente.imagenes) {
+                    productoExistente.imagenes = [];
+                }
                 // Agregar la imagen al array de imágenes del producto existente
                 if (row.imagen_url) {
                     productoExistente.imagenes.push({
@@ -242,7 +268,7 @@ app.get('/api/producto/:cod_producto', (req, res) => {
 })
 
 app.put('/api/producto', (req, res) => { 
-    const { cod_producto_original, cod_producto_nuevo, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus } = req.body
+    const { cod_producto_original, cod_producto_nuevo, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus, color } = req.body
 
     const request = new sql.Request()
     request.input('cod_producto_original', sql.VarChar, cod_producto_original)
@@ -252,11 +278,12 @@ app.put('/api/producto', (req, res) => {
     request.input('cod_marca', sql.VarChar, cod_marca)
     request.input('descripcion', sql.VarChar, descripcion)
     request.input('caracteristicas', sql.VarChar, caracteristicas)
+    request.input('color', sql.VarChar, color)
     request.input('precio', sql.Decimal(18, 2), precio)
     request.input('cantidad', sql.Int, cantidad)
     request.input('estatus', sql.Int, estatus)
     
-    request.query('update Productos set cod_producto = @cod_producto_nuevo, cod_categoria = @cod_categoria, modelo = @modelo, cod_marca = @cod_marca, descripcion = @descripcion, caracteristicas = @caracteristicas, precio = @precio, cantidad = @cantidad, estatus = @estatus where cod_producto = @cod_producto_original', (error) => {
+    request.query('update Productos set cod_producto = @cod_producto_nuevo, cod_categoria = @cod_categoria, modelo = @modelo, cod_marca = @cod_marca, descripcion = @descripcion, caracteristicas = @caracteristicas, precio = @precio, cantidad = @cantidad, estatus = @estatus, color = @color where cod_producto = @cod_producto_original', (error) => {
         if (error) {
             console.log('Error actualizando Producto: ', error)
             return res.status(500).send('Error actualizando Producto')

@@ -26,9 +26,6 @@ const CreateCategoria = () => {
             })
 
             if (response.ok) {
-                setCod_categoria('')
-                setDescripcion('')
-                setModelo('')
                 setModalMessage('Categoria registrada con exito');
                 setIsSuccess(true);
             } else {

@@ -6,6 +6,7 @@ const CreateProducto = () => {
     const [cod_categoria, setCod_categoria] = useState('')
     const [modelo, setModelo] = useState('')
     const [cod_marca, setCod_marca] = useState('')
+    const [descripcion_marca, setDescripcionMarca] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const [caracteristicas, setCaracteristicas] = useState('')
     const [precio, setPrecio] = useState(0.00)
@@ -13,6 +14,7 @@ const CreateProducto = () => {
     const [estatus, setEstatus] = useState(0)
     const [marcas, setMarcas] = useState([])
     const [categorias, setCategorias] = useState([])
+    const [color, setColor] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
@@ -26,7 +28,11 @@ const CreateProducto = () => {
         setCod_categoria(cod)
         setModelo(model)
     }
-    const handleCod_marca = (e) => setCod_marca(e.target.value.toUpperCase())
+    const handleCod_marca = (e) => {
+        const [cod, nombre] = e.target.value.split('|')
+        setCod_marca(cod.toUpperCase()) 
+        setDescripcionMarca(nombre) 
+    }
     const handleDescripcion = (e) => setDescripcion(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
     const handlePrecio = (e) => setPrecio(e.target.value)
@@ -59,36 +65,36 @@ const CreateProducto = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        console.log('Imágenes seleccionadas:')
-        images.forEach((image, index) => {
-            console.log(`Imagen ${index + 1}:`, image.name, image.size, image.type)
+    
+        const formData = new FormData()
+        formData.append('cod_producto', cod_producto)
+        formData.append('cod_categoria', cod_categoria)
+        formData.append('modelo', modelo)
+        formData.append('cod_marca', cod_marca)
+        formData.append('descripcion_marca', descripcion_marca)
+        formData.append('descripcion', descripcion)
+        formData.append('caracteristicas', caracteristicas)
+        formData.append('precio', precio)
+        formData.append('cantidad', cantidad)
+        formData.append('estatus', estatus)
+        formData.append('color', color)
+        
+        images.forEach((image) => {
+            formData.append('images', image)
         })
-
+    
         try {
             const response = await fetch('http://localhost:8081/api/producto', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ cod_producto, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus }),
+                body: formData,
             })
-
+    
             if (response.ok) {
                 setModalMessage('Producto registrado con éxito')
                 setIsSuccess(true)
-
-                setCod_producto('')
-                setCod_categoria('')
-                setModelo('')
-                setCod_marca('')
-                setDescripcion('')
-                setCaracteristicas('')
-                setPrecio(0.00)
-                setCantidad(0)
-                setEstatus(0)
+    
                 setImages([])
-
+    
                 if (fileInputRef.current) {
                     fileInputRef.current.value = ''
                 }
@@ -140,7 +146,7 @@ const CreateProducto = () => {
                         <select onChange={handleCod_marca} className="form-input" required>
                             <option value="">Seleccione una marca</option>
                             {marcas.map((marca) => (
-                                <option key={`${marca.cod_marca}`} value={`${marca.cod_marca}`}>
+                                <option key={`${marca.cod_marca}|${marca.descripcion}`} value={`${marca.cod_marca}|${marca.descripcion}`}>
                                     {`${marca.cod_marca} - ${marca.descripcion}`}
                                 </option>
                             ))}
@@ -157,6 +163,12 @@ const CreateProducto = () => {
                             Caracteristicas
                         </label>
                         <input type="text" value={caracteristicas} onChange={handleCaracteristicas} className='form-input' maxLength={500} required />
+                    </div>
+                    <div>
+                        <label className="form-label">
+                            Color (HEX)
+                        </label>
+                        <input type="text" value={color} onChange={(e) => setColor(e.target.value)} className='form-input' maxLength={10} required />
                     </div>
                     <div>
                         <label className="form-label">
@@ -190,7 +202,7 @@ const CreateProducto = () => {
                             className='form-input'
                             multiple
                             accept="image/*"
-                            ref={fileInputRef} // Referencia al input de archivos
+                            ref={fileInputRef}
                         />
                     </div>
                     <button type="submit" className="form-button">Registrar Producto</button>
@@ -198,7 +210,7 @@ const CreateProducto = () => {
                 {modalVisible && (
                     <div className="modal">
                         <div className="modal-content">
-                            <span className="close" onClick={() => setModalVisible(false)}>&times;</span>
+                            <span className="close" onClick={closeModal}>&times;</span>
                             <p style={{ color: isSuccess ? 'green' : 'red' }}>{modalMessage}</p>
                         </div>
                     </div>

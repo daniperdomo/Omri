@@ -25,8 +25,6 @@ const CreateMarca = () => {
             })
 
             if (response.ok) {
-                setCod_marca('')
-                setDescripcion('')
                 setModalMessage('Marca registrada con exito');
                 setIsSuccess(true);
             } else {
