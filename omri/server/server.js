@@ -11,7 +11,7 @@ const upload = multer()
 const sql = require("mssql/msnodesqlv8")
 const config = {
     server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri",
+    database: "webomri2",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -101,12 +101,11 @@ app.get('/api/productos', (req, res) => {
             P.precio,
             P.cantidad,
             P.estatus,
-            I.url AS imagen_url,
-            I.color AS imagen_color
+            P.color,  
+            I.url AS imagen_url  
         FROM Productos P
         LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
     `;
-
 
     request.query(query, (error, result) => {
         if (error) {
@@ -114,16 +113,18 @@ app.get('/api/productos', (req, res) => {
             return res.status(500).send('Error obteniendo productos');
         }
 
-
         // Organizar los datos para que cada producto tenga un array de imágenes
         const productos = result.recordset.reduce((acc, row) => {
             const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
             if (productoExistente) {
-                productoExistente.imagenes.push({
-                    url: row.imagen_url,
-                    color: row.imagen_color
-                });
+                // Agregar la imagen al array de imágenes del producto existente
+                if (row.imagen_url) {
+                    productoExistente.imagenes.push({
+                        url: row.imagen_url
+                    });
+                }
             } else {
+                // Crear un nuevo producto con su color y array de imágenes
                 acc.push({
                     cod_producto: row.cod_producto,
                     cod_categoria: row.cod_categoria,
@@ -134,10 +135,8 @@ app.get('/api/productos', (req, res) => {
                     precio: row.precio,
                     cantidad: row.cantidad,
                     estatus: row.estatus,
-                    imagenes: [{
-                        url: row.imagen_url,
-                        color: row.imagen_color
-                    }]
+                    color: row.color,  // El color ahora viene de Productos
+                    imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
                 });
             }
             return acc;

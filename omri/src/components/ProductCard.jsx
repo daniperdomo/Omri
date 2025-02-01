@@ -6,6 +6,7 @@ const ProductCard = ({ product, allProducts }) => {
   );
   const [availability, setAvailability] = useState(product.cantidad > 0);
 
+  // Manejar el cambio de imagen al seleccionar un color
   const handleColorClick = (image, quantity) => {
     setCurrentImage(image);
     setAvailability(quantity > 0);
@@ -44,16 +45,14 @@ const ProductCard = ({ product, allProducts }) => {
 
         {/* Círculos de colores */}
         <div className="flex space-x-2 mt-2">
-          {allProducts.map((otherProduct) =>
-            otherProduct.imagenes.map((imagen, index) => (
-              <button
-                key={index}
-                className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
-                style={{ backgroundColor: imagen.color }}
-                onClick={() => handleColorClick(imagen.url, otherProduct.cantidad)}
-              />
-            ))
-          )}
+          {allProducts.map((otherProduct, index) => (
+            <button
+              key={index}
+              className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
+              style={{ backgroundColor: otherProduct.color }}  // Usamos el color del producto
+              onClick={() => handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad)}
+            />
+          ))}
         </div>
       </div>
     </div>
