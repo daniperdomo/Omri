@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product, allProducts }) => {
   const [currentImage, setCurrentImage] = useState(
     product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : ""
   );
   const [availability, setAvailability] = useState(product.cantidad > 0);
+  const navigate = useNavigate();
 
   // Manejar el cambio de imagen al seleccionar un color
   const handleColorClick = (image, quantity) => {
@@ -12,8 +14,16 @@ const ProductCard = ({ product, allProducts }) => {
     setAvailability(quantity > 0);
   };
 
+  // Manejar clic en la tarjeta para redirigir a la página de detalles
+  const handleCardClick = () => {
+    navigate(`/producto/${product.cod_producto}`);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+    <div
+      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+      onClick={handleCardClick}
+    >
       {/* Contenedor de tamaño fijo para la imagen */}
       <div className="w-full h-48 overflow-hidden">
         {currentImage ? (
@@ -50,7 +60,10 @@ const ProductCard = ({ product, allProducts }) => {
               key={index}
               className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
               style={{ backgroundColor: otherProduct.color }}  // Usamos el color del producto
-              onClick={() => handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad)}
+              onClick={(e) => {
+                e.stopPropagation(); // Evitar que el clic en el color redirija a la página de detalles
+                handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad);
+              }}
             />
           ))}
         </div>
