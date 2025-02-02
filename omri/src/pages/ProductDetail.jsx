@@ -103,7 +103,7 @@ const ProductDetail = () => {
 
               {/* Selector de colores */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Colores disponibles:</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Colores:</h3>
                 <div className="flex space-x-3">
                   {productosRelacionados.map((prod, index) => (
                     <button
