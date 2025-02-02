@@ -9,6 +9,16 @@ const Cubitt = () => {
   const [precioMax, setPrecioMax] = useState("");
   const [errorPrecio, setErrorPrecio] = useState("");
 
+  const handleCategoriaClick = (cod_categoria) => {
+    setCategoriaSeleccionada(cod_categoria)
+    // Si la categoría ya está seleccionada, la deseleccionamos (mostrar todos los productos)
+    if (categoriaSeleccionada === cod_categoria) {
+      setCategoriaSeleccionada(null);
+    } else {
+      setCategoriaSeleccionada(cod_categoria);
+    }
+  };
+
   // Obtener productos desde la API
   useEffect(() => {
     fetch("http://localhost:8081/api/productos")
@@ -67,10 +77,14 @@ const Cubitt = () => {
         <div className="flex justify-center space-x-4 mb-12">
           {categoriasCubitt.map((category) => (
             <button
-              key={category.id}
-              onClick={() => setCategoriaSeleccionada(category.cod_categoria)}
-              className="flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
+            key={category.id}
+            onClick={() => handleCategoriaClick(category.cod_categoria)}
+            className={`flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+              categoriaSeleccionada === category.cod_categoria
+                ? "ring-4 ring-color-hover" 
+                : ""
+            }`}
+          >
               <img
                 src={category.image}
                 alt={category.title}
