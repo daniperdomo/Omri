@@ -15,10 +15,7 @@ const Cubitt = () => {
         }
         return response.json();
       })
-      .then((data) => {
-        console.log("Datos recibidos del backend:", data);
-        setProductos(data);
-      })
+      .then((data) => setProductos(data))
       .catch((error) => console.error("Error leyendo productos:", error));
   }, []);
 
