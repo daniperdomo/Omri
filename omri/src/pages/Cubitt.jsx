@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import categoriasCubitt from "../jsons/categoriasCubitt.json";
-import ProductCard from "../components/ProductCard";
+import ProductGrid from "../components/ProductGrid";
 
 const Cubitt = () => {
   const [productos, setProductos] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [precioMin, setPrecioMin] = useState("");
+  const [precioMax, setPrecioMax] = useState("");
+  const [errorPrecio, setErrorPrecio] = useState("");
 
-  // Obtener los productos desde el backend
+  const handleCategoriaClick = (cod_categoria) => {
+    setCategoriaSeleccionada(cod_categoria)
+    // Si la categoría ya está seleccionada, la deseleccionamos (mostrar todos los productos)
+    if (categoriaSeleccionada === cod_categoria) {
+      setCategoriaSeleccionada(null);
+    } else {
+      setCategoriaSeleccionada(cod_categoria);
+    }
+  };
+
+  // Obtener productos desde la API
   useEffect(() => {
     fetch("http://localhost:8081/api/productos")
       .then((response) => {
@@ -19,33 +32,31 @@ const Cubitt = () => {
       .catch((error) => console.error("Error leyendo productos:", error));
   }, []);
 
-  // Filtrar productos por marca "Cubitt" (cod_marca = "CT")
+  // Validar precios
+  const validarPrecio = () => {
+    if (precioMin && precioMax && parseFloat(precioMin) > parseFloat(precioMax)) {
+      setErrorPrecio("El precio mínimo no puede ser mayor que el máximo.");
+      return false;
+    }
+    if (isNaN(precioMin) || isNaN(precioMax)) {
+      setErrorPrecio("Los precios deben ser números válidos.");
+      return false;
+    }
+    setErrorPrecio("");
+    return true;
+  };
+
+  // Filtrar productos por marca Cubitt (cod_marca === "CT")
   const productosCubitt = productos.filter((producto) => producto.cod_marca === "CT");
 
-  // Filtrar productos por categoría seleccionada
-  const productosFiltrados = categoriaSeleccionada
-    ? productosCubitt.filter((producto) => producto.cod_categoria === categoriaSeleccionada)
-    : productosCubitt;
-
-  // Agrupar productos por modelo
-  const productosPorModelo = productosFiltrados.reduce((acc, product) => {
-    const key = `${product.cod_categoria}-${product.modelo}`; // Usamos categoría y modelo como clave
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(product);
-    return acc;
-  }, {});
-
-  // Manejar clic en una categoría
-  const handleCategoriaClick = (cod_categoria) => {
-    // Si la categoría ya está seleccionada, la deseleccionamos (mostrar todos los productos)
-    if (categoriaSeleccionada === cod_categoria) {
-      setCategoriaSeleccionada(null);
-    } else {
-      setCategoriaSeleccionada(cod_categoria);
-    }
-  };
+  // Aplicar filtros
+  const productosFiltrados = productosCubitt.filter((producto) => {
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+    const cumplePrecio =
+      (!precioMin || producto.precio >= parseFloat(precioMin)) &&
+      (!precioMax || producto.precio <= parseFloat(precioMax));
+    return cumpleCategoria && cumplePrecio;
+  });
 
   return (
     <div className="py-8 bg-gray-100">
@@ -68,11 +79,7 @@ const Cubitt = () => {
             <button
               key={category.id}
               onClick={() => handleCategoriaClick(category.cod_categoria)}
-              className={`flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                categoriaSeleccionada === category.cod_categoria
-                  ? "ring-4 ring-color-hover" 
-                  : "" // Sin borde por defecto
-              }`}
+              className="flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               <img
                 src={category.image}
@@ -88,41 +95,51 @@ const Cubitt = () => {
           ))}
         </div>
 
-        {/* Sección de filtros */}
+        {/* Filtros */}
         <div className="flex items-center space-x-4 mb-8">
-          {/* Texto "Filtrar por:" */}
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
 
-          {/* Filtro: Categoría */}
-          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-black">Categoría</span>
-          </div>
+          {/* Select de categorías */}
+          <select
+            value={categoriaSeleccionada}
+            onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+            className="w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+          >
+            <option value="">Categoría</option>
+            <option value="">Todas</option>
+            {categoriasCubitt.map((category) => (
+              <option key={category.cod_categoria} value={category.cod_categoria}>
+                {category.title}
+              </option>
+            ))}
+          </select>
 
-          {/* Filtro: Marca */}
-          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-black">Marca</span>
+          {/* Inputs de precio */}
+          <div className="flex space-x-2">
+            <input
+              type="number"
+              placeholder="$-Min"
+              value={precioMin}
+              onChange={(e) => setPrecioMin(e.target.value)}
+              onBlur={validarPrecio}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
+            <input
+              type="number"
+              placeholder="$-Max"
+              value={precioMax}
+              onChange={(e) => setPrecioMax(e.target.value)}
+              onBlur={validarPrecio}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
           </div>
-
-          {/* Filtro: Precio */}
-          <div className="w-32 h-10 flex items-center justify-center bg-white border border-black rounded-lg shadow-md">
-            <span className="text-sm font-semibold text-black">Precio</span>
-          </div>
+          {errorPrecio && <p className="text-red-500 text-sm">{errorPrecio}</p>}
         </div>
 
-        {/* Grid de productos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Object.keys(productosPorModelo).map((key) => {
-            const productosDelModelo = productosPorModelo[key];
-            const primerProducto = productosDelModelo[0]; // Usamos el primer producto para mostrar la información general
-            return (
-              <ProductCard
-                key={key}
-                product={primerProducto}
-                allProducts={productosDelModelo}
-              />
-            );
-          })}
-        </div>
+        {/* Pasar los productos filtrados al ProductGrid */}
+        <ProductGrid productos={productosFiltrados} />
       </div>
     </div>
   );
