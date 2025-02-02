@@ -79,7 +79,11 @@ const Cubitt = () => {
             <button
               key={category.id}
               onClick={() => handleCategoriaClick(category.cod_categoria)}
-              className="flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className={`flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                categoriaSeleccionada === category.cod_categoria
+                  ? "ring-4 ring-color-hover" 
+                  : ""
+              }`}
             >
               <img
                 src={category.image}
