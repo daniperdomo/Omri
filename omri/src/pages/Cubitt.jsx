@@ -39,7 +39,12 @@ const Cubitt = () => {
 
   // Manejar clic en una categoría
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada(cod_categoria);
+    // Si la categoría ya está seleccionada, la deseleccionamos (mostrar todos los productos)
+    if (categoriaSeleccionada === cod_categoria) {
+      setCategoriaSeleccionada(null);
+    } else {
+      setCategoriaSeleccionada(cod_categoria);
+    }
   };
 
   return (
@@ -63,7 +68,11 @@ const Cubitt = () => {
             <button
               key={category.id}
               onClick={() => handleCategoriaClick(category.cod_categoria)}
-              className="flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className={`flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                categoriaSeleccionada === category.cod_categoria
+                  ? "ring-4 ring-color-hover" 
+                  : "" // Sin borde por defecto
+              }`}
             >
               <img
                 src={category.image}
