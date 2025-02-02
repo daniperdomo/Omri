@@ -7,6 +7,7 @@ import Cubitt from './pages/cubitt';
 import Nosotros from './pages/Nosotros';
 import Admin from './pages/Admin';
 import AdminForm from './pages/AdminForm';
+import ProductDetail from './pages/ProductDetail'; // Importa la nueva página
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path='/nosotros' element={<Nosotros />} />
             <Route path='/admin' element={<Admin />}/>
             <Route path='/admin/:type' element={<AdminForm/>} />
+            <Route path='/producto/:cod_producto' element={<ProductDetail />} /> {/* Nueva ruta */}
           </Routes>
         </main>
 

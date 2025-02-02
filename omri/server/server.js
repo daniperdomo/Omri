@@ -10,10 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    // server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    // database: "webomri2",
-    server: "JESUS\\SQLEXPRESS",
-    database: "webomri",
+    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    database: "webomri2",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -173,6 +171,124 @@ app.get('/api/productos', (req, res) => {
     });
 });
 
+app.get('/api/productos/:cod_producto', (req, res) => {
+    const { cod_producto } = req.params;
+    const request = new sql.Request();
+    const query = `
+        SELECT 
+            P.cod_producto,
+            P.cod_categoria,
+            P.modelo,
+            P.cod_marca,
+            P.descripcion,
+            P.caracteristicas,
+            P.precio,
+            P.cantidad,
+            P.estatus,
+            P.color,  
+            I.url AS imagen_url  
+        FROM Productos P
+        LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
+        WHERE P.cod_producto = @cod_producto
+    `;
+
+    request.input('cod_producto', sql.VarChar, cod_producto);
+    request.query(query, (error, result) => {
+        if (error) {
+            console.log('Error obteniendo detalles del producto:', error);
+            return res.status(500).send('Error obteniendo detalles del producto');
+        }
+
+        if (result.recordset.length === 0) {
+            return res.status(404).send('Producto no encontrado');
+        }
+
+        // Organizar los datos para que el producto tenga un array de imágenes
+        const producto = result.recordset.reduce((acc, row) => {
+            if (!acc.cod_producto) {
+                acc = {
+                    cod_producto: row.cod_producto,
+                    cod_categoria: row.cod_categoria,
+                    modelo: row.modelo,
+                    cod_marca: row.cod_marca,
+                    descripcion: row.descripcion,
+                    caracteristicas: row.caracteristicas,
+                    precio: row.precio,
+                    cantidad: row.cantidad,
+                    estatus: row.estatus,
+                    color: row.color,
+                    imagenes: []
+                };
+            }
+            if (row.imagen_url) {
+                acc.imagenes.push({ url: row.imagen_url });
+            }
+            return acc;
+        }, {});
+
+        res.status(200).json(producto);
+    });
+});
+
+app.get('/api/productos/modelo/:modelo', (req, res) => {
+  const { modelo } = req.params;
+  const request = new sql.Request();
+  const query = `
+      SELECT 
+          P.cod_producto,
+          P.cod_categoria,
+          P.modelo,
+          P.cod_marca,
+          P.descripcion,
+          P.caracteristicas,
+          P.precio,
+          P.cantidad,
+          P.estatus,
+          P.color,  
+          I.url AS imagen_url  
+      FROM Productos P
+      LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
+      WHERE P.modelo = @modelo
+  `;
+
+  request.input('modelo', sql.VarChar, modelo);
+  request.query(query, (error, result) => {
+      if (error) {
+          console.log('Error obteniendo productos relacionados:', error);
+          return res.status(500).send('Error obteniendo productos relacionados');
+      }
+
+      // Organizar los datos para que cada producto tenga un array de imágenes
+      const productos = result.recordset.reduce((acc, row) => {
+          const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
+          if (productoExistente) {
+              if (!productoExistente.imagenes) {
+                  productoExistente.imagenes = [];
+              }
+              if (row.imagen_url) {
+                  productoExistente.imagenes.push({ url: row.imagen_url });
+              }
+          } else {
+              acc.push({
+                  cod_producto: row.cod_producto,
+                  cod_categoria: row.cod_categoria,
+                  modelo: row.modelo,
+                  cod_marca: row.cod_marca,
+                  descripcion: row.descripcion,
+                  caracteristicas: row.caracteristicas,
+                  precio: row.precio,
+                  cantidad: row.cantidad,
+                  estatus: row.estatus,
+                  color: row.color,
+                  imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
+              });
+          }
+          return acc;
+      }, []);
+
+      res.status(200).json(productos);
+  });
+});
 
 app.get('/api/marca', (req, res) => {
     const request = new sql.Request()

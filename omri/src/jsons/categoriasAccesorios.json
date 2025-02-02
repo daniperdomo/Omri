@@ -1,0 +1,16 @@
+[
+    {
+      "id": 1,
+      "title": "Cargadores",
+      "image": "/images/accesorios/categorias/cargadores.png",
+      "link": "/cargadores",
+      "cod_categoria": "ACCE"
+    },
+    {
+        "id": 2,
+        "title": "Cables",
+        "image": "/images/accesorios/categorias/cables.png",
+        "link": "/cables",
+        "cod_categoria": "ACCE"
+      }
+  ]
