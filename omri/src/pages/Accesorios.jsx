@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import categoriasAccesorios from "../jsons/categoriasAccesorios.json";
-import ProductCard from "../components/ProductCard";
+import ProductGrid from "../components/ProductGrid";
 
 const Accesorios = () => {
   const [productos, setProductos] = useState([]);
@@ -20,7 +20,7 @@ const Accesorios = () => {
   }, []);
 
   // Filtrar productos por categoría "Accesorios" (cod_categoria = "ACCE")
-  const productosAccesorios = productos.filter((producto) => producto.cod_categoria === "ACCE");
+  const productosAccesorios = productos.filter((producto) => producto.cod_categoria === "CARG");
 
   // Filtrar productos por categoría seleccionada
   const productosFiltrados = categoriaSeleccionada
@@ -106,20 +106,8 @@ const Accesorios = () => {
           </div>
         </div>
 
-        {/* Grid de productos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Object.keys(productosPorModelo).map((key) => {
-            const productosDelModelo = productosPorModelo[key];
-            const primerProducto = productosDelModelo[0]; // Usamos el primer producto para mostrar la información general
-            return (
-              <ProductCard
-                key={key}
-                product={primerProducto}
-                allProducts={productosDelModelo}
-              />
-            );
-          })}
-        </div>
+        {/* Pasar los productos filtrados al ProductGrid */}
+        <ProductGrid productos={productosFiltrados} />
       </div>
     </div>
   );

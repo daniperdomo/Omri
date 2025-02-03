@@ -28,28 +28,28 @@ const Nav = () => {
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
                                     Inicio
                                     {/* Efecto de borde iluminado */}
-                                    <span className="absolute left-0 bottom-[-25px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                                    <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
                             </Link>
                             <Link to="/cubitt">
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
                                     Cubitt
                                     {/* Efecto de borde iluminado */}
-                                    <span className="absolute left-0 bottom-[-25px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                                    <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
                             </Link>
                             <Link to="/accesorios">
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
                                     Accesorios
                                     {/* Efecto de borde iluminado */}
-                                    <span className="absolute left-0 bottom-[-25px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                                    <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
                             </Link>
                             <Link to="/nosotros">
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
                                     Nosotros
                                     {/* Efecto de borde iluminado */}
-                                    <span className="absolute left-0 bottom-[-25px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                                    <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
                             </Link>
                         </ul>

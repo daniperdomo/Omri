@@ -15,18 +15,18 @@ const Footer = () => {
 
         {/* Servicios Section */}
         <div>
-          <h2 className='text-[22px] font-semibold py-2 text-color-hover uppercase'>Servicios</h2>
+          <h2 className='text-[22px] font-semibold py-2 text-color-hover uppercase'>Ubicación</h2>
           <ul className='text-[16px] my-4'>
-            <li className='my-2'>Web design</li>
-            <li className='my-2'>Web development</li>
+            <li className='my-2'>C. C. Orinokia Mall</li>
+            <li className='my-2'>Nivel Santo Tome IV, Piso 1</li>
           </ul>
         </div>
 
         {/* Contacto Section */}
         <div className='mb-4 md:mb-0'>
           <h2 className='text-[22px] font-semibold py-2 text-color-hover uppercase'>Contacto</h2>
-          <p className='text-[16px] my-4'>Email: "email"</p>
-          <p className='text-[16px] my-4'>Teléfono: +58...</p>
+          <p className='text-[16px] my-4'>Email: "omrivzla@gmail.com"</p>
+          <p className='text-[16px] my-4'>Teléfono: +58 424-9235257</p>
         </div>
 
         {/* Redes Sociales Section */}
