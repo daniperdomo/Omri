@@ -19,7 +19,12 @@ const Menu = () => {
       title: "Accesorios Samsung",
       description: "Accesorios originales de la marca Samsung disponibles para ti.",
       image: "/images/home/menu/menusamsung.jpg", // Reemplaza con tu imagen
-      fullWidth: true, // Indica que este elemento ocupará dos columnas
+    },
+    {
+      id: 4,
+      title: "Perfumes Árabes",
+      description: "Próximamente disponibles en Omri.",
+      image: "/images/home/menu/menuarabe.jpg", // Reemplaza con tu imagen
     },
   ];
 
@@ -28,9 +33,7 @@ const Menu = () => {
       {items.map((item) => (
         <div
           key={item.id}
-          className={`relative flex items-center justify-center h-80 text-white text-center ${
-            item.fullWidth ? 'md:col-span-2' : ''
-          }`}
+          className="relative flex items-center justify-center h-80 text-white text-center"
           style={{
             backgroundImage: `url(${item.image})`,
             backgroundSize: "cover",
