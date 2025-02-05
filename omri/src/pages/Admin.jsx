@@ -20,6 +20,9 @@ const AdminHome = () => {
             { id: 8, title: 'Update Categoria', link: '/admin/updateCategoria' },
             { id: 9, title: 'Delete Categoria', link: '/admin/deleteCategoria' },
         ],
+        imagen: [
+            {id: 10, title: 'Update Imagen', link: '/admin/updateImagen'}
+        ]
     };
 
     const handleCardClick = (type) => {

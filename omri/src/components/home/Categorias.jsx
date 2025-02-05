@@ -2,10 +2,10 @@ import React from 'react';
 
 const Categorias = () => {
   const categorias = [
-    { nombre: 'Relojes Cubitt', imagen: '/images/cines.jpg' },
-    { nombre: 'Cargadores', imagen: '/images/cartelera.jpg' },
-    { nombre: 'Cables cargadores', imagen: '/images/carameleria.jpg' },
-    { nombre: 'Termos Cubitt', imagen: '/images/preventa.jpg' },
+    { nombre: 'Relojes Cubitt', imagen: '/images/cines.webp' },
+    { nombre: 'Cargadores', imagen: '/images/cartelera.webp' },
+    { nombre: 'Cables cargadores', imagen: '/images/carameleria.webp' },
+    { nombre: 'Termos Cubitt', imagen: '/images/preventa.webp' },
   ];
 
   return (

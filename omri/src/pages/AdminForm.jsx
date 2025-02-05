@@ -9,6 +9,7 @@ import DeleteCategoria from '../components/Admin/categorias/DeleteCategoria';
 import CreateProducto from '../components/Admin/productos/CreateProducto';
 import UpdateProducto from '../components/Admin/productos/UpdateProducto';
 import DeleteProducto from '../components/Admin/productos/DeleteProducto';
+import UpdateImagen from '../components/Admin/imagenes/UpdateImagen';
 
 
 const AdminForm = () => {
@@ -23,6 +24,7 @@ const AdminForm = () => {
         { type: 'createMarca', comp: <CreateMarca /> },
         { type: 'updateMarca', comp: <UpdateMarca /> },
         { type: 'deleteMarca', comp: <DeleteMarca /> },
+        { type: 'updateImagen', comp: <UpdateImagen /> },
     ];
 
     const formToRender = forms.find(form => form.type === type);

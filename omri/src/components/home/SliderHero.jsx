@@ -18,7 +18,7 @@ const SliderHero = () => {
             id: 3,
             title: "Diseño para Inspirarte",
             subtitle: "Crea espacios únicos con nuestro catálogo.",
-            image: "/images/home/slider/applebanner.jpg",
+            image: "/images/home/slider/applebanner.webp",
         },
     ];
 

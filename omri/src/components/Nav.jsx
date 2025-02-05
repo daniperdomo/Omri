@@ -13,7 +13,7 @@ const Nav = () => {
                 <div className="flex items-center flex-1">
                     <Link to="/">
                         <img
-                            src="/images/logofondoblanco.png"
+                            src="/images/logofondoblanco.webp"
                             alt="Logo"
                             className="h-20 w-auto md:h-20 lg:h-32 cursor-pointer"
                         />

@@ -9,7 +9,7 @@ const Footer = () => {
         <div className='mb-4 md:mb-0'>
           {/* Imagen del logo */}
           <img 
-            src='/images/isotipoblanco.png' alt='Logo de la empresa'className='w-32 h-auto' // Ajusta el tamaño de la imagen con Tailwind
+            src='/images/isotipoblanco.webp' alt='Logo de la empresa'className='w-32 h-auto' // Ajusta el tamaño de la imagen con Tailwind
           />
         </div>
 

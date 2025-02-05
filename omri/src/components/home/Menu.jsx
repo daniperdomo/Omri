@@ -6,25 +6,25 @@ const Menu = () => {
       id: 1,
       title: "Catálogo Cubitt",
       description: "Descubre los productos Cubitt que ofrecemos para ti.",
-      image: "/images/home/menu/menucubi.JPG", // Reemplaza con tu imagen
+      image: "/images/home/menu/menucubi.webp", // Reemplaza con tu imagen
     },
     {
       id: 2,
       title: "Accesorios Apple",
       description: "Contamos con accesorios originales de la marca Apple.",
-      image: "/images/home/menu/menuapple.jpg", // Reemplaza con tu imagen
+      image: "/images/home/menu/menuapple.webp", // Reemplaza con tu imagen
     },
     {
       id: 3,
       title: "Accesorios Samsung",
       description: "Accesorios originales de la marca Samsung disponibles para ti.",
-      image: "/images/home/menu/menusamsung.jpg", // Reemplaza con tu imagen
+      image: "/images/home/menu/menusamsung.webp", // Reemplaza con tu imagen
     },
     {
       id: 4,
       title: "Perfumes Árabes",
       description: "Próximamente disponibles en Omri.",
-      image: "/images/home/menu/menuarabe.jpg", // Reemplaza con tu imagen
+      image: "/images/home/menu/menuarabe.webp", // Reemplaza con tu imagen
     },
   ];
 

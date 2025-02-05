@@ -5,7 +5,7 @@ const Entrada = () => {
         id: 1,
         title: "Explora las Mejores Ofertas",
         subtitle: "Encuentra los productos que amas a precios increíbles.",
-        image: "/images/home/slider/prueba.JPG", // Cambia esta ruta por la de tu imagen
+        image: "/images/home/slider/prueba.webp", // Cambia esta ruta por la de tu imagen
     };
 
     return (

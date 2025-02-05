@@ -2,14 +2,14 @@
     {
       "id": 1,
       "title": "Cargadores",
-      "image": "/images/accesorios/categorias/cargadores.png",
+      "image": "/images/accesorios/categorias/cargadores.webp",
       "link": "/cargadores",
       "cod_categoria": "ACCE"
     },
     {
         "id": 2,
         "title": "Cables",
-        "image": "/images/accesorios/categorias/cables.png",
+        "image": "/images/accesorios/categorias/cables.webp",
         "link": "/cables",
         "cod_categoria": "ACCE"
       }

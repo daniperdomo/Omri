@@ -10,8 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri2",
+    server: "JESUS\\SQLEXPRESS",
+    database: "webomri",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -477,6 +477,30 @@ app.put('/api/categoria', (req, res) => {
         res.status(200).send('Categoría actualizada con éxito')
     })
 })
+
+app.get('/api/imagenes', (req, res) => {
+    const request = new sql.Request()
+    request.query('select * from Imagenes', (error, result) => {
+        if (error) {
+            console.log("Error leyendo Imagenes:", error)
+            return res.status(500).send('Error leyendo Imagenes')
+        }
+        res.json(result.recordset)
+    })
+})
+
+app.put('/api/imagenes', (req, res) => {
+    const { cod_producto, url_nueva } = req.body;
+
+    const request = new sql.Request();
+    request.query(`UPDATE Imagenes SET url = '${url_nueva}' WHERE cod_producto = '${cod_producto}'`, (error, result) => {
+        if (error) {
+            console.log("Error actualizando la imagen:", error);
+            return res.status(500).send('Error actualizando la imagen');
+        }
+        res.send('Imagen actualizada con éxito');
+    });
+});
 
 app.use(express.static(path.join(__dirname, 'client/build')))
 
