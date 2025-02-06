@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import CreateMarca from '../components/Admin/marcas/CreateMarca';
 import UpdateMarca from '../components/Admin/marcas/UpdateMarca';
 import DeleteMarca from '../components/Admin/marcas/DeleteMarca';
@@ -32,6 +32,13 @@ const AdminForm = () => {
 
     return (
         <>
+            <div className="flex justify-center items-center m-4">
+                <Link to="/admin">
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                        Regresar al menú de Admin
+                    </button>
+                </Link>
+            </div>
             {formToRender ? (
                 <div>
                     {formToRender.comp}

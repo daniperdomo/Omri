@@ -9,6 +9,7 @@ const AdminHome = () => {
             { id: 1, title: 'Create Producto', link: '/admin/createProducto' },
             { id: 2, title: 'Update Producto', link: '/admin/updateProducto' },
             { id: 3, title: 'Delete Producto', link: '/admin/deleteProducto' },
+            { id: 10, title: 'Update Imagen', link: '/admin/updateImagen' }
         ],
         marca: [
             { id: 4, title: 'Create Marca', link: '/admin/createMarca' },
@@ -19,9 +20,6 @@ const AdminHome = () => {
             { id: 7, title: 'Create Categoria', link: '/admin/createCategoria' },
             { id: 8, title: 'Update Categoria', link: '/admin/updateCategoria' },
             { id: 9, title: 'Delete Categoria', link: '/admin/deleteCategoria' },
-        ],
-        imagen: [
-            {id: 10, title: 'Update Imagen', link: '/admin/updateImagen'}
         ]
     };
 
@@ -31,7 +29,7 @@ const AdminHome = () => {
 
     return (
         <div className="p-4">
-            <div className="flex space-x-4 mb-4">
+            <div className="flex space-x-4 mb-4 justify-center">
                 {Object.keys(options).map((type) => (
                     <div
                         key={type}
@@ -44,9 +42,9 @@ const AdminHome = () => {
             </div>
 
             {selectedType && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex flex-wrap justify-center space-x-4">
                     {options[selectedType].map((option) => (
-                        <div key={option.id} className="p-4 bg-white rounded-lg shadow-md">
+                        <div key={option.id} className="p-4 bg-white rounded-lg shadow-md mb-4 w-full max-w-xs text-center">
                             <h3 className="text-lg font-semibold">{option.title}</h3>
                             <Link to={option.link}>
                                 <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">

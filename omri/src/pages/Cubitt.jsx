@@ -33,7 +33,7 @@ const Cubitt = () => {
     const productosGuardados = sessionStorage.getItem("productosCubitt");
     if (productosGuardados) {
       setProductos(JSON.parse(productosGuardados)); // Cargar desde sessionStorage
-      setLoading(false);
+      setLoading(false); // No mostrar "Cargando productos..." si hay datos en sessionStorage
     } else {
       fetchProductos();
     }
@@ -53,7 +53,12 @@ const Cubitt = () => {
   };
 
   const aplicarFiltros = () => {
-    const productosCubitt = productos.filter((producto) => producto.cod_marca === "CT");
+    // Filtrar productos por marca "Cubitt" (cod_marca = "CT") y estatus = 1
+    const productosCubitt = productos.filter(
+      (producto) => producto.cod_marca === "CT" && producto.estatus === 1
+    );
+
+    // Aplicar filtros adicionales (categoría y precio)
     const productosFiltrados = productosCubitt.filter((producto) => {
       const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
       const cumplePrecio =
@@ -61,6 +66,7 @@ const Cubitt = () => {
         (!precioMax || producto.precio <= parseFloat(precioMax));
       return cumpleCategoria && cumplePrecio;
     });
+
     return productosFiltrados;
   };
 
@@ -112,7 +118,49 @@ const Cubitt = () => {
           ))}
         </div>
 
-        {loading ? (
+        <div className="flex items-center space-x-4 mb-8">
+          <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
+
+          {/* Select de categorías */}
+          <select
+            value={categoriaSeleccionada}
+            onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+            className="w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+          >
+            <option value="">Categoría</option>
+            <option value="">Todas</option>
+            {categoriasCubitt.map((category) => (
+              <option key={category.cod_categoria} value={category.cod_categoria}>
+                {category.title}
+              </option>
+            ))}
+          </select>
+
+          {/* Inputs de precio */}
+          <div className="flex space-x-2">
+            <input
+              type="number"
+              placeholder="$-Min"
+              value={precioMin}
+              onChange={(e) => setPrecioMin(e.target.value)}
+              onBlur={validarPrecio}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
+            <input
+              type="number"
+              placeholder="$-Max"
+              value={precioMax}
+              onChange={(e) => setPrecioMax(e.target.value)}
+              onBlur={validarPrecio}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
+          </div>
+          {errorPrecio && <p className="text-red-500 text-sm">{errorPrecio}</p>}
+        </div>
+
+        {loading && !productos.length ? (
           <div className="text-center text-gray-500">Cargando productos...</div>
         ) : (
           <ProductGrid productos={productosFiltrados} />

@@ -5,6 +5,9 @@ import ProductGrid from "../components/ProductGrid";
 const Accesorios = () => {
   const [productos, setProductos] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
+  const [precioMin, setPrecioMin] = useState("");
+  const [precioMax, setPrecioMax] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Función para obtener productos desde el backend
@@ -38,10 +41,18 @@ const Accesorios = () => {
   // Filtrar productos por categoría "Accesorios" (cod_categoria = "CARG")
   const productosAccesorios = productos.filter((producto) => producto.cod_categoria === "CARG");
 
-  // Filtrar productos por categoría seleccionada
-  const productosFiltrados = categoriaSeleccionada
-    ? productosAccesorios.filter((producto) => producto.cod_categoria === categoriaSeleccionada)
-    : productosAccesorios;
+  // Obtener marcas únicas de los productos
+  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))];
+
+  // Filtrar productos según los filtros seleccionados
+  const productosFiltrados = productosAccesorios.filter((producto) => {
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
+    const cumplePrecio =
+      (!precioMin || producto.precio >= parseFloat(precioMin)) &&
+      (!precioMax || producto.precio <= parseFloat(precioMax));
+    return cumpleCategoria && cumpleMarca && cumplePrecio;
+  });
 
   const handleCategoriaClick = (cod_categoria) => {
     setCategoriaSeleccionada((prev) => (prev === cod_categoria ? null : cod_categoria));
@@ -74,9 +85,61 @@ const Accesorios = () => {
                 <h3 className="text-lg font-bold text-white text-center">
                   {category.title}
                 </h3>
- </div>
+              </div>
             </button>
           ))}
+        </div>
+
+        <div className="flex items-center space-x-4 mb-8">
+          <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
+
+          {/* Filtro: Categoría */}
+          <select
+            value={categoriaSeleccionada || ""}
+            onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+            className="w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+          >
+            <option value="">Categoría</option>
+            {categoriasAccesorios.map((category) => (
+              <option key={category.cod_categoria} value={category.cod_categoria}>
+                {category.title}
+              </option>
+            ))}
+          </select>
+
+          {/* Filtro: Marca */}
+          <select
+            value={marcaSeleccionada}
+            onChange={(e) => setMarcaSeleccionada(e.target.value)}
+            className="w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+          >
+            <option value="">Marca</option>
+            {marcasUnicas.map((marca) => (
+              <option key={marca} value={marca}>
+                {marca}
+              </option>
+            ))}
+          </select>
+
+          {/* Inputs de precio */}
+          <div className="flex space-x-2">
+            <input
+              type="number"
+              placeholder="$-Min"
+              value={precioMin}
+              onChange={(e) => setPrecioMin(e.target.value)}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
+            <input
+              type="number"
+              placeholder="$-Max"
+              value={precioMax}
+              onChange={(e) => setPrecioMax(e.target.value)}
+              min="0"
+              className="w-24 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            />
+          </div>
         </div>
 
         {loading ? (
