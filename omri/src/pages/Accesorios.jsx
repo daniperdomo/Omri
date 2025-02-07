@@ -39,7 +39,7 @@ const Accesorios = () => {
   }, []);
 
   // Filtrar productos por categoría "Accesorios" (cod_categoria = "CARG")
-  const productosAccesorios = productos.filter((producto) => producto.cod_categoria === "CARG");
+  const productosAccesorios = productos.filter((producto) => producto.cod_categoria === "CARG" || producto.cod_categoria === "CABL" || producto.cod_categoria === "AUDIF");
 
   // Obtener marcas únicas de los productos
   const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))];

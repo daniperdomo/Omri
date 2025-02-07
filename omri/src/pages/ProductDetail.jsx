@@ -10,6 +10,13 @@ const ProductDetail = () => {
   const [availability, setAvailability] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
 
+  // Verificar si el producto pertenece a las categorías CARG, CABL o AUDIF
+  const isAccesorio = producto && (
+    producto.cod_categoria === "CARG" || 
+    producto.cod_categoria === "CABL" || 
+    producto.cod_categoria === "AUDIF"
+  );
+
   // Obtener el producto principal y los productos relacionados
   useEffect(() => {
     // Obtener el producto principal
@@ -101,24 +108,26 @@ const ProductDetail = () => {
                 <p><strong>Características:</strong> {producto.caracteristicas}</p>
               </div>
 
-              {/* Selector de colores */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Colores:</h3>
-                <div className="flex space-x-3">
-                  {productosRelacionados.map((prod, index) => (
-                    <button
-                      key={index}
-                      className={`w-10 h-10 rounded-full border-2 focus:outline-none transition-all duration-200 ${
-                        selectedColor === prod.color
-                          ? "border-blue-500 scale-110"
-                          : "border-gray-300 hover:scale-105"
-                      }`}
-                      style={{ backgroundColor: prod.color }}
-                      onClick={() => handleColorClick(prod)}
-                    />
-                  ))}
+              {/* Selector de colores (solo si no es un accesorio) */}
+              {!isAccesorio && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Colores:</h3>
+                  <div className="flex space-x-3">
+                    {productosRelacionados.map((prod, index) => (
+                      <button
+                        key={index}
+                        className={`w-10 h-10 rounded-full border-2 focus:outline-none transition-all duration-200 ${
+                          selectedColor === prod.color
+                            ? "border-blue-500 scale-110"
+                            : "border-gray-300 hover:scale-105"
+                        }`}
+                        style={{ backgroundColor: prod.color }}
+                        onClick={() => handleColorClick(prod)}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard";
 const ProductGrid = ({ productos }) => {
   // Función para determinar si la categoría es CARG o CABL
   const isSpecialCategory = (cod_categoria) => {
-    return cod_categoria === "CARG" || cod_categoria === "CABL";
+    return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF";
   };
 
   // Agrupar productos por modelo, excepto para categorías CARG y CABL

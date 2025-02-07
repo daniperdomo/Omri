@@ -19,6 +19,9 @@ const ProductCard = ({ product, allProducts }) => {
     navigate(`/producto/${product.cod_producto}`);
   };
 
+  // Verificar si el producto pertenece a las categorías CARG, CABL o AUDIF
+  const isAccesorio = product.cod_categoria === "CARG" || product.cod_categoria === "CABL" || product.cod_categoria === "AUDIF";
+
   return (
     <div
       className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
@@ -53,20 +56,22 @@ const ProductCard = ({ product, allProducts }) => {
           <span className="text-sm font-semibold text-red-600">No disponible</span>
         )}
 
-        {/* Círculos de colores */}
-        <div className="flex space-x-2 mt-2">
-          {allProducts.map((otherProduct, index) => (
-            <button
-              key={index}
-              className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
-              style={{ backgroundColor: otherProduct.color }}  // Usamos el color del producto
-              onClick={(e) => {
-                e.stopPropagation(); // Evitar que el clic en el color redirija a la página de detalles
-                handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad);
-              }}
-            />
-          ))}
-        </div>
+        {/* Círculos de colores (solo si no es un accesorio) */}
+        {!isAccesorio && (
+          <div className="flex space-x-2 mt-2">
+            {allProducts.map((otherProduct, index) => (
+              <button
+                key={index}
+                className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
+                style={{ backgroundColor: otherProduct.color }}  // Usamos el color del producto
+                onClick={(e) => {
+                  e.stopPropagation(); // Evitar que el clic en el color redirija a la página de detalles
+                  handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad);
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
