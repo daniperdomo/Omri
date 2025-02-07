@@ -10,16 +10,13 @@ const ProductDetail = () => {
   const [availability, setAvailability] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
 
-  // Verificar si el producto pertenece a las categorías CARG, CABL o AUDIF
   const isAccesorio = producto && (
     producto.cod_categoria === "CARG" || 
     producto.cod_categoria === "CABL" || 
     producto.cod_categoria === "AUDIF"
   );
 
-  // Obtener el producto principal y los productos relacionados
   useEffect(() => {
-    // Obtener el producto principal
     fetch(`http://localhost:8081/api/productos/${cod_producto}`)
       .then((response) => {
         if (!response.ok) {
@@ -34,8 +31,6 @@ const ProductDetail = () => {
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
-
-        // Obtener todos los productos relacionados (mismo modelo)
         return fetch(`http://localhost:8081/api/productos/modelo/${data.modelo}`);
       })
       .then((response) => {
@@ -54,12 +49,11 @@ const ProductDetail = () => {
       });
   }, [cod_producto]);
 
-  // Manejar el cambio de color y actualizar la imagen y disponibilidad
   const handleColorClick = (productoRelacionado) => {
     setCurrentImage(productoRelacionado.imagenes[0]?.url || "");
     setAvailability(productoRelacionado.cantidad > 0);
     setSelectedColor(productoRelacionado.color);
-    setProducto(productoRelacionado); // Actualizar el producto principal
+    setProducto(productoRelacionado);
   };
 
   if (loading) {
@@ -76,42 +70,44 @@ const ProductDetail = () => {
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Columna izquierda: Imagen del producto */}
-            <div>
-              <img
-                src={currentImage}
-                alt={producto.descripcion}
-                className="w-full h-auto rounded-lg"
-              />
+            <div className="flex justify-center items-center">
+              <div className="w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden">
+                <img
+                  src={currentImage}
+                  alt={producto.descripcion}
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </div>
 
             {/* Columna derecha: Detalles del producto */}
             <div className="space-y-6">
               {/* Título del producto */}
-              <h1 className="text-3xl font-bold text-gray-900">{producto.descripcion}</h1>
+              <h1 className="text-4xl font-bold text-gray-900">{producto.descripcion}</h1>
 
               {/* Precio */}
-              <p className="text-2xl font-semibold text-gray-800">
+              <p className="text-3xl font-semibold text-gray-800">
                 ${producto.precio.toFixed(2)}
               </p>
 
               {/* Disponibilidad */}
               <div className="flex items-center space-x-2">
                 {availability ? (
-                  <span className="text-sm font-semibold text-green-600">Disponible</span>
+                  <span className="text-lg font-semibold text-green-600">Disponible</span>
                 ) : (
-                  <span className="text-sm font-semibold text-red-600">No disponible</span>
+                  <span className="text-lg font-semibold text-red-600">No disponible</span>
                 )}
               </div>
 
               {/* Descripción */}
-              <div className="text-gray-700">
+              <div className="text-gray-700 text-lg">
                 <p><strong>Características:</strong> {producto.caracteristicas}</p>
               </div>
 
               {/* Selector de colores (solo si no es un accesorio) */}
               {!isAccesorio && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Colores:</h3>
+                  <h3 className="text-xl font-semibold text-gray-900">Colores:</h3>
                   <div className="flex space-x-3">
                     {productosRelacionados.map((prod, index) => (
                       <button

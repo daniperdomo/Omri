@@ -79,7 +79,7 @@ const Cubitt = () => {
   const productosFiltrados = aplicarFiltros();
 
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? null : cod_categoria));
+    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
   };
 
   return (
@@ -95,37 +95,40 @@ const Cubitt = () => {
 
         <h2 className="text-2xl text-gray-700 mb-6 text-left">Categorías</h2>
 
-        <div className="flex justify-center space-x-4 mb-12">
-          {categoriasCubitt.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => handleCategoriaClick(category.cod_categoria)}
-              className={`flex-none w-48 h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover" : ""
-              }`}
-            >
-              <img
-                src={category.image}
-                alt={category.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
-                <h3 className="text-lg font-bold text-white text-center">
-                  {category.title}
-                </h3>
-              </div>
-            </button>
-          ))}
+        {/* Contenedor de categorías con desplazamiento horizontal y barra oculta */}
+        <div className="overflow-x-auto scrollbar-hide whitespace-nowrap mb-12 lg:overflow-x-visible lg:whitespace-normal">
+          <div className="inline-flex space-x-4 lg:flex lg:flex-nowrap lg:space-x-4">
+            {categoriasCubitt.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => handleCategoriaClick(category.cod_categoria)}
+                className={`flex-none w-32 h-32 md:w-48 md:h-48 relative rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                  categoriaSeleccionada === category.cod_categoria ? "ring-4 ring-color-hover" : ""
+                }`}
+              >
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-center">
+                  <h3 className="text-sm md:text-lg font-bold text-white text-center">
+                    {category.title}
+                  </h3>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex items-center space-x-4 mb-8">
+        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
 
           {/* Select de categorías */}
           <select
             value={categoriaSeleccionada}
             onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-            className="w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
+            className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
           >
             <option value="">Categoría</option>
             <option value="">Todas</option>
