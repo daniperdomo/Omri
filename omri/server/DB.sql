@@ -1,4 +1,4 @@
-CREATE DATABASE webomri
+CREATE DATABASE webomri2
 
 CREATE TABLE Categorias(
     cod_categoria varchar(10) not NULL,
@@ -23,10 +23,11 @@ CREATE TABLE Productos(
     precio decimal(18,2) not NULL,
     cantidad int not NULL,
     estatus int not NULL,
+    color varchar(10) NOT NULL, 
     FOREIGN KEY (cod_categoria, modelo) REFERENCES Categorias(cod_categoria, modelo)
-        on update cascade, 
+        ON UPDATE CASCADE, 
     FOREIGN KEY (cod_marca) REFERENCES Marcas(cod_marca)
-        on update cascade, 
+        ON UPDATE CASCADE, 
     PRIMARY KEY(cod_producto),
     constraint CHK_Precio_Positivo check (precio >= 0),
     constraint CHK_Cantidad_Positiva check (cantidad >= 0),
@@ -36,7 +37,6 @@ CREATE TABLE Productos(
 CREATE TABLE Imagenes(
     cod_producto varchar(100) not NULL,
     url varchar(255) not NULL,
-    color varchar(10) NOT NULL,
     PRIMARY KEY(cod_producto, url),
     FOREIGN KEY (cod_producto) REFERENCES Productos(cod_producto)
         ON UPDATE CASCADE

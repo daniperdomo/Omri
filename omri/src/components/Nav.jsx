@@ -1,57 +1,73 @@
-import React, { useState, useEffect } from 'react'
-import { FaTimes, FaBars, FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react';
+import { FaTimes, FaBars, FaSearch } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
-    const [click, setClick] = useState(false)
-    const [searchTerm, setSearchTerm] = useState('')
-    const [searchResults, setSearchResults] = useState([])
+    const [click, setClick] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const searchRef = useRef(null); // Referencia para el contenedor de la barra de búsqueda
 
-    const handleClick = () => setClick(!click)
+    const handleClick = () => setClick(!click);
 
     // Efecto para hacer el llamado a la API al montar el componente
     useEffect(() => {
         fetch('http://localhost:8081/api/productos')
             .then(response => response.json())
             .then(data => {
-                sessionStorage.setItem('searchResults', JSON.stringify(data))
+                sessionStorage.setItem('searchResults', JSON.stringify(data));
             })
             .catch(error => {
-                console.error('Error fetching products:', error)
-            })
-    }, [])
+                console.error('Error fetching products:', error);
+            });
+    }, []);
 
     // Función para manejar el cambio en la barra de búsqueda
     const handleSearchChange = (e) => {
-        const value = e.target.value
-        setSearchTerm(value)
+        const value = e.target.value;
+        setSearchTerm(value);
 
         if (!value) {
-            setSearchResults([])
-            return
+            setSearchResults([]);
+            return;
         }
 
-        const cachedResults = sessionStorage.getItem('searchResults')
+        const cachedResults = sessionStorage.getItem('searchResults');
         if (cachedResults) {
-            const results = JSON.parse(cachedResults)
+            const results = JSON.parse(cachedResults);
             const filteredResults = results.filter(product =>
                 product.descripcion.toLowerCase().includes(value.toLowerCase())
-            )
+            );
 
             // Usar un Set para eliminar duplicados basados en la descripción
-            const uniqueResults = []
-            const seenDescriptions = new Set()
+            const uniqueResults = [];
+            const seenDescriptions = new Set();
 
             filteredResults.forEach(product => {
                 if (!seenDescriptions.has(product.descripcion)) {
-                    seenDescriptions.add(product.descripcion)
-                    uniqueResults.push(product)
+                    seenDescriptions.add(product.descripcion);
+                    uniqueResults.push(product);
                 }
-            })
+            });
 
-            setSearchResults(uniqueResults)
+            setSearchResults(uniqueResults);
         }
-    }
+    };
+
+    // Cerrar el menú desplegable al hacer clic fuera
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setSearchTerm('');
+                setSearchResults([]);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     // Contenido del menú desplegable
     const content = (
@@ -83,7 +99,7 @@ const Nav = () => {
                 </Link>
             </ul>
         </div>
-    )
+    );
 
     return (
         <nav className="bg-white shadow-lg top-0 left-0 w-full z-50">
@@ -99,9 +115,9 @@ const Nav = () => {
                     </Link>
                 </div>
 
-                {/* Menú de navegación ( escritorio ) */}
-                <div className="lg:flex md:flex lg:flex-1 items-center justify-end font-normal hidden">
-                    <div className="flex-10">
+                {/* Menú de navegación (escritorio) */}
+                <div className="flex items-center justify-end font-normal">
+                    <div className="hidden lg:flex">
                         <ul className="flex gap-8 mr-16 text-lg">
                             <Link to="/">
                                 <li className="relative group hover:text-color-hover transition cursor-pointer">
@@ -130,8 +146,8 @@ const Nav = () => {
                         </ul>
                     </div>
 
-                    {/* Barra de búsqueda */}
-                    <div className="flex items-center">
+                    {/* Barra de búsqueda (visible en todas las pantallas) */}
+                    <div className="flex items-center" ref={searchRef}>
                         <div className="relative">
                             <input
                                 type="text"
@@ -141,12 +157,18 @@ const Nav = () => {
                                 className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black w-full md:w-64"
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
-                            {searchResults.length > 0 && (
-                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
+                            {searchTerm && searchResults.length > 0 && ( // Solo muestra si searchTerm no está vacío
+                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto">
                                     <ul>
-                                        {searchResults.map(product => (
+                                        {searchResults.slice(0, 4).map(product => (
                                             <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">
-                                                <Link to={`/producto/${product.cod_producto}`} onClick={() => setSearchTerm('')}>
+                                                <Link
+                                                    to={`/producto/${product.cod_producto}`}
+                                                    onClick={() => {
+                                                        setSearchTerm(''); // Limpia el término de búsqueda
+                                                        setSearchResults([]); // Limpia los resultados
+                                                    }}
+                                                >
                                                     <div className="flex items-center">
                                                         <img 
                                                             src={product.imagenes[0]?.url} 
@@ -166,7 +188,7 @@ const Nav = () => {
                 </div>
 
                 {/* Menú desplegable (hamburguesa) */}
-                <div className="block sm:hidden">
+                <div className="block lg:hidden">
                     <button
                         className="transition text-2xl"
                         onClick={handleClick}
@@ -179,7 +201,7 @@ const Nav = () => {
             {/* Mostrar el menú desplegable cuando se hace clic */}
             {click && content}
         </nav>
-    )
-}
+    );
+};
 
-export default Nav
+export default Nav;
