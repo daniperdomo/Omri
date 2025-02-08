@@ -9,6 +9,18 @@ const Nav = () => {
 
     const handleClick = () => setClick(!click)
 
+    // Efecto para hacer el llamado a la API al montar el componente
+    useEffect(() => {
+        fetch('http://localhost:8081/api/productos')
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('searchResults', JSON.stringify(data))
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error)
+            })
+    }, [])
+
     // Función para manejar el cambio en la barra de búsqueda
     const handleSearchChange = (e) => {
         const value = e.target.value
@@ -25,17 +37,19 @@ const Nav = () => {
             const filteredResults = results.filter(product =>
                 product.descripcion.toLowerCase().includes(value.toLowerCase())
             )
-            setSearchResults(filteredResults)
-        } else {
-            fetch(`http://localhost:8081/api/productos?search=${value}`)
-                .then(response => response.json())
-                .then(data => {
-                    setSearchResults(data)
-                    sessionStorage.setItem('searchResults', JSON.stringify(data)) 
-                })
-                .catch(error => {
-                    console.error('Error fetching search results:', error)
-                })
+
+            // Usar un Set para eliminar duplicados basados en la descripción
+            const uniqueResults = []
+            const seenDescriptions = new Set()
+
+            filteredResults.forEach(product => {
+                if (!seenDescriptions.has(product.descripcion)) {
+                    seenDescriptions.add(product.descripcion)
+                    uniqueResults.push(product)
+                }
+            })
+
+            setSearchResults(uniqueResults)
         }
     }
 
@@ -85,7 +99,7 @@ const Nav = () => {
                     </Link>
                 </div>
 
-                {/* Menú de navegación ( escritorio) */}
+                {/* Menú de navegación ( escritorio ) */}
                 <div className="lg:flex md:flex lg:flex-1 items-center justify-end font-normal hidden">
                     <div className="flex-10">
                         <ul className="flex gap-8 mr-16 text-lg">
@@ -131,10 +145,16 @@ const Nav = () => {
                                 <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
                                     <ul>
                                         {searchResults.map(product => (
-                                            <li key={product.cod_producto} className="p-2 hover:bg-gray-100 flex items-center">
+                                            <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">
                                                 <Link to={`/producto/${product.cod_producto}`} onClick={() => setSearchTerm('')}>
-                                                    <img src={product.imagen} alt={product.descripcion} className="h-10 w-10 mr-2" />
-                                                    {product.descripcion}
+                                                    <div className="flex items-center">
+                                                        <img 
+                                                            src={product.imagenes[0]?.url} 
+                                                            alt={product.descripcion} 
+                                                            className="h-16 w-16 mr-4 object-cover rounded-lg" 
+                                                        />
+                                                        <span className="text-lg">{product.descripcion}</span>
+                                                    </div>
                                                 </Link>
                                             </li>
                                         ))}

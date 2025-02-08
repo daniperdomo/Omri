@@ -110,8 +110,7 @@ app.post('/api/producto', upload.array('images', 3), (req, res) => {
 })
 
 app.get('/api/productos', (req, res) => {
-    const request = new sql.Request();
-    const searchTerm = req.query.search;
+    const request = new sql.Request()
 
     // Consulta base
     let query = `
@@ -129,32 +128,27 @@ app.get('/api/productos', (req, res) => {
             I.url AS imagen_url  
         FROM Productos P
         LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
-    `;
-
-    if (searchTerm) {
-        request.input('searchTerm', sql.VarChar, `%${searchTerm}%`);
-        query += ` WHERE P.descripcion LIKE @searchTerm`;
-    }
+    `
 
     request.query(query, (error, result) => {
         if (error) {
-            console.log('Error obteniendo productos:', error);
-            return res.status(500).send('Error obteniendo productos');
+            console.log('Error obteniendo productos:', error)
+            return res.status(500).send('Error obteniendo productos')
         }
 
         // Organizar los datos para que cada producto tenga un array de imágenes
         const productos = result.recordset.reduce((acc, row) => {
-            const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
+            const productoExistente = acc.find(p => p.cod_producto === row.cod_producto)
             if (productoExistente) {
                 // Asegurarse de que el array de imágenes esté inicializado
                 if (!productoExistente.imagenes) {
-                    productoExistente.imagenes = [];
+                    productoExistente.imagenes = []
                 }
                 // Agregar la imagen al array de imágenes del producto existente
                 if (row.imagen_url) {
                     productoExistente.imagenes.push({
                         url: row.imagen_url
-                    });
+                    })
                 }
             } else {
                 // Crear un nuevo producto con su color y array de imágenes
@@ -170,18 +164,18 @@ app.get('/api/productos', (req, res) => {
                     estatus: row.estatus,
                     color: row.color,  // El color ahora viene de Productos
                     imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
-                });
+                })
             }
-            return acc;
-        }, []);
+            return acc
+        }, [])
 
-        res.status(200).json(productos);
-    });
-});
+        res.status(200).json(productos)
+    })
+})
 
 app.get('/api/productos/:cod_producto', (req, res) => {
-    const { cod_producto } = req.params;
-    const request = new sql.Request();
+    const { cod_producto } = req.params
+    const request = new sql.Request()
     const query = `
         SELECT 
             P.cod_producto,
@@ -198,17 +192,17 @@ app.get('/api/productos/:cod_producto', (req, res) => {
         FROM Productos P
         LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
         WHERE P.cod_producto = @cod_producto
-    `;
+    `
 
-    request.input('cod_producto', sql.VarChar, cod_producto);
+    request.input('cod_producto', sql.VarChar, cod_producto)
     request.query(query, (error, result) => {
         if (error) {
-            console.log('Error obteniendo detalles del producto:', error);
-            return res.status(500).send('Error obteniendo detalles del producto');
+            console.log('Error obteniendo detalles del producto:', error)
+            return res.status(500).send('Error obteniendo detalles del producto')
         }
 
         if (result.recordset.length === 0) {
-            return res.status(404).send('Producto no encontrado');
+            return res.status(404).send('Producto no encontrado')
         }
 
         // Organizar los datos para que el producto tenga un array de imágenes
@@ -226,21 +220,21 @@ app.get('/api/productos/:cod_producto', (req, res) => {
                     estatus: row.estatus,
                     color: row.color,
                     imagenes: []
-                };
+                }
             }
             if (row.imagen_url) {
-                acc.imagenes.push({ url: row.imagen_url });
+                acc.imagenes.push({ url: row.imagen_url })
             }
-            return acc;
-        }, {});
+            return acc
+        }, {})
 
-        res.status(200).json(producto);
-    });
-});
+        res.status(200).json(producto)
+    })
+})
 
 app.get('/api/productos/modelo/:modelo', (req, res) => {
-  const { modelo } = req.params;
-  const request = new sql.Request();
+  const { modelo } = req.params
+  const request = new sql.Request()
   const query = `
       SELECT 
           P.cod_producto,
@@ -257,24 +251,24 @@ app.get('/api/productos/modelo/:modelo', (req, res) => {
       FROM Productos P
       LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
       WHERE P.modelo = @modelo
-  `;
+  `
 
-  request.input('modelo', sql.VarChar, modelo);
+  request.input('modelo', sql.VarChar, modelo)
   request.query(query, (error, result) => {
       if (error) {
-          console.log('Error obteniendo productos relacionados:', error);
-          return res.status(500).send('Error obteniendo productos relacionados');
+          console.log('Error obteniendo productos relacionados:', error)
+          return res.status(500).send('Error obteniendo productos relacionados')
       }
 
       // Organizar los datos para que cada producto tenga un array de imágenes
       const productos = result.recordset.reduce((acc, row) => {
-          const productoExistente = acc.find(p => p.cod_producto === row.cod_producto);
+          const productoExistente = acc.find(p => p.cod_producto === row.cod_producto)
           if (productoExistente) {
               if (!productoExistente.imagenes) {
-                  productoExistente.imagenes = [];
+                  productoExistente.imagenes = []
               }
               if (row.imagen_url) {
-                  productoExistente.imagenes.push({ url: row.imagen_url });
+                  productoExistente.imagenes.push({ url: row.imagen_url })
               }
           } else {
               acc.push({
@@ -289,14 +283,14 @@ app.get('/api/productos/modelo/:modelo', (req, res) => {
                   estatus: row.estatus,
                   color: row.color,
                   imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
-              });
+              })
           }
-          return acc;
-      }, []);
+          return acc
+      }, [])
 
-      res.status(200).json(productos);
-  });
-});
+      res.status(200).json(productos)
+  })
+})
 
 app.get('/api/marca', (req, res) => {
     const request = new sql.Request()
@@ -498,17 +492,17 @@ app.get('/api/imagenes', (req, res) => {
 })
 
 app.put('/api/imagenes', (req, res) => {
-    const { cod_producto, url_nueva } = req.body;
+    const { cod_producto, url_nueva } = req.body
 
-    const request = new sql.Request();
+    const request = new sql.Request()
     request.query(`UPDATE Imagenes SET url = '${url_nueva}' WHERE cod_producto = '${cod_producto}'`, (error, result) => {
         if (error) {
-            console.log("Error actualizando la imagen:", error);
-            return res.status(500).send('Error actualizando la imagen');
+            console.log("Error actualizando la imagen:", error)
+            return res.status(500).send('Error actualizando la imagen')
         }
-        res.send('Imagen actualizada con éxito');
-    });
-});
+        res.send('Imagen actualizada con éxito')
+    })
+})
 
 app.use(express.static(path.join(__dirname, 'client/build')))
 
