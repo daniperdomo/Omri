@@ -33,6 +33,16 @@ CREATE TABLE Productos(
     constraint CHK_Estatus_Valido check (estatus IN (0, 1))
 );
 
+CREATE TABLE Imagenes(
+    cod_producto varchar(100) not NULL,
+    url varchar(255) not NULL,
+    color varchar(10) NOT NULL,
+    PRIMARY KEY(cod_producto, url),
+    FOREIGN KEY (cod_producto) REFERENCES Productos(cod_producto)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
 insert into Categorias (cod_categoria, descripcion, modelo) values 
     ('SMWT', 'smartwatch', 'aura-Pro'),
     ('SMWT', 'smartwatch', 'aura'),

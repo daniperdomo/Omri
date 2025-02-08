@@ -1,10 +1,43 @@
-import React, { useState } from 'react';
-import { FaTimes, FaBars, FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { FaTimes, FaBars, FaSearch } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const Nav = () => {
-    const [click, setClick] = useState(false);
-    const handleClick = () => setClick(!click);
+    const [click, setClick] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+
+    const handleClick = () => setClick(!click)
+
+    // Función para manejar el cambio en la barra de búsqueda
+    const handleSearchChange = (e) => {
+        const value = e.target.value
+        setSearchTerm(value)
+
+        if (!value) {
+            setSearchResults([])
+            return
+        }
+
+        const cachedResults = sessionStorage.getItem('searchResults')
+        if (cachedResults) {
+            const results = JSON.parse(cachedResults)
+            const filteredResults = results.filter(product =>
+                product.descripcion.toLowerCase().includes(value.toLowerCase())
+            )
+            setSearchResults(filteredResults)
+        } else {
+            fetch(`http://localhost:8081/api/productos?search=${value}`)
+                .then(response => response.json())
+                .then(data => {
+                    setSearchResults(data)
+                    sessionStorage.setItem('searchResults', JSON.stringify(data)) 
+                })
+                .catch(error => {
+                    console.error('Error fetching search results:', error)
+                })
+        }
+    }
 
     // Contenido del menú desplegable
     const content = (
@@ -36,7 +69,7 @@ const Nav = () => {
                 </Link>
             </ul>
         </div>
-    );
+    )
 
     return (
         <nav className="bg-white shadow-lg top-0 left-0 w-full z-50">
@@ -52,7 +85,7 @@ const Nav = () => {
                     </Link>
                 </div>
 
-                {/* Menú de navegación (escritorio) */}
+                {/* Menú de navegación ( escritorio) */}
                 <div className="lg:flex md:flex lg:flex-1 items-center justify-end font-normal hidden">
                     <div className="flex-10">
                         <ul className="flex gap-8 mr-16 text-lg">
@@ -89,9 +122,25 @@ const Nav = () => {
                             <input
                                 type="text"
                                 placeholder="Buscar..."
-                                className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black w-full md:w-64"
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
+                            {searchResults.length > 0 && (
+                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
+                                    <ul>
+                                        {searchResults.map(product => (
+                                            <li key={product.cod_producto} className="p-2 hover:bg-gray-100 flex items-center">
+                                                <Link to={`/producto/${product.cod_producto}`} onClick={() => setSearchTerm('')}>
+                                                    <img src={product.imagen} alt={product.descripcion} className="h-10 w-10 mr-2" />
+                                                    {product.descripcion}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -110,7 +159,7 @@ const Nav = () => {
             {/* Mostrar el menú desplegable cuando se hace clic */}
             {click && content}
         </nav>
-    );
-};
+    )
+}
 
-export default Nav;
+export default Nav

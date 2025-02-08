@@ -10,8 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri2",
+    server: "JESUS\\SQLEXPRESS",
+    database: "webomri",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -111,7 +111,10 @@ app.post('/api/producto', upload.array('images', 3), (req, res) => {
 
 app.get('/api/productos', (req, res) => {
     const request = new sql.Request();
-    const query = `
+    const searchTerm = req.query.search;
+
+    // Consulta base
+    let query = `
         SELECT 
             P.cod_producto,
             P.cod_categoria,
@@ -127,6 +130,11 @@ app.get('/api/productos', (req, res) => {
         FROM Productos P
         LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
     `;
+
+    if (searchTerm) {
+        request.input('searchTerm', sql.VarChar, `%${searchTerm}%`);
+        query += ` WHERE P.descripcion LIKE @searchTerm`;
+    }
 
     request.query(query, (error, result) => {
         if (error) {
