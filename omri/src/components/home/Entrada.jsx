@@ -3,15 +3,15 @@ import React from "react";
 const Entrada = () => {
     const slide = {
         id: 1,
-        title: "Explora las Mejores Ofertas",
-        subtitle: "Encuentra los productos que amas a precios increíbles.",
+        title: "¡Bienvenido a la web de Omri!",
+        subtitle: "Consulta la disponibilidad e información de los productos que amas.",
         image: "/images/home/slider/prueba.webp", // Cambia esta ruta por la de tu imagen
     };
 
     return (
-        <div className="flex justify-center items-center w-full">
+        <div className="flex justify-center items-center w-full p-4 bg-gray-100">
             {/* Contenedor de la imagen */}
-            <div className="w-[100%] h-80 md:h-96 relative overflow-hidden shadow-lg"> {/* Eliminé rounded-lg */}
+            <div className="w-full h-80 md:h-96 relative rounded-lg overflow-hidden shadow-lg">
                 {/* Imagen de fondo */}
                 <div
                     className="absolute inset-0 w-full h-full"

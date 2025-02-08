@@ -1,5 +1,4 @@
 import React from "react";
-import SliderHero from "../components/home/SliderHero";
 import Menu from "../components/home/Menu";
 import Servicios from "../components/home/Servicios";
 import Entrada from "../components/home/Entrada";
@@ -7,9 +6,8 @@ import Entrada from "../components/home/Entrada";
 const Home = () => {
     return (
         <div>
-            {/* Slider :) */}
+            {/* Imagen de entrada :) */}
             <Entrada />
-            
             <Menu/>
             <Servicios/>
         </div>

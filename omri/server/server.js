@@ -10,8 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "JESUS\\SQLEXPRESS",
-    database: "webomri",
+    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
+    database: "webomri2",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Importar useNavigate
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
+  const navigate = useNavigate(); // Hook para navegar
   const [producto, setProducto] = useState(null);
   const [productosRelacionados, setProductosRelacionados] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,29 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="py-12 bg-gray-100 min-h-screen">
+    <div className="py-12 bg-gray-100 min-h-screen relative"> {/* Contenedor padre con position: relative */}
+      {/* Botón de retroceso */}
+      <button
+        onClick={() => navigate(-1)} // Navegar a la página anterior
+        className="absolute top-2 left-4 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition duration-300"
+        aria-label="Volver atrás"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-gray-700"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+      </button>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
