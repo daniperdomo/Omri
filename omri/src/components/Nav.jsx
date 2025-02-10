@@ -6,11 +6,11 @@ const Nav = () => {
     const [click, setClick] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const searchRef = useRef(null); // Referencia para el contenedor de la barra de búsqueda
+    const [showSearch, setShowSearch] = useState(false);
+    const searchRef = useRef(null);
 
     const handleClick = () => setClick(!click);
 
-    // Efecto para hacer el llamado a la API al montar el componente
     useEffect(() => {
         fetch('http://localhost:8081/api/productos')
             .then(response => response.json())
@@ -22,7 +22,6 @@ const Nav = () => {
             });
     }, []);
 
-    // Función para manejar el cambio en la barra de búsqueda
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
@@ -39,7 +38,6 @@ const Nav = () => {
                 product.descripcion.toLowerCase().includes(value.toLowerCase())
             );
 
-            // Usar un Set para eliminar duplicados basados en la descripción
             const uniqueResults = [];
             const seenDescriptions = new Set();
 
@@ -54,12 +52,12 @@ const Nav = () => {
         }
     };
 
-    // Cerrar el menú desplegable al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setSearchTerm('');
                 setSearchResults([]);
+                setShowSearch(false);
             }
         };
 
@@ -69,7 +67,6 @@ const Nav = () => {
         };
     }, []);
 
-    // Contenido del menú desplegable
     const content = (
         <div className="lg:hidden fixed top-20 left-0 w-full h-full bg-white z-40 transition-transform duration-300 ease-in-out transform translate-x-0">
             <ul className="flex flex-col items-center py-10 gap-6 text-lg">
@@ -104,18 +101,16 @@ const Nav = () => {
     return (
         <nav className="bg-white shadow-lg top-0 left-0 w-full z-50">
             <div className="h-20 flex justify-between items-center z-50 text-black lg:py-5 px-10 sm:px-6">
-                {/* Contenedor del logo */}
                 <div className="flex items-center flex-1">
                     <Link to="/">
                         <img
                             src="/images/logofondoblanco.webp"
                             alt="Logo"
-                            className="h-20 w-auto md:h-20 lg:h-32 cursor-pointer"
+                            className="h-24 w-auto md:h-20 lg:h-32 cursor-pointer"
                         />
                     </Link>
                 </div>
 
-                {/* Menú de navegación (escritorio) */}
                 <div className="flex items-center justify-end font-normal">
                     <div className="hidden lg:flex">
                         <ul className="flex gap-8 mr-16 text-lg">
@@ -146,18 +141,18 @@ const Nav = () => {
                         </ul>
                     </div>
 
-                    {/* Barra de búsqueda (visible en todas las pantallas) */}
-                    <div className="flex items-center" ref={searchRef}>
+                    {/* Barra de búsqueda en PC */}
+                    <div className="hidden lg:flex items-center ml-4 mr-4" ref={searchRef}>
                         <div className="relative">
                             <input
                                 type="text"
                                 placeholder="Buscar..."
                                 value={searchTerm}
                                 onChange={handleSearchChange}
-                                className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black w-full md:w-64"
+                                className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black w-48 md:w-64"
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
-                            {searchTerm && searchResults.length > 0 && ( // Solo muestra si searchTerm no está vacío
+                            {searchTerm && searchResults.length > 0 && (
                                 <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto">
                                     <ul>
                                         {searchResults.slice(0, 4).map(product => (
@@ -165,8 +160,8 @@ const Nav = () => {
                                                 <Link
                                                     to={`/producto/${product.cod_producto}`}
                                                     onClick={() => {
-                                                        setSearchTerm(''); // Limpia el término de búsqueda
-                                                        setSearchResults([]); // Limpia los resultados
+                                                        setSearchTerm('');
+                                                        setSearchResults([]);
                                                     }}
                                                 >
                                                     <div className="flex items-center">
@@ -185,20 +180,67 @@ const Nav = () => {
                             )}
                         </div>
                     </div>
-                </div>
 
-                {/* Menú desplegable (hamburguesa) */}
-                <div className="block lg:hidden">
-                    <button
-                        className="transition text-2xl"
-                        onClick={handleClick}
-                    >
-                        {click ? <FaTimes /> : <FaBars />}
-                    </button>
+                    {/* Lupa para móviles */}
+                    <div className="block lg:hidden items-center">
+                        <button
+                            className="text-2xl mr-4"
+                            onClick={() => setShowSearch(!showSearch)}
+                        >
+                            <FaSearch />
+                        </button>
+                        <button
+                            className="transition text-2xl"
+                            onClick={handleClick}
+                        >
+                            {click ? <FaTimes /> : <FaBars />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Mostrar el menú desplegable cuando se hace clic */}
+            {/* Mostrar la barra de búsqueda en móviles si showSearch es true */}
+            {showSearch && (
+                <div className="lg:hidden flex items-center justify-center mb-4" ref={searchRef}>
+                    <div className="relative w-full px-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar..."
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            className="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-color-hover text-black w-full"
+                        />
+                        <FaSearch className="absolute right-7 top-3 text-gray-400" />
+                        {searchTerm && searchResults.length > 0 && (
+                            <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <ul>
+                                    {searchResults.slice(0, 4).map(product => (
+                                        <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">
+                                            <Link
+                                                to={`/producto/${product.cod_producto}`}
+                                                onClick={() => {
+                                                    setSearchTerm('');
+                                                    setSearchResults([]);
+                                                }}
+                                            >
+                                                <div className="flex items-center">
+                                                    <img 
+                                                        src={product.imagenes[0]?.url} 
+                                                        alt={product.descripcion} 
+                                                        className="h-16 w-16 mr-4 object-cover rounded-lg" 
+                                                    />
+                                                    <span className="text-lg">{product.descripcion}</span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {click && content}
         </nav>
     );

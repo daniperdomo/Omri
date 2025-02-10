@@ -5,12 +5,12 @@ const Servicios = () => {
     {
       id: 2,
       title: "Atención Personalizada",
-      description: "Nuestro equipo está siempre disponible para brindarte la mejor atención.",
+      description: "Nuestro equipo está siempre disponible para brindarte la mejor atención",
     },
     {
       id: 3,
       title: "Productos Originales",
-      description: "Trabajamos con productos de alta calidad para asegurar tu satisfacción.",
+      description: "Trabajamos con productos de alta calidad para asegurar tu satisfacción",
     },
   ];
 

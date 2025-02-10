@@ -4,7 +4,7 @@ const Entrada = () => {
     const slide = {
         id: 1,
         title: "¡Bienvenido a la web de Omri!",
-        subtitle: "Consulta la disponibilidad e información de los productos que amas.",
+        subtitle: "Consulta la disponibilidad e información de los productos que amas",
         image: "/images/home/slider/prueba.webp", // Cambia esta ruta por la de tu imagen
     };
 
