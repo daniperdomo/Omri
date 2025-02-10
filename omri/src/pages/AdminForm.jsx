@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import CreateMarca from '../components/Admin/marcas/CreateMarca';
 import UpdateMarca from '../components/Admin/marcas/UpdateMarca';
 import DeleteMarca from '../components/Admin/marcas/DeleteMarca';
@@ -9,6 +9,7 @@ import DeleteCategoria from '../components/Admin/categorias/DeleteCategoria';
 import CreateProducto from '../components/Admin/productos/CreateProducto';
 import UpdateProducto from '../components/Admin/productos/UpdateProducto';
 import DeleteProducto from '../components/Admin/productos/DeleteProducto';
+import UpdateImagen from '../components/Admin/imagenes/UpdateImagen';
 
 
 const AdminForm = () => {
@@ -23,6 +24,7 @@ const AdminForm = () => {
         { type: 'createMarca', comp: <CreateMarca /> },
         { type: 'updateMarca', comp: <UpdateMarca /> },
         { type: 'deleteMarca', comp: <DeleteMarca /> },
+        { type: 'updateImagen', comp: <UpdateImagen /> },
     ];
 
     const formToRender = forms.find(form => form.type === type);
@@ -30,6 +32,13 @@ const AdminForm = () => {
 
     return (
         <>
+            <div className="flex justify-center items-center m-4">
+                <Link to="/admin">
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                        Regresar al menú de Admin
+                    </button>
+                </Link>
+            </div>
             {formToRender ? (
                 <div>
                     {formToRender.comp}
