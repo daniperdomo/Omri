@@ -15,14 +15,14 @@ const Menu = () => {
       title: "Accesorios Apple",
       description: "Contamos con accesorios originales de la marca Apple",
       image: "/images/home/menu/menuapple.webp", 
-      link: "/accesorios-apple", 
+      link: "/accesorios", 
     },
     {
       id: 3,
       title: "Accesorios Samsung",
       description: "Accesorios originales de la marca Samsung disponibles para ti",
       image: "/images/home/menu/menusamsung.webp",
-      link: "/accesorios-samsung", 
+      link: "/accesorios", 
     },
     {
       id: 4,

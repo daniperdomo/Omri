@@ -153,7 +153,7 @@ const Nav = () => {
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
                             {searchTerm && searchResults.length > 0 && (
-                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
                                     <ul>
                                         {searchResults.slice(0, 4).map(product => (
                                             <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">

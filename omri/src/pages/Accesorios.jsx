@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import categoriasAccesorios from "../jsons/categoriasAccesorios.json";
 import ProductGrid from "../components/ProductGrid";
+import PantallaCarga from "../components/PantallaCarga"; // Importa el componente PantallaCarga
 
 const Accesorios = () => {
   const [productos, setProductos] = useState([]);
@@ -149,7 +150,7 @@ const Accesorios = () => {
         </div>
 
         {loading ? (
-          <div className="text-center text-gray-500">Cargando productos...</div>
+          <PantallaCarga /> 
         ) : (
           productosPorMarca.map(({ marca, productos }) => (
             productos.length > 0 && (
