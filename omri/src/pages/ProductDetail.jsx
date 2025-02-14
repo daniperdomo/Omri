@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Importar useNavigate
+import { useParams, useNavigate } from "react-router-dom";
+import { FaWhatsapp } from 'react-icons/fa';
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
@@ -64,6 +65,10 @@ const ProductDetail = () => {
   if (!producto) {
     return <div className="text-center py-8">Producto no encontrado</div>;
   }
+
+  // Aquí puedes personalizar el número y el mensaje de WhatsApp
+  const whatsappNumber = "1234567890"; // Reemplaza con tu número de WhatsApp
+  const whatsappMessage = `Hola, estoy interesado en el producto: ${producto.descripcion}.`;
 
   return (
     <div className="py-12 bg-gray-100 min-h-screen relative"> {/* Contenedor padre con position: relative */}
@@ -147,6 +152,21 @@ const ProductDetail = () => {
                   </div>
                 </div>
               )}
+
+              {/* Botón de WhatsApp */}
+              <div className="m-4 flex justify-center mt-12 md:pt-12"> 
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-green-500 text-white font-semibold rounded-full shadow-md hover:bg-green-600 transition duration-300 w-full max-w-xs md:max-w-md md:h-16 md:"
+                >
+                  <FaWhatsapp style={{ color: "#ffffff", fontSize: "36px" }} className="mr-2" />
+                  <span className="md:text-xl"> {/* Cambia el tamaño de la fuente aquí */}
+                    Contactar por WhatsApp
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

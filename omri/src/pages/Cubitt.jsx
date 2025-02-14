@@ -131,7 +131,6 @@ const Cubitt = () => {
             className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
           >
             <option value="">Categoría</option>
-            <option value="">Todas</option>
             {categoriasCubitt.map((category) => (
               <option key={category.cod_categoria} value={category.cod_categoria}>
                 {category.title}
