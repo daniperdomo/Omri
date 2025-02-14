@@ -142,7 +142,7 @@ const ProductDetail = () => {
                         key={index}
                         className={`w-10 h-10 rounded-full border-2 focus:outline-none transition-all duration-200 ${
                           selectedColor === prod.color
-                            ? "border-blue-500 scale-110"
+                            ? "border-color-hover scale-110"
                             : "border-gray-300 hover:scale-105"
                         }`}
                         style={{ backgroundColor: prod.color }}
