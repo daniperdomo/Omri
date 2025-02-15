@@ -1,10 +1,10 @@
 import React from "react";
 import ProductCard from "../components/ProductCard";
 
-const ProductRecomendado = ({ productos, categoria }) => {
-  // Filtrar productos por la categoría
+const ProductRecomendado = ({ productos, categoria, modeloSeleccionado }) => {
+  // Filtrar productos por la categoría y excluir el modelo seleccionado
   const productosRecomendados = productos.filter(
-    (producto) => producto.cod_categoria === categoria
+    (producto) => producto.cod_categoria === categoria && producto.modelo !== modeloSeleccionado
   );
 
   // Crear un conjunto para rastrear modelos únicos

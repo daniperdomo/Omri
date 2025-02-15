@@ -108,7 +108,7 @@ const ProductDetail = () => {
             {/* Columna izquierda: Imagen principal y miniaturas */}
             <div className="flex flex-col items-center">
               {/* Imagen principal */}
-              <div className="w-full max-w-[500px ] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
+              <div className="w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
                   src={currentImage}
                   alt={producto.descripcion}
@@ -191,7 +191,11 @@ const ProductDetail = () => {
         </div>
 
         {/* Componente de productos recomendados */}
-        <ProductRecomendado productos={productosRelacionados} categoria={producto.cod_categoria} />
+        <ProductRecomendado 
+          productos={productosRelacionados} 
+          categoria={producto.cod_categoria} 
+          modeloSeleccionado={producto.modelo} // Pasar el modelo del producto seleccionado
+        />
       </div>
     </div>
   );
