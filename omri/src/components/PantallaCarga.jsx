@@ -6,7 +6,7 @@ const PantallaCarga = () => {
       {/* Contenedor de la imagen giratoria */}
       <div className="animate-spin-slow">
         <img
-          src="/images/loading-icon.png" // Ruta de la imagen
+          src="/images/isotipofondoblanco.webp" // Ruta de la imagen
           alt="Cargando..."
           className="w-16 h-16" // Tamaño de la imagen
         />

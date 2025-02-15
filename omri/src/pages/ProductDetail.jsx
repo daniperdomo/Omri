@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaWhatsapp } from 'react-icons/fa';
+import PantallaCarga from "../components/PantallaCarga";
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
@@ -59,7 +60,7 @@ const ProductDetail = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Cargando...</div>;
+    return <PantallaCarga />
   }
 
   if (!producto) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import categoriasCubitt from "../jsons/categoriasCubitt.json";
 import ProductGrid from "../components/ProductGrid";
 import { debounce } from "lodash";
+import PantallaCarga from "../components/PantallaCarga";
 
 const Cubitt = () => {
   const [productos, setProductos] = useState([]);
@@ -163,7 +164,7 @@ const Cubitt = () => {
         </div>
 
         {loading && !productos.length ? (
-          <div className="text-center text-gray-500">Cargando productos...</div>
+          <PantallaCarga />
         ) : (
           <ProductGrid productos={productosFiltrados} />
         )}

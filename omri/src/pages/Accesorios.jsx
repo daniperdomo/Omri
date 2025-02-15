@@ -56,15 +56,16 @@ const Accesorios = () => {
     return cumpleCategoria && cumpleMarca && cumplePrecio;
   });
 
+  // Ordenar productos filtrados por marca
+  const productosOrdenados = productosFiltrados.sort((a, b) => {
+    if (a.cod_marca < b.cod_marca) return -1;
+    if (a.cod_marca > b.cod_marca) return 1;
+    return 0;
+  });
+
   const handleCategoriaClick = (cod_categoria) => {
     setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
   };
-
-  // Agrupar productos por marca
-  const productosPorMarca = marcasUnicas.map((marca) => ({
-    marca,
-    productos: productosFiltrados.filter((producto) => producto.cod_marca === marca),
-  }));
 
   return (
     <div className="py-8 bg-gray-100">
@@ -152,14 +153,7 @@ const Accesorios = () => {
         {loading ? (
           <PantallaCarga /> 
         ) : (
-          productosPorMarca.map(({ marca, productos }) => (
-            productos.length > 0 && (
-              <div key={marca} className="mb-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">{marca}</h3>
-                <ProductGrid productos={productos} />
-              </div>
-            )
-          ))
+          <ProductGrid productos={productosOrdenados} />
         )}
       </div>
     </div>
