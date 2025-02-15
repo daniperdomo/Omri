@@ -5,11 +5,12 @@ import PantallaCarga from "../components/PantallaCarga";
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
-  const navigate = useNavigate(); // Hook para navegar
+  const navigate = useNavigate();
   const [producto, setProducto] = useState(null);
   const [productosRelacionados, setProductosRelacionados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState("");
+  const [allImages, setAllImages] = useState([]);
   const [availability, setAvailability] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
 
@@ -31,6 +32,7 @@ const ProductDetail = () => {
         setProducto(data);
         if (data.imagenes && data.imagenes.length > 0) {
           setCurrentImage(data.imagenes[0].url);
+          setAllImages(data.imagenes);
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
@@ -53,29 +55,28 @@ const ProductDetail = () => {
   }, [cod_producto]);
 
   const handleColorClick = (productoRelacionado) => {
-    setCurrentImage(productoRelacionado.imagenes[0]?.url || "");
-    setAvailability(productoRelacionado.cantidad > 0);
-    setSelectedColor(productoRelacionado.color);
-    setProducto(productoRelacionado);
+    setCurrentImage(productoRelacionado.imagenes[0]?.url || ""); // Cambia la imagen principal
+    setAllImages(productoRelacionado.imagenes); // Actualiza las imágenes al seleccionar un color
+    setAvailability(productoRelacionado.cantidad > 0); // Actualiza la disponibilidad
+    setSelectedColor(productoRelacionado.color); // Actualiza el color seleccionado
+    setProducto(productoRelacionado); // Actualiza el producto
   };
 
   if (loading) {
-    return <PantallaCarga />
+    return <PantallaCarga />;
   }
 
   if (!producto) {
     return <div className="text-center py-8">Producto no encontrado</div>;
   }
 
-  // Aquí puedes personalizar el número y el mensaje de WhatsApp
-  const whatsappNumber = "1234567890"; // Reemplaza con tu número de WhatsApp
+  const whatsappNumber = "1234567890";
   const whatsappMessage = `Hola, estoy interesado en el producto: ${producto.descripcion}.`;
 
   return (
-    <div className="py-12 bg-gray-100 min-h-screen relative"> {/* Contenedor padre con position: relative */}
-      {/* Botón de retroceso */}
+    <div className="py-12 bg-gray-100 min-h-screen relative">
       <button
-        onClick={() => navigate(-1)} // Navegar a la página anterior
+        onClick={() => navigate(-1)}
         className="absolute top-2 left-4 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition duration-300"
         aria-label="Volver atrás"
       >
@@ -98,28 +99,45 @@ const ProductDetail = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-            {/* Columna izquierda: Imagen del producto */}
-            <div className="flex justify-center items-center">
-              <div className="w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden">
+            {/* Columna izquierda: Imagen principal y miniaturas */}
+            <div className="flex flex-col items-center">
+              {/* Imagen principal */}
+              <div className="w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
                   src={currentImage}
                   alt={producto.descripcion}
                   className="w-full h-full object-contain"
                 />
               </div>
+
+              {/* Miniaturas de imágenes */}
+              <div className="flex space-x-2">
+                {allImages.map((img, index) => (
+                  <button
+                    key={index}
+                    className={`flex-shrink-0 w-16 h-16 border-b-4 focus:outline-none transition-all duration-200 ${
+                      currentImage === img.url
+                        ? "border-b-2 border-color-hover scale-110" // Borde inferior azul cuando está seleccionado
+                        : "border-b-2 border-transparent hover:border-color-hover-50 hover:scale-105" // Borde inferior transparente y cambia a azul al hacer hover
+                    }`}
+                    onClick={() => setCurrentImage(img.url)}
+                  >
+                    <img
+                      src={img.url}
+                      alt={`Imagen ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Columna derecha: Detalles del producto */}
             <div className="space-y-6">
-              {/* Título del producto */}
               <h1 className="text-4xl font-bold text-gray-900">{producto.descripcion}</h1>
-
-              {/* Precio */}
               <p className="text-3xl font-semibold text-gray-800">
                 ${producto.precio.toFixed(2)}
               </p>
-
-              {/* Disponibilidad */}
               <div className="flex items-center space-x-2">
                 {availability ? (
                   <span className="text-lg font-semibold text-green-600">Disponible</span>
@@ -127,13 +145,9 @@ const ProductDetail = () => {
                   <span className="text-lg font-semibold text-red-600">No disponible</span>
                 )}
               </div>
-
-              {/* Descripción */}
               <div className="text-gray-700 text-lg">
                 <p><strong>Características:</strong> {producto.caracteristicas}</p>
               </div>
-
-              {/* Selector de colores (solo si no es un accesorio) */}
               {!isAccesorio && (
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-gray-900">Colores:</h3>
@@ -153,8 +167,6 @@ const ProductDetail = () => {
                   </div>
                 </div>
               )}
-
-              {/* Botón de WhatsApp */}
               <div className="m-4 flex justify-center mt-12 md:pt-12"> 
                 <a
                   href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
@@ -163,7 +175,7 @@ const ProductDetail = () => {
                   className="inline-flex items-center justify-center px-8 py-4 bg-green-500 text-white font-semibold rounded-full shadow-md hover:bg-green-600 transition duration-300 w-full max-w-xs md:max-w-md md:h-16 md:"
                 >
                   <FaWhatsapp style={{ color: "#ffffff", fontSize: "36px" }} className="mr-2" />
-                  <span className="md:text-xl"> {/* Cambia el tamaño de la fuente aquí */}
+                  <span className="md:text-xl">
                     Contactar por WhatsApp
                   </span>
                 </a>
