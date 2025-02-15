@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaWhatsapp } from 'react-icons/fa';
 import PantallaCarga from "../components/PantallaCarga";
+import ProductRecomendado from "../components/ProductRecomendado"; // Importa el nuevo componente
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
@@ -172,7 +173,7 @@ const ProductDetail = () => {
                   href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-green-500 text-white font-semibold rounded-full shadow-md hover:bg-green-600 transition duration-300 w-full max-w-xs md:max-w-md md:h-16 md:"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-green-500 text-white font-semibold rounded-full shadow-md hover:bg-green-600 transition duration-300 w-full max-w-xs md:max-w-md md:h-16"
                 >
                   <FaWhatsapp style={{ color: "#ffffff", fontSize: "36px" }} className="mr-2" />
                   <span className="md:text-xl">
@@ -183,6 +184,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+
+        {/* Componente de productos recomendados */}
+        <ProductRecomendado productos={productosRelacionados} categoria={producto.cod_categoria} />
       </div>
     </div>
   );
