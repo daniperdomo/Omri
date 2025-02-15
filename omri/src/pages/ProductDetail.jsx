@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaWhatsapp } from 'react-icons/fa';
 import PantallaCarga from "../components/PantallaCarga";
-import ProductRecomendado from "../components/ProductRecomendado"; // Importa el nuevo componente
+import ProductRecomendado from "../components/ProductRecomendado";
 
 const ProductDetail = () => {
   const { cod_producto } = useParams();
@@ -37,7 +37,7 @@ const ProductDetail = () => {
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
-        return fetch(`http://localhost:8081/api/productos/modelo/${data.modelo}`);
+        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}`);
       })
       .then((response) => {
         if (!response.ok) {
@@ -56,11 +56,11 @@ const ProductDetail = () => {
   }, [cod_producto]);
 
   const handleColorClick = (productoRelacionado) => {
-    setCurrentImage(productoRelacionado.imagenes[0]?.url || ""); // Cambia la imagen principal
-    setAllImages(productoRelacionado.imagenes); // Actualiza las imágenes al seleccionar un color
-    setAvailability(productoRelacionado.cantidad > 0); // Actualiza la disponibilidad
-    setSelectedColor(productoRelacionado.color); // Actualiza el color seleccionado
-    setProducto(productoRelacionado); // Actualiza el producto
+    setCurrentImage(productoRelacionado.imagenes[0]?.url || "");
+    setAllImages(productoRelacionado.imagenes);
+    setAvailability(productoRelacionado.cantidad > 0);
+    setSelectedColor(productoRelacionado.color);
+    setProducto(productoRelacionado);
   };
 
   if (loading) {
@@ -73,6 +73,11 @@ const ProductDetail = () => {
 
   const whatsappNumber = "1234567890";
   const whatsappMessage = `Hola, estoy interesado en el producto: ${producto.descripcion}.`;
+
+  // Filtrar productos relacionados por modelo para obtener colores disponibles
+  const coloresDisponibles = productosRelacionados.filter(
+    (prod) => prod.modelo === producto.modelo
+  );
 
   return (
     <div className="py-12 bg-gray-100 min-h-screen relative">
@@ -103,7 +108,7 @@ const ProductDetail = () => {
             {/* Columna izquierda: Imagen principal y miniaturas */}
             <div className="flex flex-col items-center">
               {/* Imagen principal */}
-              <div className="w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
+              <div className="w-full max-w-[500px ] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
                   src={currentImage}
                   alt={producto.descripcion}
@@ -118,8 +123,8 @@ const ProductDetail = () => {
                     key={index}
                     className={`flex-shrink-0 w-16 h-16 border-b-4 focus:outline-none transition-all duration-200 ${
                       currentImage === img.url
-                        ? "border-b-2 border-color-hover scale-110" // Borde inferior azul cuando está seleccionado
-                        : "border-b-2 border-transparent hover:border-color-hover-50 hover:scale-105" // Borde inferior transparente y cambia a azul al hacer hover
+                        ? "border-b-2 border-color-hover scale-110"
+                        : "border-b-2 border-transparent hover:border-color-hover-50 hover:scale-105"
                     }`}
                     onClick={() => setCurrentImage(img.url)}
                   >
@@ -153,7 +158,7 @@ const ProductDetail = () => {
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-gray-900">Colores:</h3>
                   <div className="flex space-x-3">
-                    {productosRelacionados.map((prod, index) => (
+                    {coloresDisponibles.map((prod, index) => (
                       <button
                         key={index}
                         className={`w-10 h-10 rounded-full border-2 focus:outline-none transition-all duration-200 ${

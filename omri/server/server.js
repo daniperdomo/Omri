@@ -10,8 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri2",
+    server: "JESUS\\SQLEXPRESS",
+    database: "webomri",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -232,8 +232,8 @@ app.get('/api/productos/:cod_producto', (req, res) => {
     })
 })
 
-app.get('/api/productos/modelo/:modelo', (req, res) => {
-  const { modelo } = req.params
+app.get('/api/productos/categoria/:categoria', (req, res) => {
+  const { categoria } = req.params
   const request = new sql.Request()
   const query = `
       SELECT 
@@ -250,10 +250,10 @@ app.get('/api/productos/modelo/:modelo', (req, res) => {
           I.url AS imagen_url  
       FROM Productos P
       LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
-      WHERE P.modelo = @modelo
+      WHERE P.cod_categoria = @categoria
   `
 
-  request.input('modelo', sql.VarChar, modelo)
+  request.input('categoria', sql.VarChar, categoria)
   request.query(query, (error, result) => {
       if (error) {
           console.log('Error obteniendo productos relacionados:', error)
