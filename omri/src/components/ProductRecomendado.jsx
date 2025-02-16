@@ -1,46 +1,83 @@
-import React from "react";
-import ProductCard from "../components/ProductCard";
+import React from "react"
+import ProductCard from "../components/ProductCard"
 
-const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca }) => {
-  // Filtrar productos de la misma categoría
-  const productosPorCategoria = productos.filter(
-    (producto) => producto.cod_categoria === categoria && producto.modelo !== modeloSeleccionado
-  );
+const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, cod_producto }) => {
+  const modelosVistos = new Set()
+  const productosLimitados = []
 
-  // Filtrar productos de la misma marca
-  const productosPorMarca = productos.filter(
-    (producto) => producto.cod_marca === marca && producto.modelo !== modeloSeleccionado
-  );
+  const categoriasEspecificas = ['CARG', 'CABL', 'AUDIF']
+  const esCategoriaEspecifica = categoriasEspecificas.includes(categoria)
 
-  const modelosVistos = new Set();
-  const productosLimitados = [];
+  if (esCategoriaEspecifica) {
+    // Filtrar productos del mismo modelo y marca
+    const productosDelMismoModeloYMarca = productos.filter(
+      (producto) => 
+        producto.modelo === modeloSeleccionado && 
+        producto.cod_marca === marca && 
+        producto.cod_producto !== cod_producto
+    )
 
-  // Agregar productos de la misma categoría primero
-  for (const producto of productosPorCategoria) {
-    const modelo = producto.modelo;
-
-    if (!modelosVistos.has(modelo)) {
-      modelosVistos.add(modelo);
-      productosLimitados.push(producto);
-    }
-
-    if (productosLimitados.length >= 4) {
-      break;
-    }
-  }
-
-  // Si hay menos de 4, agregar productos de la misma marca
-  if (productosLimitados.length < 4) {
-    for (const producto of productosPorMarca) {
-      const modelo = producto.modelo;
-
-      if (!modelosVistos.has(modelo)) {
-        modelosVistos.add(modelo);
-        productosLimitados.push(producto);
-      }
-
+    // Agregar productos del mismo modelo y marca a la lista de recomendados
+    for (const producto of productosDelMismoModeloYMarca) {
+      productosLimitados.push(producto)
       if (productosLimitados.length >= 4) {
-        break;
+        break
+      }
+    }
+
+    // Si hay menos de 4, completar con productos de la misma marca
+    if (productosLimitados.length < 4) {
+      const productosPorMarca = productos.filter(
+        (producto) => 
+          producto.cod_marca === marca && 
+          producto.cod_producto !== cod_producto
+      )
+
+      for (const producto of productosPorMarca) {
+        if (!productosLimitados.includes(producto)) {
+          productosLimitados.push(producto)
+        }
+        if (productosLimitados.length >= 4) {
+          break
+        }
+      }
+    }
+  } else {
+    // Para categorías no específicas
+    const productosPorCategoria = productos.filter(
+      (producto) => 
+        producto.cod_categoria === categoria && 
+        producto.modelo !== modeloSeleccionado && 
+        producto.cod_producto !== cod_producto
+    )
+
+    for (const producto of productosPorCategoria) {
+      if (!modelosVistos.has(producto.modelo)) {
+        modelosVistos.add(producto.modelo)
+        productosLimitados.push(producto)
+      }
+      if (productosLimitados.length >= 4) {
+        break
+      }
+    }
+
+    // Si hay menos de 4, completar con productos de la misma marca
+    if (productosLimitados.length < 4) {
+      const productosPorMarca = productos.filter(
+        (producto) => 
+          producto.cod_marca === marca && 
+          producto.modelo !== modeloSeleccionado && 
+          producto.cod_producto !== cod_producto
+      )
+
+      for (const producto of productosPorMarca) {
+        if (!modelosVistos.has(producto.modelo)) {
+          modelosVistos.add(producto.modelo)
+          productosLimitados.push(producto)
+        }
+        if (productosLimitados.length >= 4) {
+          break
+        }
       }
     }
   }
@@ -52,7 +89,7 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca })
         {productosLimitados.map((producto) => {
           const coloresDisponibles = productos.filter(
             (prod) => prod.modelo === producto.modelo
-          );
+          )
 
           return (
             <ProductCard 
@@ -60,11 +97,11 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca })
               product={producto} 
               allProducts={coloresDisponibles}
             />
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductRecomendado;
+export default ProductRecomendado

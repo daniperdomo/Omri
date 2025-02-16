@@ -198,6 +198,7 @@ const ProductDetail = () => {
           categoria={producto.cod_categoria} 
           modeloSeleccionado={producto.modelo} 
           marca={producto.cod_marca}
+          cod_producto={producto.cod_producto}
         />
       </div>
     </div>
