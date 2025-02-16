@@ -10,8 +10,8 @@ const upload = multer({ dest: '../public/images/' })
 
 const sql = require("mssql/msnodesqlv8")
 const config = {
-    server: "DESKTOP-409OAJ1\\MSSQLSERVER14",
-    database: "webomri2",
+    server: "JESUS\\SQLEXPRESS",
+    database: "webomri",
     driver: "msnodesqlv8",
     options: {
         trustedConnection: true
@@ -232,64 +232,65 @@ app.get('/api/productos/:cod_producto', (req, res) => {
     })
 })
 
-app.get('/api/productos/categoria/:categoria', (req, res) => {
-  const { categoria } = req.params
-  const request = new sql.Request()
-  const query = `
-      SELECT 
-          P.cod_producto,
-          P.cod_categoria,
-          P.modelo,
-          P.cod_marca,
-          P.descripcion,
-          P.caracteristicas,
-          P.precio,
-          P.cantidad,
-          P.estatus,
-          P.color,  
-          I.url AS imagen_url  
-      FROM Productos P
-      LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
-      WHERE P.cod_categoria = @categoria
-  `
-
-  request.input('categoria', sql.VarChar, categoria)
-  request.query(query, (error, result) => {
-      if (error) {
-          console.log('Error obteniendo productos relacionados:', error)
-          return res.status(500).send('Error obteniendo productos relacionados')
-      }
-
-      // Organizar los datos para que cada producto tenga un array de imágenes
-      const productos = result.recordset.reduce((acc, row) => {
-          const productoExistente = acc.find(p => p.cod_producto === row.cod_producto)
-          if (productoExistente) {
-              if (!productoExistente.imagenes) {
-                  productoExistente.imagenes = []
-              }
-              if (row.imagen_url) {
-                  productoExistente.imagenes.push({ url: row.imagen_url })
-              }
-          } else {
-              acc.push({
-                  cod_producto: row.cod_producto,
-                  cod_categoria: row.cod_categoria,
-                  modelo: row.modelo,
-                  cod_marca: row.cod_marca,
-                  descripcion: row.descripcion,
-                  caracteristicas: row.caracteristicas,
-                  precio: row.precio,
-                  cantidad: row.cantidad,
-                  estatus: row.estatus,
-                  color: row.color,
-                  imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
-              })
-          }
-          return acc
-      }, [])
-
-      res.status(200).json(productos)
-  })
+app.get('/api/productos/categoria/:categoria/marca/:marca', (req, res) => {
+    const { categoria, marca } = req.params
+    const request = new sql.Request()
+    const query = `
+        SELECT 
+            P.cod_producto,
+            P.cod_categoria,
+            P.modelo,
+            P.cod_marca,
+            P.descripcion,
+            P.caracteristicas,
+            P.precio,
+            P.cantidad,
+            P.estatus,
+            P.color,  
+            I.url AS imagen_url  
+        FROM Productos P
+        LEFT JOIN Imagenes I ON P.cod_producto = I.cod_producto
+        WHERE P.cod_categoria = @categoria OR P.cod_marca = @marca
+    `
+  
+    request.input('categoria', sql.VarChar, categoria)
+    request.input('marca', sql.VarChar, marca)
+    request.query(query, (error, result) => {
+        if (error) {
+            console.log('Error obteniendo productos relacionados:', error)
+            return res.status(500).send('Error obteniendo productos relacionados')
+        }
+  
+        // Organizar los datos para que cada producto tenga un array de imágenes
+        const productos = result.recordset.reduce((acc, row) => {
+            const productoExistente = acc.find(p => p.cod_producto === row.cod_producto)
+            if (productoExistente) {
+                if (!productoExistente.imagenes) {
+                    productoExistente.imagenes = []
+                }
+                if (row.imagen_url) {
+                    productoExistente.imagenes.push({ url: row.imagen_url })
+                }
+            } else {
+                acc.push({
+                    cod_producto: row.cod_producto,
+                    cod_categoria: row.cod_categoria,
+                    modelo: row.modelo,
+                    cod_marca: row.cod_marca,
+                    descripcion: row.descripcion,
+                    caracteristicas: row.caracteristicas,
+                    precio: row.precio,
+                    cantidad: row.cantidad,
+                    estatus: row.estatus,
+                    color: row.color,
+                    imagenes: row.imagen_url ? [{ url: row.imagen_url }] : []
+                })
+            }
+            return acc
+        }, [])
+  
+        res.status(200).json(productos)
+    })
 })
 
 app.get('/api/marca', (req, res) => {

@@ -37,7 +37,8 @@ const ProductDetail = () => {
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
-        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}`);
+        // Realizar la búsqueda de productos relacionados por categoría y marca
+        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
       })
       .then((response) => {
         if (!response.ok) {
@@ -47,6 +48,7 @@ const ProductDetail = () => {
       })
       .then((data) => {
         setProductosRelacionados(data);
+        console.log('Data: ', data)
         setLoading(false);
       })
       .catch((error) => {
@@ -194,7 +196,8 @@ const ProductDetail = () => {
         <ProductRecomendado 
           productos={productosRelacionados} 
           categoria={producto.cod_categoria} 
-          modeloSeleccionado={producto.modelo} // Pasar el modelo del producto seleccionado
+          modeloSeleccionado={producto.modelo} 
+          marca={producto.cod_marca}
         />
       </div>
     </div>
