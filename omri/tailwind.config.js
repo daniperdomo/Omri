@@ -9,10 +9,12 @@ export default {
       colors: {
         'color-hover': '#e8dcb5', 
       },
+      animation: {
+        'spin-slow': 'spin 2s linear infinite', // Animación personalizada
+      },
     },
   },
   plugins: [
     require("tailwind-scrollbar-hide"),
   ],
 }
-

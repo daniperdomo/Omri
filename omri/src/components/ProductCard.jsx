@@ -26,7 +26,7 @@ const ProductCard = ({ product, allProducts }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer border-2 border-gray-200 hover:border-color-hover" // Borde gris por defecto, azul en hover
       onClick={handleCardClick}
     >
       {/* Contenedor de tamaño fijo para la imagen */}

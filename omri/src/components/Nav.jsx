@@ -71,7 +71,7 @@ const Nav = () => {
         <div className="lg:hidden sticky top-20 left-0 w-full h-full bg-white z-40 transition-transform duration-300 ease-in-out transform translate-x-0">
             <ul className="flex flex-col items-center py-10 gap-6 text-lg">
                 <Link to="/" onClick={() => setClick(false)}>
-                    <li className="relative group hover:text-color-hover transition cursor-pointer">
+                    <li className="relative group hover:text-color-hover transition cursor-pointer ">
                         Inicio
                         <span className="absolute left-0 bottom-[-6px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </li>
@@ -115,7 +115,7 @@ const Nav = () => {
                     <div className="hidden lg:flex">
                         <ul className="flex gap-8 mr-16 text-lg">
                             <Link to="/">
-                                <li className="relative group hover:text-color-hover transition cursor-pointer">
+                                <li className="relative group hover:text-color-hover transition cursor-pointer" style={{ fontFamily: 'Amblas' }}>
                                     Inicio
                                     <span className="absolute left-0 bottom-[-26px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                 </li>
