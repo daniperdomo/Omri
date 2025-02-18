@@ -2,17 +2,28 @@ import React from "react";
 import ProductCard from "../components/ProductCard";
 
 const ProductGrid = ({ productos }) => {
-  // Función para determinar si la categoría es CARG o CABL
+  // Función para determinar si la categoría es CARG, CABL o AUDIF
   const isSpecialCategory = (cod_categoria) => {
     return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF";
   };
 
-  // Ordenar los productos por cod_producto de manera alfanumérica
+  // Ordenar los productos
   const productosOrdenados = productos.sort((a, b) => {
+    if (isSpecialCategory(a.cod_categoria) && isSpecialCategory(b.cod_categoria)) {
+      // Si ambos son de categorías especiales, ordenar por cod_marca y luego por cod_producto
+      if (a.cod_marca < b.cod_marca) return -1;
+      if (a.cod_marca > b.cod_marca) return 1;
+      return a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' });
+    }
+    // Si solo a es de categoría especial
+    if (isSpecialCategory(a.cod_categoria)) return -1;
+    // Si solo b es de categoría especial
+    if (isSpecialCategory(b.cod_categoria)) return 1;
+    // Si ninguno es de categoría especial, ordenar solo por cod_producto
     return a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' });
   });
 
-  // Agrupar productos por modelo, excepto para categorías CARG y CABL
+  // Agrupar productos por modelo, excepto para categorías CARG, CABL y AUDIF
   const productosAgrupados = productosOrdenados.reduce((acc, product) => {
     if (isSpecialCategory(product.cod_categoria)) {
       // Para categorías especiales, crear una entrada por cod_producto
