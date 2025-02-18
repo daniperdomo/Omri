@@ -20,16 +20,13 @@ const UpdateMarca = () => {
 
     const handleSelectedMarca = (cod_marca) => {
         setCod_marca_original(cod_marca)
-        setCod_marca_nuevo(cod_marca) // Inicialmente, el nuevo código es el mismo que el original
+        setCod_marca_nuevo(cod_marca)
 
         // Cargar los datos de la marca seleccionada
         fetch(`http://localhost:8081/api/marca/${cod_marca}`)
             .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    const marca = data[0]
-                    setDescripcion(marca.descripcion)
-                }
+            .then(prod => {
+                setDescripcion(prod.descripcion)
             })
             .catch(error => console.error('Error leyendo marca:', error))
     }
