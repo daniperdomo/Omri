@@ -1,71 +1,71 @@
-import React, { useState, useEffect } from "react";
-import categoriasAccesorios from "../jsons/categoriasAccesorios.json";
-import ProductGrid from "../components/ProductGrid";
-import PantallaCarga from "../components/PantallaCarga"; // Importa el componente PantallaCarga
+import React, { useState, useEffect } from "react"
+import categoriasAccesorios from "../jsons/categoriasAccesorios.json"
+import ProductGrid from "../components/ProductGrid"
+import PantallaCarga from "../components/PantallaCarga" // Importa el componente PantallaCarga
 
 const Accesorios = () => {
-  const [productos, setProductos] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
-  const [precioMin, setPrecioMin] = useState("");
-  const [precioMax, setPrecioMax] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState([])
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("")
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("")
+  const [precioMin, setPrecioMin] = useState("")
+  const [precioMax, setPrecioMax] = useState("")
+  const [loading, setLoading] = useState(true)
 
   const fetchProductos = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos");
+      const response = await fetch("http://localhost:8081/api/productos")
       if (!response.ok) {
-        throw new Error("Error en la respuesta del servidor");
+        throw new Error("Error en la respuesta del servidor")
       }
-      const data = await response.json();
-      setProductos(data);
-      sessionStorage.setItem("productosAccesorios", JSON.stringify(data));
+      const data = await response.json()
+      setProductos(data)
+      sessionStorage.setItem("productosAccesorios", JSON.stringify(data))
     } catch (error) {
-      console.error("Error leyendo productos:", error);
+      console.error("Error leyendo productos:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosAccesorios");
+    const productosGuardados = sessionStorage.getItem("productosAccesorios")
     if (productosGuardados) {
-      setProductos(JSON.parse(productosGuardados));
-      setLoading(false);
+      setProductos(JSON.parse(productosGuardados))
+      setLoading(false)
     } else {
-      fetchProductos();
+      fetchProductos()
     }
-  }, []);
+  }, [])
 
   const productosAccesorios = productos.filter(
     (producto) =>
       producto.cod_categoria === "CARG" ||
       producto.cod_categoria === "CABL" ||
       producto.cod_categoria === "AUDIF"
-  );
+  )
 
-  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))];
+  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))]
 
   const productosFiltrados = productosAccesorios.filter((producto) => {
-    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
-    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
+    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada
     const cumplePrecio =
       (!precioMin || producto.precio >= parseFloat(precioMin)) &&
-      (!precioMax || producto.precio <= parseFloat(precioMax));
-    return cumpleCategoria && cumpleMarca && cumplePrecio;
-  });
+      (!precioMax || producto.precio <= parseFloat(precioMax))
+    return cumpleCategoria && cumpleMarca && cumplePrecio
+  })
 
   // Ordenar productos filtrados por marca
   const productosOrdenados = productosFiltrados.sort((a, b) => {
-    if (a.cod_marca < b.cod_marca) return -1;
-    if (a.cod_marca > b.cod_marca) return 1;
-    return 0;
-  });
+    if (a.cod_marca < b.cod_marca) return -1
+    if (a.cod_marca > b.cod_marca) return 1
+    return 0
+  })
 
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
-  };
+    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria))
+  }
 
   return (
     <div className="py-8 bg-gray-100">
@@ -157,7 +157,7 @@ const Accesorios = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Accesorios;
+export default Accesorios

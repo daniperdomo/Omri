@@ -48,7 +48,6 @@ const ProductDetail = () => {
       })
       .then((data) => {
         setProductosRelacionados(data);
-        console.log('Data: ', data)
         setLoading(false);
       })
       .catch((error) => {
