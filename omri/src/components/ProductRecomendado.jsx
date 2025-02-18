@@ -1,12 +1,12 @@
-import React from "react"
-import ProductCard from "../components/ProductCard"
+import React from "react";
+import ProductCard from "../components/ProductCard";
 
 const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, cod_producto }) => {
-  const modelosVistos = new Set()
-  const productosLimitados = []
+  const modelosVistos = new Set();
+  const productosLimitados = [];
 
-  const categoriasEspecificas = ['CARG', 'CABL', 'AUDIF']
-  const esCategoriaEspecifica = categoriasEspecificas.includes(categoria)
+  const categoriasEspecificas = ['CARG', 'CABL', 'AUDIF'];
+  const esCategoriaEspecifica = categoriasEspecificas.includes(categoria);
 
   if (esCategoriaEspecifica) {
     // Filtrar productos del mismo modelo y marca
@@ -15,13 +15,13 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
         producto.modelo === modeloSeleccionado && 
         producto.cod_marca === marca && 
         producto.cod_producto !== cod_producto
-    )
+    );
 
     // Agregar productos del mismo modelo y marca a la lista de recomendados
     for (const producto of productosDelMismoModeloYMarca) {
-      productosLimitados.push(producto)
+      productosLimitados.push(producto);
       if (productosLimitados.length >= 4) {
-        break
+        break;
       }
     }
 
@@ -31,14 +31,14 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
         (producto) => 
           producto.cod_marca === marca && 
           producto.cod_producto !== cod_producto
-      )
+      );
 
       for (const producto of productosPorMarca) {
         if (!productosLimitados.includes(producto)) {
-          productosLimitados.push(producto)
+          productosLimitados.push(producto);
         }
         if (productosLimitados.length >= 4) {
-          break
+          break;
         }
       }
     }
@@ -49,15 +49,15 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
         producto.cod_categoria === categoria && 
         producto.modelo !== modeloSeleccionado && 
         producto.cod_producto !== cod_producto
-    )
+    );
 
     for (const producto of productosPorCategoria) {
       if (!modelosVistos.has(producto.modelo)) {
-        modelosVistos.add(producto.modelo)
-        productosLimitados.push(producto)
+        modelosVistos.add(producto.modelo);
+        productosLimitados.push(producto);
       }
       if (productosLimitados.length >= 4) {
-        break
+        break;
       }
     }
 
@@ -68,19 +68,22 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
           producto.cod_marca === marca && 
           producto.modelo !== modeloSeleccionado && 
           producto.cod_producto !== cod_producto
-      )
+      );
 
       for (const producto of productosPorMarca) {
         if (!modelosVistos.has(producto.modelo)) {
-          modelosVistos.add(producto.modelo)
-          productosLimitados.push(producto)
+          modelosVistos.add(producto.modelo);
+          productosLimitados.push(producto);
         }
         if (productosLimitados.length >= 4) {
-          break
+          break;
         }
       }
     }
   }
+
+  // Ordenar productosLimitados por cod_producto alfanuméricamente
+  productosLimitados.sort((a, b) => a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' }));
 
   return (
     <div className="mt-8">
@@ -89,19 +92,25 @@ const ProductRecomendado = ({ productos, categoria, modeloSeleccionado, marca, c
         {productosLimitados.map((producto) => {
           const coloresDisponibles = productos.filter(
             (prod) => prod.modelo === producto.modelo
-          )
+          );
+
+          // Ordenar las imágenes del producto de manera alfanumérica
+          const productoConImagenesOrdenadas = {
+            ...producto,
+            imagenes: producto.imagenes.sort((a, b) => a.url.localeCompare(b.url, undefined, { numeric: true, sensitivity: 'base' }))
+          };
 
           return (
             <ProductCard 
               key={producto.cod_producto} 
-              product={producto} 
+              product={productoConImagenesOrdenadas} 
               allProducts={coloresDisponibles}
             />
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductRecomendado
+export default ProductRecomendado;

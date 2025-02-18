@@ -7,8 +7,13 @@ const ProductGrid = ({ productos }) => {
     return cod_categoria === "CARG" || cod_categoria === "CABL" || cod_categoria === "AUDIF";
   };
 
+  // Ordenar los productos por cod_producto de manera alfanumérica
+  const productosOrdenados = productos.sort((a, b) => {
+    return a.cod_producto.localeCompare(b.cod_producto, undefined, { numeric: true, sensitivity: 'base' });
+  });
+
   // Agrupar productos por modelo, excepto para categorías CARG y CABL
-  const productosAgrupados = productos.reduce((acc, product) => {
+  const productosAgrupados = productosOrdenados.reduce((acc, product) => {
     if (isSpecialCategory(product.cod_categoria)) {
       // Para categorías especiales, crear una entrada por cod_producto
       const key = product.cod_producto;
@@ -31,10 +36,17 @@ const ProductGrid = ({ productos }) => {
         {Object.keys(productosAgrupados).map((key) => {
           const productosDelGrupo = productosAgrupados[key];
           const primerProducto = productosDelGrupo[0];
+
+          // Ordenar las imágenes del primer producto
+          const productoConImagenesOrdenadas = {
+            ...primerProducto,
+            imagenes: primerProducto.imagenes.sort((a, b) => a.url.localeCompare(b.url))
+          };
+
           return (
             <ProductCard
               key={key}
-              product={primerProducto}
+              product={productoConImagenesOrdenadas}
               allProducts={productosDelGrupo}
             />
           );
