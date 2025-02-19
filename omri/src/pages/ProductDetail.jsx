@@ -112,35 +112,41 @@ const ProductDetail = () => {
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Columna izquierda: Imagen principal y miniaturas */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-row items-start">
+              {/* Mostrar miniaturas solo si hay más de una imagen */}
+              {allImages.length > 1 && (
+                <div className="flex flex-col space-y-2 mr-4">
+                  {allImages.map((img, index) => (
+                    <button
+                      key={index}
+                      className={`flex-shrink-0 w-16 h-16 border-2 focus:outline-none transition-all duration-200 ${
+                        currentImage === img.url
+                          ? "border-color-hover scale-110"
+                          : "border-gray-300 hover:border-color-hover-50 hover:scale-105"
+                      }`}
+                      onClick={() => setCurrentImage(img.url)}
+                    >
+                      <img
+                        src={img.url}
+                        alt={`Imagen ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Imagen principal */}
-              <div className="w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
+              <div
+                className={`w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden ${
+                  allImages.length <= 1 ? "ml-0" : ""
+                }`}
+              >
                 <img
                   src={currentImage}
                   alt={producto.descripcion}
                   className="w-full h-full object-contain"
                 />
-              </div>
-
-              {/* Miniaturas de imágenes */}
-              <div className="flex space-x-2">
-                {allImages.map((img, index) => (
-                  <button
-                    key={index}
-                    className={`flex-shrink-0 w-16 h-16 border-b-4 focus:outline-none transition-all duration-200 ${
-                      currentImage === img.url
-                        ? "border-b-2 border-color-hover scale-110"
-                        : "border-b-2 border-transparent hover:border-color-hover-50 hover:scale-105"
-                    }`}
-                    onClick={() => setCurrentImage(img.url)}
-                  >
-                    <img
-                      src={img.url}
-                      alt={`Imagen ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
               </div>
             </div>
 
