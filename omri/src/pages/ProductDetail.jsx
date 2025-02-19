@@ -32,8 +32,10 @@ const ProductDetail = () => {
       .then((data) => {
         setProducto(data);
         if (data.imagenes && data.imagenes.length > 0) {
-          setCurrentImage(data.imagenes[0].url);
-          setAllImages(data.imagenes);
+          // Ordenar las imágenes alfabéticamente por su URL
+          const sortedImages = data.imagenes.sort((a, b) => a.url.localeCompare(b.url));
+          setCurrentImage(sortedImages[0].url);
+          setAllImages(sortedImages);
           setAvailability(data.cantidad > 0);
           setSelectedColor(data.color);
         }
@@ -57,8 +59,11 @@ const ProductDetail = () => {
   }, [cod_producto]);
 
   const handleColorClick = (productoRelacionado) => {
-    setCurrentImage(productoRelacionado.imagenes[0]?.url || "");
-    setAllImages(productoRelacionado.imagenes);
+    // Ordenar las imágenes alfabéticamente por su URL
+    const sortedImages = productoRelacionado.imagenes.sort((a, b) => a.url.localeCompare(b.url));
+    
+    setCurrentImage(sortedImages[0]?.url || "");
+    setAllImages(sortedImages);
     setAvailability(productoRelacionado.cantidad > 0);
     setSelectedColor(productoRelacionado.color);
     setProducto(productoRelacionado);

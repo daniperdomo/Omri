@@ -30,12 +30,12 @@ const ProductCard = ({ product, allProducts }) => {
       onClick={handleCardClick}
     >
       {/* Contenedor de tamaño fijo para la imagen */}
-      <div className="w-full h-48 overflow-hidden">
+      <div className="w-full h-64 overflow-hidden p-2"> {/* Ajusta la altura y añade padding */}
         {currentImage ? (
           <img
             src={currentImage}
             alt={product.descripcion}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain" // Cambia a object-contain para que la imagen se ajuste completamente
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
