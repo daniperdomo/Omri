@@ -14,13 +14,13 @@ const Accesorios = () => {
   const fetchProductos = async () => {
     setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos")
+      const response = await fetch("http://localhost:8081/api/productos/accesorios")
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor")
       }
       const data = await response.json()
       setProductos(data)
-      sessionStorage.setItem("productosAccesorios", JSON.stringify(data))
+      sessionStorage.setItem("productos", JSON.stringify(data))
     } catch (error) {
       console.error("Error leyendo productos:", error)
     } finally {
@@ -29,7 +29,7 @@ const Accesorios = () => {
   }
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosAccesorios")
+    const productosGuardados = sessionStorage.getItem("productos")
     if (productosGuardados) {
       setProductos(JSON.parse(productosGuardados))
       setLoading(false)
@@ -38,16 +38,9 @@ const Accesorios = () => {
     }
   }, [])
 
-  const productosAccesorios = productos.filter(
-    (producto) =>
-      producto.cod_categoria === "CARG" ||
-      producto.cod_categoria === "CABL" ||
-      producto.cod_categoria === "AUDIF"
-  )
+  const marcasUnicas = [...new Set(productos.map((producto) => producto.cod_marca))]
 
-  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))]
-
-  const productosFiltrados = productosAccesorios.filter((producto) => {
+  const productosFiltrados = productos.filter((producto) => {
     const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
     const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada
     const cumplePrecio =

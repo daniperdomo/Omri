@@ -125,20 +125,19 @@ app.get('/api/productos', async (req, res) => {
             color,
             Imagenes (url)
         `)
-        .order('cod_categoria', { ascending: true }) // Ordenar por categoría
-        .order('modelo', { ascending: true })        // Luego por modelo
-        .order('cod_producto', { ascending: true }); // Finalmente por código de producto
+        .order('cod_categoria', { ascending: true })
+        .order('modelo', { ascending: true })        
+        .order('cod_producto', { ascending: true }) 
 
     if (error) {
-        console.log('Error obteniendo productos:', error);
-        return res.status(500).send('Error obteniendo productos');
+        console.log('Error obteniendo productos:', error)
+        return res.status(500).send('Error obteniendo productos')
     }
 
-    // Ordenar las imágenes dentro de cada producto
     const productosConImagenesOrdenadas = data.map(producto => ({
         ...producto,
         Imagenes: producto.Imagenes.sort((a, b) => a.url.localeCompare(b.url))
-    }));
+    }))
 
     const productos = productosConImagenesOrdenadas.map(producto => ({
         cod_producto: producto.cod_producto,
@@ -152,13 +151,109 @@ app.get('/api/productos', async (req, res) => {
         estatus: producto.estatus,
         color: producto.color,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
-    }));
+    }))
 
-    res.status(200).json(productos);
-});
+    res.status(200).json(productos)
+})
+
+app.get('/api/productos/accesorios', async (req, res) => {
+    const { data, error } = await supabase
+        .from('Productos')
+        .select(`
+            cod_producto,
+            cod_categoria,
+            modelo,
+            cod_marca,
+            descripcion,
+            caracteristicas,
+            precio,
+            cantidad,
+            estatus,
+            color,
+            Imagenes (url)
+        `)
+        .in('cod_categoria', ['CARG', 'CABL', 'AUDIF'])
+        .order('cod_categoria', { ascending: true })
+        .order('modelo', { ascending: true })        
+        .order('cod_producto', { ascending: true }) 
+
+    if (error) {
+        console.log('Error obteniendo productos:', error)
+        return res.status(500).send('Error obteniendo productos')
+    }
+
+    const productosConImagenesOrdenadas = data.map(producto => ({
+        ...producto,
+        Imagenes: producto.Imagenes.sort((a, b) => a.url.localeCompare(b.url))
+    }))
+
+    const productos = productosConImagenesOrdenadas.map(producto => ({
+        cod_producto: producto.cod_producto,
+        cod_categoria: producto.cod_categoria,
+        modelo: producto.modelo,
+        cod_marca: producto.cod_marca,
+        descripcion: producto.descripcion,
+        caracteristicas: producto.caracteristicas,
+        precio: producto.precio,
+        cantidad: producto.cantidad,
+        estatus: producto.estatus,
+        color: producto.color,
+        imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
+    }))
+
+    res.status(200).json(productos)
+})
+
+app.get('/api/productos/cubitt', async (req, res) => {
+    const { data, error } = await supabase
+        .from('Productos')
+        .select(`
+            cod_producto,
+            cod_categoria,
+            modelo,
+            cod_marca,
+            descripcion,
+            caracteristicas,
+            precio,
+            cantidad,
+            estatus,
+            color,
+            Imagenes (url)
+        `)
+        .eq('cod_marca', 'CT')
+        .order('cod_categoria', { ascending: true })
+        .order('modelo', { ascending: true })        
+        .order('cod_producto', { ascending: true }) 
+
+    if (error) {
+        console.log('Error obteniendo productos:', error)
+        return res.status(500).send('Error obteniendo productos')
+    }
+
+    const productosConImagenesOrdenadas = data.map(producto => ({
+        ...producto,
+        Imagenes: producto.Imagenes.sort((a, b) => a.url.localeCompare(b.url))
+    }))
+
+    const productos = productosConImagenesOrdenadas.map(producto => ({
+        cod_producto: producto.cod_producto,
+        cod_categoria: producto.cod_categoria,
+        modelo: producto.modelo,
+        cod_marca: producto.cod_marca,
+        descripcion: producto.descripcion,
+        caracteristicas: producto.caracteristicas,
+        precio: producto.precio,
+        cantidad: producto.cantidad,
+        estatus: producto.estatus,
+        color: producto.color,
+        imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
+    }))
+
+    res.status(200).json(productos)
+})
 
 app.get('/api/productos/:cod_producto', async (req, res) => {
-    const { cod_producto } = req.params;
+    const { cod_producto } = req.params
 
     const { data, error } = await supabase
         .from('Productos')
@@ -176,22 +271,22 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
             Imagenes (url)
         `)
         .eq('cod_producto', cod_producto)
-        .single();
+        .single()
 
     if (error) {
-        console.log('Error obteniendo detalles del producto:', error);
-        return res.status(500).send('Error obteniendo detalles del producto');
+        console.log('Error obteniendo detalles del producto:', error)
+        return res.status(500).send('Error obteniendo detalles del producto')
     }
 
     if (!data) {
-        return res.status(404).send('Producto no encontrado');
+        return res.status(404).send('Producto no encontrado')
     }
 
     // Ordenar las imágenes del producto
     const productoConImagenesOrdenadas = {
         ...data,
         Imagenes: data.Imagenes.sort((a, b) => a.url.localeCompare(b.url))
-    };
+    }
 
     const producto = {
         cod_producto: productoConImagenesOrdenadas.cod_producto,
@@ -205,13 +300,13 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
         estatus: productoConImagenesOrdenadas.estatus,
         color: productoConImagenesOrdenadas.color,
         imagenes: productoConImagenesOrdenadas.Imagenes ? productoConImagenesOrdenadas.Imagenes.map(imagen => ({ url: imagen.url })) : []
-    };
+    }
 
-    res.status(200).json(producto);
-});
+    res.status(200).json(producto)
+})
 
 app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => {
-    const { categoria, marca } = req.params;
+    const { categoria, marca } = req.params
 
     const { data, error } = await supabase
         .from('Productos')
@@ -228,23 +323,23 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
             color,
             Imagenes (url)
         `)
-        .or(`cod_categoria.eq.${categoria},cod_marca.eq.${marca}`);
+        .or(`cod_categoria.eq.${categoria},cod_marca.eq.${marca}`)
 
     if (error) {
-        console.log('Error obteniendo productos relacionados:', error);
-        return res.status(500).send('Error obteniendo productos relacionados');
+        console.log('Error obteniendo productos relacionados:', error)
+        return res.status(500).send('Error obteniendo productos relacionados')
     }
 
     // Ordenar los productos en el código
     const productosOrdenados = data.sort((a, b) => {
-        if (a.cod_categoria < b.cod_categoria) return -1;
-        if (a.cod_categoria > b.cod_categoria) return 1;
-        if (a.modelo < b.modelo) return -1;
-        if (a.modelo > b.modelo) return 1;
-        if (a.cod_producto < b.cod_producto) return -1;
-        if (a.cod_producto > b.cod_producto) return 1;
-        return 0;
-    });
+        if (a.cod_categoria < b.cod_categoria) return -1
+        if (a.cod_categoria > b.cod_categoria) return 1
+        if (a.modelo < b.modelo) return -1
+        if (a.modelo > b.modelo) return 1
+        if (a.cod_producto < b.cod_producto) return -1
+        if (a.cod_producto > b.cod_producto) return 1
+        return 0
+    })
 
     const productos = productosOrdenados.map(producto => ({
         cod_producto: producto.cod_producto,
@@ -258,10 +353,10 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
         estatus: producto.estatus,
         color: producto.color,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
-    }));
+    }))
 
-    res.status(200).json(productos);
-});
+    res.status(200).json(productos)
+})
 
 app.get('/api/marca', async (req, res) => {
     const { data, error } = await supabase
@@ -294,15 +389,15 @@ app.get('/api/producto', async (req, res) => {
         .select('*')
         .order('cod_categoria', { ascending: true }) // Ordenar por categoría
         .order('modelo', { ascending: true })        // Luego por modelo
-        .order('cod_producto', { ascending: true }); // Finalmente por código de producto
+        .order('cod_producto', { ascending: true }) // Finalmente por código de producto
 
     if (error) {
-        console.log("Error leyendo Productos:", error);
-        return res.status(500).send('Error leyendo Productos');
+        console.log("Error leyendo Productos:", error)
+        return res.status(500).send('Error leyendo Productos')
     }
 
-    res.json(data);
-});
+    res.json(data)
+})
 
 app.post('/api/deleteCategoria', async (req, res) => {
     const { cod_categoria, modelo } = req.body
