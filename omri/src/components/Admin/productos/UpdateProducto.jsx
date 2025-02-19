@@ -59,19 +59,16 @@ const UpdateProducto = () => {
 
         fetch(`http://localhost:8081/api/producto/${cod_producto}`)
             .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    const prod = data[0]
-                    setCod_categoria(prod.cod_categoria)
-                    setModelo(prod.modelo)
-                    setCod_marca(prod.cod_marca)
-                    setDescripcion(prod.descripcion)
-                    setCaracteristicas(prod.caracteristicas)
-                    setPrecio(prod.precio)
-                    setCantidad(prod.cantidad)
-                    setEstatus(prod.estatus)
-                    setColor(prod.color)
-                }
+            .then(prod => {
+                setCod_categoria(prod.cod_categoria)
+                setModelo(prod.modelo)
+                setCod_marca(prod.cod_marca)
+                setDescripcion(prod.descripcion)
+                setCaracteristicas(prod.caracteristicas)
+                setPrecio(prod.precio)
+                setCantidad(prod.cantidad)
+                setEstatus(prod.estatus)
+                setColor(prod.color)
             })
             .catch(error => console.error('Error leyendo producto:', error))
     }
@@ -228,7 +225,7 @@ const UpdateProducto = () => {
                 {modalVisible && (
                     <div className="modal">
                         <div className="modal-content">
-                            <span className="close" onClick={closeModal}>&times;</span>
+                            <span className="close" onClick={closeModal}>&times</span>
                             <p style={{ color: isSuccess ? 'green' : 'red' }}>{modalMessage}</p>
                         </div>
                     </div>

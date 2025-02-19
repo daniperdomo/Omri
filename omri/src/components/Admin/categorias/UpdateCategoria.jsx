@@ -29,11 +29,8 @@ const UpdateCategoria = () => {
         // Cargar los datos de la categoría seleccionada
         fetch(`http://localhost:8081/api/categoria/${cod_categoria}/${modelo}`)
             .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    const categoria = data[0]
-                    setDescripcion(categoria.descripcion)
-                }
+            .then(prod => {
+                setDescripcion(prod.descripcion)
             })
             .catch(error => console.error('Error leyendo categoría:', error))
     }

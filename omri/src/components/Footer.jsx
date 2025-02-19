@@ -40,7 +40,8 @@ const Footer = () => {
             <li className='my-2'>
               <a
                 className='text-white hover:text-fuchsia-600 transition-all duration-150 ease-in-out flex items-center'
-                href=''
+                href='https://www.instagram.com/omri.vzla/'
+                target='blank'
               >
                 <FaInstagram size={24} className="mr-2" /> {/* Ícono de Instagram */}
                 Instagram

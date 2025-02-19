@@ -1,67 +1,71 @@
-import React, { useState, useEffect } from "react";
-import categoriasAccesorios from "../jsons/categoriasAccesorios.json";
-import ProductGrid from "../components/ProductGrid";
+import React, { useState, useEffect } from "react"
+import categoriasAccesorios from "../jsons/categoriasAccesorios.json"
+import ProductGrid from "../components/ProductGrid"
+import PantallaCarga from "../components/PantallaCarga" // Importa el componente PantallaCarga
 
 const Accesorios = () => {
-  const [productos, setProductos] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
-  const [precioMin, setPrecioMin] = useState("");
-  const [precioMax, setPrecioMax] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState([])
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("")
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("")
+  const [precioMin, setPrecioMin] = useState("")
+  const [precioMax, setPrecioMax] = useState("")
+  const [loading, setLoading] = useState(true)
 
-  // Función para obtener productos desde el backend
   const fetchProductos = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos");
+      const response = await fetch("http://localhost:8081/api/productos")
       if (!response.ok) {
-        throw new Error("Error en la respuesta del servidor");
+        throw new Error("Error en la respuesta del servidor")
       }
-      const data = await response.json();
-      setProductos(data);
-      sessionStorage.setItem("productosAccesorios", JSON.stringify(data)); // Almacenar en sessionStorage
+      const data = await response.json()
+      setProductos(data)
+      sessionStorage.setItem("productosAccesorios", JSON.stringify(data))
     } catch (error) {
-      console.error("Error leyendo productos:", error);
+      console.error("Error leyendo productos:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosAccesorios");
+    const productosGuardados = sessionStorage.getItem("productosAccesorios")
     if (productosGuardados) {
-      setProductos(JSON.parse(productosGuardados)); // Cargar desde sessionStorage
-      setLoading(false);
+      setProductos(JSON.parse(productosGuardados))
+      setLoading(false)
     } else {
-      fetchProductos();
+      fetchProductos()
     }
-  }, []);
+  }, [])
 
-  // Filtrar productos por categoría "Accesorios" (cod_categoria = "CARG")
   const productosAccesorios = productos.filter(
     (producto) =>
       producto.cod_categoria === "CARG" ||
       producto.cod_categoria === "CABL" ||
       producto.cod_categoria === "AUDIF"
-  );
+  )
 
-  // Obtener marcas únicas de los productos
-  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))];
+  const marcasUnicas = [...new Set(productosAccesorios.map((producto) => producto.cod_marca))]
 
-  // Filtrar productos según los filtros seleccionados
   const productosFiltrados = productosAccesorios.filter((producto) => {
-    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
-    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada;
+    const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
+    const cumpleMarca = !marcaSeleccionada || producto.cod_marca === marcaSeleccionada
     const cumplePrecio =
       (!precioMin || producto.precio >= parseFloat(precioMin)) &&
-      (!precioMax || producto.precio <= parseFloat(precioMax));
-    return cumpleCategoria && cumpleMarca && cumplePrecio;
-  });
+      (!precioMax || producto.precio <= parseFloat(precioMax))
+    return cumpleCategoria && cumpleMarca && cumplePrecio
+  })
+
+  // Ordenar productos filtrados por marca
+  const productosOrdenados = productosFiltrados.sort((a, b) => {
+    if (a.cod_marca < b.cod_marca) return -1
+    if (a.cod_marca > b.cod_marca) return 1
+    return 0
+  })
 
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
-  };
+    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria))
+  }
 
   return (
     <div className="py-8 bg-gray-100">
@@ -72,7 +76,6 @@ const Accesorios = () => {
 
         <h2 className="text-2xl text-gray-700 mb-6 text-left">Categorías</h2>
 
-        {/* Contenedor de categorías con desplazamiento horizontal y barra oculta */}
         <div className="overflow-x-auto scrollbar-hide whitespace-nowrap mb-12 lg:overflow-x-visible lg:whitespace-normal">
           <div className="inline-flex space-x-4 lg:flex lg:flex-nowrap lg:space-x-4">
             {categoriasAccesorios.map((category) => (
@@ -101,7 +104,6 @@ const Accesorios = () => {
         <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
           <h2 className="text-2xl text-gray-700">Filtrar por:</h2>
 
-          {/* Filtro: Categoría */}
           <select
             value={categoriaSeleccionada}
             onChange={(e) => setCategoriaSeleccionada(e.target.value)}
@@ -115,7 +117,6 @@ const Accesorios = () => {
             ))}
           </select>
 
-          {/* Filtro: Marca */}
           <select
             value={marcaSeleccionada}
             onChange={(e) => setMarcaSeleccionada(e.target.value)}
@@ -129,7 +130,6 @@ const Accesorios = () => {
             ))}
           </select>
 
-          {/* Inputs de precio */}
           <div className="flex space-x-2">
             <input
               type="number"
@@ -151,13 +151,13 @@ const Accesorios = () => {
         </div>
 
         {loading ? (
-          <div className="text-center text-gray-500">Cargando productos...</div>
+          <PantallaCarga /> 
         ) : (
-          <ProductGrid productos={productosFiltrados} />
+          <ProductGrid productos={productosOrdenados} />
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Accesorios;
+export default Accesorios

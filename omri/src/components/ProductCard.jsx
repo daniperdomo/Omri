@@ -6,12 +6,14 @@ const ProductCard = ({ product, allProducts }) => {
     product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : ""
   );
   const [availability, setAvailability] = useState(product.cantidad > 0);
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0); // Estado para el índice del color seleccionado
   const navigate = useNavigate();
 
   // Manejar el cambio de imagen al seleccionar un color
-  const handleColorClick = (image, quantity) => {
+  const handleColorClick = (image, quantity, index) => {
     setCurrentImage(image);
     setAvailability(quantity > 0);
+    setSelectedColorIndex(index); // Actualizar el índice del color seleccionado
   };
 
   // Manejar clic en la tarjeta para redirigir a la página de detalles
@@ -24,7 +26,7 @@ const ProductCard = ({ product, allProducts }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer border-2 border-gray-200 hover:border-color-hover" // Borde gris por defecto, azul en hover
       onClick={handleCardClick}
     >
       {/* Contenedor de tamaño fijo para la imagen */}
@@ -62,11 +64,13 @@ const ProductCard = ({ product, allProducts }) => {
             {allProducts.map((otherProduct, index) => (
               <button
                 key={index}
-                className="w-6 h-6 rounded-full border-2 border-gray-300 focus:outline-none"
+                className={`w-6 h-6 rounded-full border-2 focus:outline-none ${
+                  index === selectedColorIndex ? "border-color-hover shadow-lg" : "border-gray-300"
+                }`}
                 style={{ backgroundColor: otherProduct.color }}  // Usamos el color del producto
                 onClick={(e) => {
                   e.stopPropagation(); // Evitar que el clic en el color redirija a la página de detalles
-                  handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad);
+                  handleColorClick(otherProduct.imagenes[0]?.url, otherProduct.cantidad, index);
                 }}
               />
             ))}

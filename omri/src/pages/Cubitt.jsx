@@ -1,86 +1,87 @@
-import React, { useState, useEffect } from "react";
-import categoriasCubitt from "../jsons/categoriasCubitt.json";
-import ProductGrid from "../components/ProductGrid";
-import { debounce } from "lodash";
+import React, { useState, useEffect } from "react"
+import categoriasCubitt from "../jsons/categoriasCubitt.json"
+import ProductGrid from "../components/ProductGrid"
+import { debounce } from "lodash"
+import PantallaCarga from "../components/PantallaCarga"
 
 const Cubitt = () => {
-  const [productos, setProductos] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
-  const [precioMin, setPrecioMin] = useState("");
-  const [precioMax, setPrecioMax] = useState("");
-  const [errorPrecio, setErrorPrecio] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState([])
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("")
+  const [precioMin, setPrecioMin] = useState("")
+  const [precioMax, setPrecioMax] = useState("")
+  const [errorPrecio, setErrorPrecio] = useState("")
+  const [loading, setLoading] = useState(true)
 
   // Función para obtener productos desde la API
   const fetchProductos = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos");
+      const response = await fetch("http://localhost:8081/api/productos")
       if (!response.ok) {
-        throw new Error("Error en la respuesta del servidor");
+        throw new Error("Error en la respuesta del servidor")
       }
-      const data = await response.json();
-      setProductos(data);
-      sessionStorage.setItem("productosCubitt", JSON.stringify(data)); // Almacenar en sessionStorage
+      const data = await response.json()
+      setProductos(data)
+      sessionStorage.setItem("productosCubitt", JSON.stringify(data))
     } catch (error) {
-      console.error("Error leyendo productos:", error);
+      console.error("Error leyendo productos:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productosCubitt");
+    const productosGuardados = sessionStorage.getItem("productosCubitt")
     if (productosGuardados) {
-      setProductos(JSON.parse(productosGuardados)); // Cargar desde sessionStorage
-      setLoading(false); // No mostrar "Cargando productos..." si hay datos en sessionStorage
+      setProductos(JSON.parse(productosGuardados))
+      setLoading(false)
     } else {
-      fetchProductos();
+      fetchProductos()
     }
-  }, []);
+  }, [])
 
   const validarPrecio = () => {
     if (precioMin && precioMax && parseFloat(precioMin) > parseFloat(precioMax)) {
-      setErrorPrecio("El precio mínimo no puede ser mayor que el máximo.");
-      return false;
+      setErrorPrecio("El precio mínimo no puede ser mayor que el máximo.")
+      return false
     }
     if (isNaN(precioMin) || isNaN(precioMax)) {
-      setErrorPrecio("Los precios deben ser números válidos.");
-      return false;
+      setErrorPrecio("Los precios deben ser números válidos.")
+      return false
     }
-    setErrorPrecio("");
-    return true;
-  };
+    setErrorPrecio("")
+    return true
+  }
 
   const aplicarFiltros = () => {
     // Filtrar productos por marca "Cubitt" (cod_marca = "CT") y estatus = 1
     const productosCubitt = productos.filter(
       (producto) => producto.cod_marca === "CT" && producto.estatus === 1
-    );
+    )
 
     // Aplicar filtros adicionales (categoría y precio)
     const productosFiltrados = productosCubitt.filter((producto) => {
-      const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada;
+      const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
       const cumplePrecio =
         (!precioMin || producto.precio >= parseFloat(precioMin)) &&
-        (!precioMax || producto.precio <= parseFloat(precioMax));
-      return cumpleCategoria && cumplePrecio;
-    });
+        (!precioMax || producto.precio <= parseFloat(precioMax))
+      return cumpleCategoria && cumplePrecio
+    })
 
-    return productosFiltrados;
-  };
+    return productosFiltrados
+  }
 
-  const aplicarFiltrosDebounced = debounce(aplicarFiltros, 300);
+  const aplicarFiltrosDebounced = debounce(aplicarFiltros, 300)
 
   useEffect(() => {
-    aplicarFiltrosDebounced();
-  }, [categoriaSeleccionada, precioMin, precioMax]);
+    aplicarFiltrosDebounced()
+  }, [categoriaSeleccionada, precioMin, precioMax])
 
-  const productosFiltrados = aplicarFiltros();
+  const productosFiltrados = aplicarFiltros()
 
   const handleCategoriaClick = (cod_categoria) => {
-    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria));
-  };
+    setCategoriaSeleccionada((prev) => (prev === cod_categoria ? "" : cod_categoria))
+  }
 
   return (
     <div className="py-8 bg-gray-100">
@@ -131,7 +132,6 @@ const Cubitt = () => {
             className="w-full md:w-32 h-10 bg-white border border-black rounded-lg shadow-md px-2"
           >
             <option value="">Categoría</option>
-            <option value="">Todas</option>
             {categoriasCubitt.map((category) => (
               <option key={category.cod_categoria} value={category.cod_categoria}>
                 {category.title}
@@ -164,13 +164,13 @@ const Cubitt = () => {
         </div>
 
         {loading && !productos.length ? (
-          <div className="text-center text-gray-500">Cargando productos...</div>
+          <PantallaCarga />
         ) : (
           <ProductGrid productos={productosFiltrados} />
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Cubitt;
+export default Cubitt

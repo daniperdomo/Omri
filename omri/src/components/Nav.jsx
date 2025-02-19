@@ -68,10 +68,10 @@ const Nav = () => {
     }, []);
 
     const content = (
-        <div className="lg:hidden fixed top-20 left-0 w-full h-full bg-white z-40 transition-transform duration-300 ease-in-out transform translate-x-0">
+        <div className="lg:hidden sticky top-20 left-0 w-full h-full bg-white z-40 transition-transform duration-300 ease-in-out transform translate-x-0">
             <ul className="flex flex-col items-center py-10 gap-6 text-lg">
                 <Link to="/" onClick={() => setClick(false)}>
-                    <li className="relative group hover:text-color-hover transition cursor-pointer">
+                    <li className="relative group hover:text-color-hover transition cursor-pointer ">
                         Inicio
                         <span className="absolute left-0 bottom-[-6px] w-full h-0.5 bg-color-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                     </li>
@@ -153,7 +153,7 @@ const Nav = () => {
                             />
                             <FaSearch className="absolute right-3 top-3 text-gray-400" />
                             {searchTerm && searchResults.length > 0 && (
-                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div className="absolute z-50 bg-white border border-gray-300 mt-1 w-full rounded-lg shadow-lg">
                                     <ul>
                                         {searchResults.slice(0, 4).map(product => (
                                             <li key={product.cod_producto} className="p-4 hover:bg-gray-100 flex items-center">
@@ -202,7 +202,7 @@ const Nav = () => {
             {/* Mostrar la barra de búsqueda en móviles si showSearch es true */}
             {showSearch && (
                 <div className="lg:hidden flex items-center justify-center mb-4" ref={searchRef}>
-                    <div className="relative w-full px-4">
+                    <div className="relative w-full px-4 mb-4">
                         <input
                             type="text"
                             placeholder="Buscar..."
