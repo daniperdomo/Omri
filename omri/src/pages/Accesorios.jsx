@@ -20,7 +20,7 @@ const Accesorios = () => {
       }
       const data = await response.json()
       setProductos(data)
-      sessionStorage.setItem("productos", JSON.stringify(data))
+      sessionStorage.setItem("productosAccesorios", JSON.stringify(data))
     } catch (error) {
       console.error("Error leyendo productos:", error)
     } finally {
@@ -29,7 +29,7 @@ const Accesorios = () => {
   }
 
   useEffect(() => {
-    const productosGuardados = sessionStorage.getItem("productos")
+    const productosGuardados = sessionStorage.getItem("productosAccesorrios")
     if (productosGuardados) {
       setProductos(JSON.parse(productosGuardados))
       setLoading(false)

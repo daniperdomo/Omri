@@ -54,12 +54,7 @@ const Cubitt = () => {
   }
 
   const aplicarFiltros = () => {
-    const productosCubitt = productos.filter(
-      (producto) => producto.estatus === 1
-    )
-
-    // Aplicar filtros adicionales (categoría y precio)
-    const productosFiltrados = productosCubitt.filter((producto) => {
+    const productosFiltrados = productos.filter((producto) => {
       const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
       const cumplePrecio =
         (!precioMin || producto.precio >= parseFloat(precioMin)) &&
