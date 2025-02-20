@@ -16,7 +16,7 @@ const Cubitt = () => {
   const fetchProductos = async () => {
     setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos")
+      const response = await fetch("http://localhost:8081/api/productos/cubitt")
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor")
       }
@@ -54,13 +54,7 @@ const Cubitt = () => {
   }
 
   const aplicarFiltros = () => {
-    // Filtrar productos por marca "Cubitt" (cod_marca = "CT") y estatus = 1
-    const productosCubitt = productos.filter(
-      (producto) => producto.cod_marca === "CT" && producto.estatus === 1
-    )
-
-    // Aplicar filtros adicionales (categoría y precio)
-    const productosFiltrados = productosCubitt.filter((producto) => {
+    const productosFiltrados = productos.filter((producto) => {
       const cumpleCategoria = !categoriaSeleccionada || producto.cod_categoria === categoriaSeleccionada
       const cumplePrecio =
         (!precioMin || producto.precio >= parseFloat(precioMin)) &&
