@@ -7,7 +7,7 @@ const CreateProducto = () => {
     const [modelo, setModelo] = useState('')
     const [cod_marca, setCod_marca] = useState('')
     const [descripcion_marca, setDescripcionMarca] = useState('')
-    const [descripcion, setDescripcion] = useState('')
+    const [nombre, setNombre] = useState('')
     const [caracteristicas, setCaracteristicas] = useState('')
     const [precio, setPrecio] = useState(0.00)
     const [cantidad, setCantidad] = useState(0)
@@ -33,7 +33,7 @@ const CreateProducto = () => {
         setCod_marca(cod.toUpperCase()) 
         setDescripcionMarca(nombre) 
     }
-    const handleDescripcion = (e) => setDescripcion(e.target.value)
+    const handleDescripcion = (e) => setNombre(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
     const handlePrecio = (e) => setPrecio(e.target.value)
     const handleCantidad = (e) => setCantidad(e.target.value)
@@ -72,7 +72,7 @@ const CreateProducto = () => {
         formData.append('modelo', modelo)
         formData.append('cod_marca', cod_marca)
         formData.append('descripcion_marca', descripcion_marca)
-        formData.append('descripcion', descripcion)
+        formData.append('nombre', nombre)
         formData.append('caracteristicas', caracteristicas)
         formData.append('precio', precio)
         formData.append('cantidad', cantidad)
@@ -154,9 +154,9 @@ const CreateProducto = () => {
                     </div>
                     <div>
                         <label htmlFor="" className="form-label">
-                            Descripcion
+                            Nombre
                         </label>
-                        <input type="text" value={descripcion} onChange={handleDescripcion} className='form-input' maxLength={100} required />
+                        <input type="text" value={nombre} onChange={handleDescripcion} className='form-input' maxLength={100} required />
                     </div>
                     <div>
                         <label className="form-label">

@@ -34,7 +34,7 @@ const ProductCard = ({ product, allProducts }) => {
         {currentImage ? (
           <img
             src={currentImage}
-            alt={product.descripcion}
+            alt={product.nombre}
             className="w-full h-full object-contain" // Cambia a object-contain para que la imagen se ajuste completamente
           />
         ) : (
@@ -46,7 +46,7 @@ const ProductCard = ({ product, allProducts }) => {
 
       <div className="p-4">
         {/* Nombre del producto */}
-        <h3 className="text-lg font-bold text-gray-900">{product.descripcion}</h3>
+        <h3 className="text-lg font-bold text-gray-900">{product.nombre}</h3>
 
         {/* Precio */}
         <p className="text-gray-700">${product.precio.toFixed(2)}</p>

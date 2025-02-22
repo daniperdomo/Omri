@@ -8,7 +8,7 @@ const UpdateProducto = () => {
     const [cod_categoria, setCod_categoria] = useState('')
     const [modelo, setModelo] = useState('')
     const [cod_marca, setCod_marca] = useState('')
-    const [descripcion, setDescripcion] = useState('')
+    const [nombre, setNombre] = useState('')
     const [caracteristicas, setCaracteristicas] = useState('')
     const [precio, setPrecio] = useState(0.00)
     const [cantidad, setCantidad] = useState(0)
@@ -27,7 +27,7 @@ const UpdateProducto = () => {
         setModelo(model)
     }
     const handleCod_marca = (e) => setCod_marca(e.target.value.toUpperCase())
-    const handleDescripcion = (e) => setDescripcion(e.target.value)
+    const handleNombre = (e) => setNombre(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
     const handlePrecio = (e) => setPrecio(parseFloat(e.target.value))
     const handleCantidad = (e) => setCantidad(parseInt(e.target.value, 10))
@@ -63,7 +63,7 @@ const UpdateProducto = () => {
                 setCod_categoria(prod.cod_categoria)
                 setModelo(prod.modelo)
                 setCod_marca(prod.cod_marca)
-                setDescripcion(prod.descripcion)
+                setNombre(prod.nombre)
                 setCaracteristicas(prod.caracteristicas)
                 setPrecio(prod.precio)
                 setCantidad(prod.cantidad)
@@ -155,11 +155,11 @@ const UpdateProducto = () => {
                             </select>
                         </div>
                         <div>
-                            <label className="form-label">Descripción</label>
+                            <label className="form-label">Nombre</label>
                             <textarea
                                 className="form-input"
-                                value={descripcion}
-                                onChange={handleDescripcion}
+                                value={nombre}
+                                onChange={handleNombre}
                                 required
                             />
                         </div>
@@ -215,7 +215,7 @@ const UpdateProducto = () => {
                                 <option value="">Seleccione un producto</option>
                                 {productos.map((producto) => (
                                     <option key={`${producto.cod_producto}`} value={`${producto.cod_producto}`}>
-                                        {`${producto.cod_producto} - ${producto.descripcion}`}
+                                        {`${producto.cod_producto} - ${producto.nombre}`}
                                     </option>
                                 ))}
                             </select>

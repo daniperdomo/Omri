@@ -78,7 +78,7 @@ const ProductDetail = () => {
   }
 
   const whatsappNumber = "1234567890";
-  const whatsappMessage = `Hola, estoy interesado en el producto: ${producto.descripcion}.`;
+  const whatsappMessage = `Hola, estoy interesado en el producto: ${producto.nombre}.`;
 
   // Filtrar productos relacionados por modelo para obtener colores disponibles
   const coloresDisponibles = productosRelacionados.filter(
@@ -117,7 +117,7 @@ const ProductDetail = () => {
               <div className="w-full max-w-[500px] h-[500px] flex justify-center items-center border-2 border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
                   src={currentImage}
-                  alt={producto.descripcion}
+                  alt={producto.nombre}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -146,7 +146,7 @@ const ProductDetail = () => {
 
             {/* Columna derecha: Detalles del producto */}
             <div className="space-y-6">
-              <h1 className="text-4xl font-bold text-gray-900">{producto.descripcion}</h1>
+              <h1 className="text-4xl font-bold text-gray-900">{producto.nombre}</h1>
               <p className="text-3xl font-semibold text-gray-800">
                 ${producto.precio.toFixed(2)}
               </p>
