@@ -2,7 +2,7 @@ const express = require("express")
 const path = require("path")
 const app = express()
 const cors = require("cors")
-const port = 8081
+const port = process.env.PORT || 8081
 const multer = require('multer')
 const fs = require('node:fs')
 const { createClient } = require('@supabase/supabase-js')
@@ -15,7 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const upload = multer({ dest: '../public/images/' })
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["https://omri-one.vercel.app/"],
 }
 
 app.use(cors(corsOptions))
