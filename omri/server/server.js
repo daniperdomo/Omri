@@ -2,7 +2,7 @@ const express = require("express")
 const path = require("path")
 const app = express()
 const cors = require("cors")
-const port = process.env.PORT || 8081
+const port = 8081
 const multer = require('multer')
 const fs = require('node:fs')
 const { createClient } = require('@supabase/supabase-js')
@@ -15,7 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const upload = multer({ dest: '../public/images/' })
 
 const corsOptions = {
-    origin: ["https://omri-one.vercel.app/"],
+    origin: ["http://localhost:5173"],
 }
 
 app.use(cors(corsOptions))
@@ -56,7 +56,7 @@ app.post('/api/categoria', async (req, res) => {
 })
 
 app.post('/api/producto', upload.array('images', 3), async (req, res) => {
-    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion_marca, nombre, caracteristicas, precio, cantidad, estatus, color } = req.body
+    const { cod_producto, cod_categoria, modelo, cod_marca, descripcion_marca, nombre, caracteristicas, precio, cantidad, estatus, color, especificaciones } = req.body
     const { data: productoData, error: productoError } = await supabase
         .from('Productos')
         .insert([
@@ -70,7 +70,8 @@ app.post('/api/producto', upload.array('images', 3), async (req, res) => {
                 precio,
                 cantidad,
                 estatus,
-                color
+                color,
+                especificaciones
             }
         ])
 
@@ -119,6 +120,7 @@ app.get('/api/productos', async (req, res) => {
             cod_marca,
             nombre,
             caracteristicas,
+            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -166,6 +168,7 @@ app.get('/api/productos/accesorios', async (req, res) => {
             cod_marca,
             nombre,
             caracteristicas,
+            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -215,6 +218,7 @@ app.get('/api/productos/cubitt', async (req, res) => {
             cod_marca,
             nombre,
             caracteristicas,
+            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -470,7 +474,7 @@ app.get('/api/producto/:cod_producto', async (req, res) => {
 })
 
 app.put('/api/producto', async (req, res) => { 
-    const { cod_producto_original, cod_producto_nuevo, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus, color } = req.body
+    const { cod_producto_original, cod_producto_nuevo, cod_categoria, modelo, cod_marca, descripcion, caracteristicas, precio, cantidad, estatus, color, especificaciones } = req.body
 
     const { error } = await supabase
         .from('Productos')
@@ -484,7 +488,8 @@ app.put('/api/producto', async (req, res) => {
             precio,
             cantidad,
             estatus,
-            color
+            color,
+            especificaciones
         })
         .eq('cod_producto', cod_producto_original) 
 

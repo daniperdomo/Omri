@@ -9,6 +9,7 @@ const CreateProducto = () => {
     const [descripcion_marca, setDescripcionMarca] = useState('')
     const [nombre, setNombre] = useState('')
     const [caracteristicas, setCaracteristicas] = useState('')
+    const [especificaciones, setEspecificaciones] = useState('')
     const [precio, setPrecio] = useState(0.00)
     const [cantidad, setCantidad] = useState(0)
     const [estatus, setEstatus] = useState(0)
@@ -35,6 +36,7 @@ const CreateProducto = () => {
     }
     const handleDescripcion = (e) => setNombre(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
+    const handleEspecificaciones = (e) => setEspecificaciones(e.target.value)
     const handlePrecio = (e) => setPrecio(e.target.value)
     const handleCantidad = (e) => setCantidad(e.target.value)
     const handleEstatus = (e) => {
@@ -74,6 +76,7 @@ const CreateProducto = () => {
         formData.append('descripcion_marca', descripcion_marca)
         formData.append('nombre', nombre)
         formData.append('caracteristicas', caracteristicas)
+        formData.append('especificaciones', especificaciones)
         formData.append('precio', precio)
         formData.append('cantidad', cantidad)
         formData.append('estatus', estatus)
@@ -162,7 +165,13 @@ const CreateProducto = () => {
                         <label className="form-label">
                             Caracteristicas
                         </label>
-                        <input type="text" value={caracteristicas} onChange={handleCaracteristicas} className='form-input' maxLength={500} required />
+                        <input type="text" value={caracteristicas} onChange={handleCaracteristicas} className='form-input' required />
+                    </div>
+                    <div>
+                        <label className="form-label">
+                            Especificaciones
+                        </label>
+                        <input type="text" value={especificaciones} onChange={handleEspecificaciones} className='form-input' required />
                     </div>
                     <div>
                         <label className="form-label">

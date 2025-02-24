@@ -66,7 +66,7 @@ const DeleteProducto = () => {
                             <option value="">Seleccione un producto</option>
                             {productos.map((producto)=>(
                                 <option key={`${producto.cod_producto}`}  value={`${producto.cod_producto}`}>
-                                    {`${producto.cod_producto} - ${producto.descripcion}`}
+                                    {`${producto.cod_producto} - ${producto.nombre}`}
                                 </option>
                             ))}
                         </select>

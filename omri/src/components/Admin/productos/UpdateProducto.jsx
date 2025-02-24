@@ -10,6 +10,7 @@ const UpdateProducto = () => {
     const [cod_marca, setCod_marca] = useState('')
     const [nombre, setNombre] = useState('')
     const [caracteristicas, setCaracteristicas] = useState('')
+    const [especificaciones, setEspecificaciones] = useState('')
     const [precio, setPrecio] = useState(0.00)
     const [cantidad, setCantidad] = useState(0)
     const [estatus, setEstatus] = useState(0)
@@ -29,6 +30,7 @@ const UpdateProducto = () => {
     const handleCod_marca = (e) => setCod_marca(e.target.value.toUpperCase())
     const handleNombre = (e) => setNombre(e.target.value)
     const handleCaracteristicas = (e) => setCaracteristicas(e.target.value)
+    const handleEspecificaciones = (e) => setEspecificaciones(e.target.value)
     const handlePrecio = (e) => setPrecio(parseFloat(e.target.value))
     const handleCantidad = (e) => setCantidad(parseInt(e.target.value, 10))
     const handleEstatus = (e) => {
@@ -69,6 +71,7 @@ const UpdateProducto = () => {
                 setCantidad(prod.cantidad)
                 setEstatus(prod.estatus)
                 setColor(prod.color)
+                setEspecificaciones(prod.especificaciones)
             })
             .catch(error => console.error('Error leyendo producto:', error))
     }
@@ -93,7 +96,8 @@ const UpdateProducto = () => {
                     precio, 
                     cantidad, 
                     estatus,
-                    color 
+                    color,
+                    especificaciones 
                 })
             })
 
@@ -169,6 +173,15 @@ const UpdateProducto = () => {
                                 className="form-input"
                                 value={caracteristicas}
                                 onChange={handleCaracteristicas}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="form-label">Especificaciones</label>
+                            <textarea
+                                className="form-input"
+                                value={especificaciones}
+                                onChange={handleEspecificaciones}
                                 required
                             />
                         </div>
