@@ -15,7 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const upload = multer({ dest: '../public/images/' })
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["https://omri-iota.vercel.app/"],
 }
 
 app.use(cors(corsOptions))
