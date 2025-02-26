@@ -113,7 +113,7 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Columna izquierda: Imagen principal y miniaturas */}
             <div className="flex flex-row items-start">
-              {/* Mostrar miniaturas solo si hay más de una imagen */}
+              {/* Mostrar miniaturas solo si hay más de una imagen je*/}
               {allImages.length > 1 && (
                 <div className="flex flex-col space-y-2 mr-4">
                   {allImages.map((img, index) => (
