@@ -14,7 +14,7 @@ const DeleteProducto = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/producto')
+        fetch(`${process.env.PUBLIC_URL}/api/producto`)
             .then(response => response.json())
             .then(data => setProductos(data))
             .catch(error => console.error('Error leyendo productos:', error));
@@ -25,7 +25,7 @@ const DeleteProducto = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch('http://localhost:8081/api/deleteProducto', {
+            const response = await fetch(`${process.env.PUBLIC_URL}/api/deleteProducto`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

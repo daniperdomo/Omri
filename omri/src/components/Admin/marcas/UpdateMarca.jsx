@@ -12,7 +12,7 @@ const UpdateMarca = () => {
 
     useEffect(() => {
         // Cargar las marcas al inicio
-        fetch('http://localhost:8081/api/marca')
+        fetch(`${process.env.PUBLIC_URL}/api/marca`)
             .then(response => response.json())
             .then(data => setMarcas(data))
             .catch(error => console.error('Error leyendo marcas:', error))
@@ -23,7 +23,7 @@ const UpdateMarca = () => {
         setCod_marca_nuevo(cod_marca)
 
         // Cargar los datos de la marca seleccionada
-        fetch(`http://localhost:8081/api/marca/${cod_marca}`)
+        fetch(`${process.env.PUBLIC_URL}/marca/${cod_marca}`)
             .then(response => response.json())
             .then(prod => {
                 setDescripcion(prod.descripcion)
@@ -35,7 +35,7 @@ const UpdateMarca = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch('http://localhost:8081/api/marca', {
+            const response = await fetch(`${process.env.PUBLIC_URL}/api/marca`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

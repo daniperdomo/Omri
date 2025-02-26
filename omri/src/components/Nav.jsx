@@ -12,7 +12,7 @@ const Nav = () => {
     const handleClick = () => setClick(!click);
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/productos')
+        fetch(`${process.env.PUBLIC_URL}/api/productos`)
             .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data));

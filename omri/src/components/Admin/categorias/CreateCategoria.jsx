@@ -17,7 +17,7 @@ const CreateCategoria = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch('http://localhost:8081/api/categoria', {
+            const response = await fetch(`${process.env.PUBLIC_URL}/api/categoria`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

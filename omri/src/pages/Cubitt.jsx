@@ -16,7 +16,7 @@ const Cubitt = () => {
   const fetchProductos = async () => {
     setLoading(true)
     try {
-      const response = await fetch("http://localhost:8081/api/productos/cubitt")
+      const response = await fetch(`${process.env.PUBLIC_URL}/api/productos/cubitt`)
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor")
       }

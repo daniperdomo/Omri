@@ -54,12 +54,12 @@ const CreateProducto = () => {
     }
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/marca')
+        fetch(`${process.env.PUBLIC_URL}/api/marca`)
             .then(response => response.json())
             .then(data => setMarcas(data))
             .catch(error => console.error('Error leyendo Marcas:', error))
 
-        fetch('http://localhost:8081/api/categoria')
+        fetch(`${process.env.PUBLIC_URL}/api/categoria`)
             .then(response => response.json())
             .then(data => setCategorias(data))
             .catch(error => console.error('Error leyendo Categorias:', error))
@@ -87,7 +87,7 @@ const CreateProducto = () => {
         })
     
         try {
-            const response = await fetch('http://localhost:8081/api/producto', {
+            const response = await fetch(`${process.env.PUBLIC_URL}/api/producto`, {
                 method: 'POST',
                 body: formData,
             })
