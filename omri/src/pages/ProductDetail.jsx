@@ -202,7 +202,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Componente de productos recomendados */}
+        {/* Componente de productos recomendados oki */}
         <ProductRecomendado 
           productos={productosRelacionados} 
           categoria={producto.cod_categoria} 
