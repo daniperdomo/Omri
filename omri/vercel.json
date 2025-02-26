@@ -22,11 +22,5 @@
       "src": "/(.*)",
       "dest": "/dist/index.html"
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://omri-iota.vercel.app/api/:path*"
-    }
   ]
 }
