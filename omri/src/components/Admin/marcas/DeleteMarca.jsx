@@ -13,7 +13,7 @@ const DeleteMarca = () => {
 
 
     useEffect(() => {
-        fetch(`${process.env.PUBLIC_URL}/api/marca`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/marca`)
             .then(response => response.json())
             .then(data => setMarcas(data))
             .catch(error => console.error('Error leyendo Marcas:', error));
@@ -24,7 +24,7 @@ const DeleteMarca = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${process.env.PUBLIC_URL}/api/deleteMarca`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/deleteMarca`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

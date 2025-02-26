@@ -39,17 +39,17 @@ const UpdateProducto = () => {
     }
 
     useEffect(() => {
-        fetch(`${process.env.PUBLIC_URL}/api/producto`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/producto`)
             .then(response => response.json())
             .then(data => setProductos(data))
             .catch(error => console.error(`Error leyendo productos:`, error))
 
-        fetch(`${process.env.PUBLIC_URL}/api/marca`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/marca`)
             .then(response => response.json())
             .then(data => setMarcas(data))
             .catch(error => console.error('Error leyendo Marcas:', error))
 
-        fetch(`${process.env.PUBLIC_URL}/api/categoria`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/categoria`)
             .then(response => response.json())
             .then(data => setCategorias(data))
             .catch(error => console.error('Error leyendo Categorias:', error))
@@ -59,7 +59,7 @@ const UpdateProducto = () => {
         setCod_producto_original(cod_producto)
         setCod_producto_nuevo(cod_producto)
 
-        fetch(`${process.env.PUBLIC_URL}/api/producto/${cod_producto}`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/producto/${cod_producto}`)
             .then(response => response.json())
             .then(prod => {
                 setCod_categoria(prod.cod_categoria)
@@ -80,7 +80,7 @@ const UpdateProducto = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${process.env.PUBLIC_URL}/api/producto`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/producto`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -11,7 +11,7 @@ const UpdateImagen = () => {
 
     useEffect(() => {
         // Cargar las imágenes al inicio
-        fetch(`${process.env.PUBLIC_URL}/api/imagenes`)
+        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/imagenes`)
             .then(response => response.json())
             .then(data => setImagenes(data))
             .catch(error => console.error('Error leyendo imágenes:', error));
@@ -26,7 +26,7 @@ const UpdateImagen = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${process.env.PUBLIC_URL}/api/imagenes`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/imagenes`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
