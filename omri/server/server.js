@@ -152,6 +152,7 @@ app.get('/api/productos', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
+        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -202,6 +203,7 @@ app.get('/api/productos/accesorios', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
+        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -252,6 +254,7 @@ app.get('/api/productos/cubitt', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
+        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -270,6 +273,7 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
             cod_marca,
             nombre,
             caracteristicas,
+            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -305,6 +309,7 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
         cantidad: productoConImagenesOrdenadas.cantidad,
         estatus: productoConImagenesOrdenadas.estatus,
         color: productoConImagenesOrdenadas.color,
+        especificaciones: productoConImagenesOrdenadas.especificaciones,
         imagenes: productoConImagenesOrdenadas.Imagenes ? productoConImagenesOrdenadas.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }
 
@@ -323,6 +328,7 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
             cod_marca,
             nombre,
             caracteristicas,
+            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -358,6 +364,7 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
+        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -393,9 +400,9 @@ app.get('/api/producto', async (req, res) => {
     const { data, error } = await supabase
         .from('Productos')
         .select('*')
-        .order('cod_categoria', { ascending: true }) // Ordenar por categoría
-        .order('modelo', { ascending: true })        // Luego por modelo
-        .order('cod_producto', { ascending: true }) // Finalmente por código de producto
+        .order('cod_categoria', { ascending: true })
+        .order('modelo', { ascending: true })       
+        .order('cod_producto', { ascending: true })
 
     if (error) {
         console.log("Error leyendo Productos:", error)
