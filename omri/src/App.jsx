@@ -4,7 +4,7 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Accesorios from "./pages/Accesorios";
-import Cubitt from './pages/cubitt';
+import Cubitt from './pages/Cubitt';
 import Nosotros from './pages/Nosotros';
 import Admin from './pages/Admin';
 import AdminForm from './pages/AdminForm';

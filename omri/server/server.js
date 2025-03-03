@@ -3,8 +3,6 @@ const path = require("path")
 const app = express()
 const cors = require("cors")
 const port = process.env.PORT || 8081
-const multer = require('multer')
-const fs = require('node:fs')
 const { createClient } = require('@supabase/supabase-js')
 require('dotenv').config()
 
@@ -12,10 +10,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-const upload = multer({ dest: '../public/images/' })
-
 const corsOptions = {
-    origin: ["https://omri-iota.vercel.app/"],
+    origin: ["https://omri-six.vercel.app/"],
 }
 
 app.use(cors(corsOptions))
@@ -55,7 +51,7 @@ app.post('/api/categoria', async (req, res) => {
     res.status(201).send('Categoria registrada con éxito')
 })
 
-app.post('/api/producto', upload.array('images', 3), async (req, res) => {
+app.post('/api/producto', async (req, res) => {
     const { cod_producto, cod_categoria, modelo, cod_marca, descripcion_marca, nombre, caracteristicas, precio, cantidad, estatus, color, especificaciones } = req.body
     const { data: productoData, error: productoError } = await supabase
         .from('Productos')
@@ -80,34 +76,7 @@ app.post('/api/producto', upload.array('images', 3), async (req, res) => {
         return res.status(500).send('Error registrando Producto')
     }
 
-    const imagePromises = req.files.map(async (file) => {
-        const dir = path.join(__dirname, '../public/images', descripcion_marca, 'productos', modelo)
-        fs.mkdirSync(dir, { recursive: true })
-
-        const imagePath = path.join(dir, file.originalname)
-        fs.renameSync(file.path, imagePath)
-
-        const { error: imageError } = await supabase
-            .from('Imagenes')
-            .insert([
-                {
-                    cod_producto,
-                    url: `/images/${descripcion_marca}/productos/${modelo}/${file.originalname}`
-                }
-            ])
-
-        if (imageError) {
-            throw new Error('Error al guardar la imagen: ' + imageError.message)
-        }
-    })
-
-    try {
-        await Promise.all(imagePromises)
-        res.status(201).send('Producto registrado con éxito y las imágenes han sido guardadas')
-    } catch (imageError) {
-        console.log('Error guardando imágenes: ', imageError)
-        res.status(500).send('Producto registrado, pero hubo un error al guardar las imágenes')
-    }
+    res.status(201).send('Producto registrado con éxito')
 })
 
 app.get('/api/productos', async (req, res) => {
@@ -152,7 +121,6 @@ app.get('/api/productos', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
-        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -203,7 +171,6 @@ app.get('/api/productos/accesorios', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
-        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -254,7 +221,6 @@ app.get('/api/productos/cubitt', async (req, res) => {
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
-        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -273,7 +239,6 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
             cod_marca,
             nombre,
             caracteristicas,
-            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -309,7 +274,6 @@ app.get('/api/productos/:cod_producto', async (req, res) => {
         cantidad: productoConImagenesOrdenadas.cantidad,
         estatus: productoConImagenesOrdenadas.estatus,
         color: productoConImagenesOrdenadas.color,
-        especificaciones: productoConImagenesOrdenadas.especificaciones,
         imagenes: productoConImagenesOrdenadas.Imagenes ? productoConImagenesOrdenadas.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }
 
@@ -328,7 +292,6 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
             cod_marca,
             nombre,
             caracteristicas,
-            especificaciones,
             precio,
             cantidad,
             estatus,
@@ -364,7 +327,6 @@ app.get('/api/productos/categoria/:categoria/marca/:marca', async (req, res) => 
         cantidad: producto.cantidad,
         estatus: producto.estatus,
         color: producto.color,
-        especificaciones: producto.especificaciones,
         imagenes: producto.Imagenes ? producto.Imagenes.map(imagen => ({ url: imagen.url })) : []
     }))
 
@@ -400,9 +362,9 @@ app.get('/api/producto', async (req, res) => {
     const { data, error } = await supabase
         .from('Productos')
         .select('*')
-        .order('cod_categoria', { ascending: true })
-        .order('modelo', { ascending: true })       
-        .order('cod_producto', { ascending: true })
+        .order('cod_categoria', { ascending: true }) // Ordenar por categoría
+        .order('modelo', { ascending: true })        // Luego por modelo
+        .order('cod_producto', { ascending: true }) // Finalmente por código de producto
 
     if (error) {
         console.log("Error leyendo Productos:", error)
@@ -620,11 +582,11 @@ app.put('/api/imagenes', async (req, res) => {
     res.status(200).send('Imagen actualizada con éxito')
 })
 
-app.use(express.static(path.join(__dirname, 'client/build')))
+app.use(express.static(path.join(__dirname, '../dist')))
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
-})
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist', 'index.html'))
+});
 
 app.listen(port, () => {
     console.log("Server started on port", port)

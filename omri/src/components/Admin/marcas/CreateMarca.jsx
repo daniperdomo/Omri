@@ -16,7 +16,7 @@ const CreateMarca = () => {
         e.preventDefault()
         
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/marca`, {
+            const response = await fetch(`/api/marca`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

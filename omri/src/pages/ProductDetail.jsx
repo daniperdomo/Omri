@@ -22,7 +22,7 @@ const ProductDetail = () => {
   );
 
   useEffect(() => {
-    fetch(`http://localhost:8081/api/productos/${cod_producto}`)
+    fetch(`/api/productos/${cod_producto}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error en la respuesta del servidor");
@@ -40,7 +40,7 @@ const ProductDetail = () => {
           setSelectedColor(data.color);
         }
         // Realizar la búsqueda de productos relacionados por categoría y marca
-        return fetch(`http://localhost:8081/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
+        return fetch(`/api/productos/categoria/${data.cod_categoria}/marca/${data.cod_marca}`);
       })
       .then((response) => {
         if (!response.ok) {

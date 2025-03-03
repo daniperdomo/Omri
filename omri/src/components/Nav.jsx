@@ -12,7 +12,7 @@ const Nav = () => {
     const handleClick = () => setClick(!click);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/productos`)
+        fetch(`/api/productos`)
             .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('searchResults', JSON.stringify(data));
@@ -35,15 +35,15 @@ const Nav = () => {
         if (cachedResults) {
             const results = JSON.parse(cachedResults);
             const filteredResults = results.filter(product =>
-                product.descripcion.toLowerCase().includes(value.toLowerCase())
+                product.nombre.toLowerCase().includes(value.toLowerCase())
             );
 
             const uniqueResults = [];
             const seenDescriptions = new Set();
 
             filteredResults.forEach(product => {
-                if (!seenDescriptions.has(product.descripcion)) {
-                    seenDescriptions.add(product.descripcion);
+                if (!seenDescriptions.has(product.nombre)) {
+                    seenDescriptions.add(product.nombre);
                     uniqueResults.push(product);
                 }
             });
@@ -167,10 +167,10 @@ const Nav = () => {
                                                     <div className="flex items-center">
                                                         <img 
                                                             src={product.imagenes[0]?.url} 
-                                                            alt={product.descripcion} 
+                                                            alt={product.nombre} 
                                                             className="h-16 w-16 mr-4 object-cover rounded-lg" 
                                                         />
-                                                        <span className="text-lg">{product.descripcion}</span>
+                                                        <span className="text-lg">{product.nombre}</span>
                                                     </div>
                                                 </Link>
                                             </li>
@@ -226,10 +226,10 @@ const Nav = () => {
                                                 <div className="flex items-center">
                                                     <img 
                                                         src={product.imagenes[0]?.url} 
-                                                        alt={product.descripcion} 
+                                                        alt={product.nombre} 
                                                         className="h-16 w-16 mr-4 object-cover rounded-lg" 
                                                     />
-                                                    <span className="text-lg">{product.descripcion}</span>
+                                                    <span className="text-lg">{product.nombre}</span>
                                                 </div>
                                             </Link>
                                         </li>

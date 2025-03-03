@@ -14,7 +14,7 @@ const UpdateCategoria = () => {
 
     useEffect(() => {
         // Cargar las categorías al inicio
-        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/categoria`)
+        fetch(`/api/categoria`)
             .then(response => response.json())
             .then(data => setCategorias(data))
             .catch(error => console.error('Error leyendo categorías:', error))
@@ -27,7 +27,7 @@ const UpdateCategoria = () => {
         setModelo(modelo)
 
         // Cargar los datos de la categoría seleccionada
-        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/categoria/${cod_categoria}/${modelo}`)
+        fetch(`/api/categoria/${cod_categoria}/${modelo}`)
             .then(response => response.json())
             .then(prod => {
                 setDescripcion(prod.descripcion)
@@ -39,7 +39,7 @@ const UpdateCategoria = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/categoria`, {
+            const response = await fetch(`/api/categoria`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

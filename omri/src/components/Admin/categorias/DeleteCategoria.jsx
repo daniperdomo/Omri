@@ -16,7 +16,7 @@ const DeleteCategoria = () => {
     }
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/categoria`)
+        fetch(`/api/categoria`)
             .then(response => response.json())
             .then(data => setCategorias(data))
             .catch(error => console.error('Error leyendo Categorias:', error))
@@ -26,7 +26,7 @@ const DeleteCategoria = () => {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL}/api/deleteCategoria`, {
+            const response = await fetch(`/api/deleteCategoria`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
